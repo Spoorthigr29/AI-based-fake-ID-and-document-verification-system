@@ -1,0 +1,1014 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}VerifyX | Institutional Identity & Document Verification System{% endblock %}
+
+{% block content %}
+
+<!-- ==========================================================================
+     1. DARK BLUE HERO SECTION (#071426)
+     ========================================================================== -->
+<section id="home" class="hero-section-dark">
+    <div class="container px-lg-5">
+        <div class="row align-items-center g-5">
+            <!-- Left Column: Hero Content & CTAs -->
+            <div class="col-lg-6 text-center text-lg-start">
+                <div class="hero-badge-dark">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <span>DOCUMENT VERIFICATION</span>
+                </div>
+                
+                <h1 class="hero-heading-dark mb-2">
+                    VerifyX
+                </h1>
+                <h2 class="hero-subheading-dark">
+                    Identity & Document Verification System
+                </h2>
+                
+                <p class="hero-desc-dark mb-4">
+                    Verify documents, detect tampering, validate identity and generate comprehensive risk insights.
+                </p>
+
+                <!-- Action Buttons (Cyan / Blue) -->
+                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-3 mb-4">
+                    <a href="#verification" class="btn-cyan-hero">
+                        <i class="fa-solid fa-arrow-down me-2"></i> Start Verification
+                    </a>
+                    <a href="#how-it-works" class="btn-hero-outline">
+                        See How It Works <i class="fa-solid fa-arrow-right ms-2 text-info"></i>
+                    </a>
+                </div>
+
+                <!-- 4 Trust Indicators -->
+                <div class="d-flex flex-wrap justify-content-center justify-content-lg-start gap-2 pt-2">
+                    <div class="trust-pill-dark">
+                        <i class="fa-solid fa-bolt" style="color: #08BFEA;"></i> Automated Verification
+                    </div>
+                    <div class="trust-pill-dark">
+                        <i class="fa-solid fa-layer-group" style="color: #08BFEA;"></i> Multi-Level Verification
+                    </div>
+                    <div class="trust-pill-dark">
+                        <i class="fa-solid fa-clipboard-check" style="color: #08BFEA;"></i> Verification Details
+                    </div>
+                    <div class="trust-pill-dark">
+                        <i class="fa-solid fa-shield-halved" style="color: #08BFEA;"></i> Secure Workflow
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Abstract Verification Graphic (Dark Blue Mockup) -->
+            <div class="col-lg-6">
+                <div class="mockup-container-hero mx-auto" style="max-width: 500px;">
+                    <!-- Floating Badge Top: Tamper Detection -->
+                    <div class="mockup-floating-pill mockup-pill-top">
+                        <div class="d-flex align-items-center justify-content-center bg-success bg-opacity-20 text-success rounded-circle p-2" style="width: 32px; height: 32px;">
+                            <i class="fa-solid fa-shield-check"></i>
+                        </div>
+                        <div>
+                            <div class="extra-small text-muted text-light fw-bold">DOCUMENT INTEGRITY</div>
+                            <div class="small fw-bold text-success">Passed &bull; Low Risk</div>
+                        </div>
+                    </div>
+
+                    <!-- Main Document Reference Card Mockup -->
+                    <div class="mockup-card-hero">
+                        <div class="d-flex justify-content-between align-items-center pb-3 mb-3 border-bottom border-secondary border-opacity-30">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="d-flex align-items-center justify-content-center bg-info bg-opacity-20 text-info rounded-2 p-1" style="width: 28px; height: 28px;">
+                                    <i class="fa-solid fa-id-card"></i>
+                                </div>
+                                <span class="fw-bold text-white small">DOCUMENT REFERENCE</span>
+                            </div>
+                            <span class="badge bg-success bg-opacity-25 text-success border border-success small">AUTHENTICATED</span>
+                        </div>
+
+                        <div class="row g-3 align-items-center">
+                            <div class="col-4 text-center">
+                                <div class="bg-dark bg-opacity-50 border border-secondary border-opacity-40 rounded-3 p-3 text-secondary d-flex flex-column align-items-center justify-content-center" style="height: 100px;">
+                                    <i class="fa-solid fa-user-tie fs-1" style="color: #08BFEA;"></i>
+                                    <span class="extra-small text-muted mt-1">Photo Valid</span>
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <div class="mb-2">
+                                    <div class="extra-small text-muted">DOCUMENT HOLDER</div>
+                                    <div class="small fw-bold text-white">ANANYA SHARMA</div>
+                                </div>
+                                <div class="row g-1">
+                                    <div class="col-6">
+                                        <div class="extra-small text-muted">DOB</div>
+                                        <div class="small font-monospace text-info">15/08/1998</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="extra-small text-muted">DOCUMENT ID</div>
+                                        <div class="small font-monospace text-info">ID-9942-XXXX</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between align-items-center mt-3 pt-3 border-top border-secondary border-opacity-30">
+                            <div style="width: 36px; height: 26px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 4px;"></div>
+                            <div class="extra-small text-muted font-monospace" style="color: #94a3b8 !important;">
+                                &lt;&lt;&lt; OCR VALIDATED &bull; INTEGRITY VERIFIED &gt;&gt;&gt;
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Floating Badge Bottom: Risk Score -->
+                    <div class="mockup-floating-pill mockup-pill-bottom">
+                        <div class="d-flex align-items-center justify-content-center bg-info bg-opacity-20 text-info rounded-circle p-2" style="width: 32px; height: 32px;">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <div class="extra-small text-muted text-light fw-bold">OVERALL RISK SCORE</div>
+                            <div class="small fw-bold text-white">18 / 100 &bull; <span class="text-success">LOW RISK</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ==========================================================================
+     MAIN CONTENT AREA: SOFT LIGHT BLUE BACKGROUND (#EAF6FF)
+     ========================================================================== -->
+<div class="main-content-light-blue">
+
+    <!-- ======================================================================
+         2. VERIFICATION SECTION (#verification)
+         ====================================================================== -->
+    <section id="verification" class="section-light-blue">
+        <div class="container px-lg-5">
+            <!-- Section Header -->
+            <div class="text-center mb-5">
+                <div class="section-badge-blue">
+                    <i class="fa-solid fa-file-shield"></i> DOCUMENT VERIFICATION
+                </div>
+                <h2 class="heading-section-dark fs-1 mb-2">Verify Your Identity Document</h2>
+                <p class="desc-section-slate mx-auto" style="max-width: 650px;">
+                    Upload your document to initiate multi-level verification analysis.
+                </p>
+            </div>
+
+            <!-- Multi-Part Verification Form -->
+            <form id="verificationUploadForm" method="POST" action="{% url 'documents:upload' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- 3-Column White Card Layout -->
+                <div class="row g-4 mb-4">
+                    <!-- CARD 1: 01 SELECT DOCUMENT TYPE -->
+                    <div class="col-lg-4">
+                        <div class="step-card-white">
+                            <div class="step-number-blue">01</div>
+                            <div class="step-title-navy">SELECT DOCUMENT TYPE</div>
+                            
+                            <p class="text-slate-secondary small mb-3">
+                                Choose the document type you are submitting for automated verification.
+                            </p>
+
+                            <div class="mb-3">
+                                <label for="documentTypeSelect" class="form-label text-slate-secondary small fw-bold mb-1">
+                                    Document Category
+                                </label>
+                                <select id="documentTypeSelect" name="document_type" class="form-select form-select-lg border-slate-300 shadow-sm fs-6" style="background-color: #f8fbfe;" required>
+                                    <option value="sample_aadhaar" selected>Aadhaar Card</option>
+                                    <option value="sample_pan">PAN Card</option>
+                                    <option value="sample_passport">Passport Data Page</option>
+                                    <option value="sample_driving_license">Driving License</option>
+                                    <option value="sample_voter_id">Voter ID (EPIC)</option>
+                                    <option value="other">Other Identity Document</option>
+                                </select>
+                            </div>
+
+                            <!-- Dynamic Document Capability Notice -->
+                            <div class="mt-auto">
+                                <div id="docRequirementNotice" class="p-3 rounded-3 bg-light border border-slate-200 small">
+                                    <div class="fw-bold text-navy mb-1">
+                                        <i class="fa-solid fa-circle-check text-success me-1"></i>
+                                        <span id="noticeHeader">Photo Identity Document</span>
+                                    </div>
+                                    <div id="noticeBody" class="text-slate-secondary">
+                                        ✓ Live selfie required<br>
+                                        ✓ Face matching enabled
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 2: 02 UPLOAD DOCUMENT -->
+                    <div class="col-lg-4">
+                        <div class="step-card-white">
+                            <div class="step-number-blue">02</div>
+                            <div class="step-title-navy">UPLOAD DOCUMENT</div>
+
+                            <p class="text-slate-secondary small mb-3">
+                                Submit a clear image of the identity document for OCR and document integrity checks.
+                            </p>
+
+                            <!-- Drag & Drop Upload Dropzone -->
+                            <div class="upload-dropzone-custom mb-3" id="docDropzone" onclick="document.getElementById('docFileInput').click()">
+                                <i class="fa-solid fa-cloud-arrow-up fs-1 mb-2" style="color: #0875E1;"></i>
+                                <div class="fw-bold text-navy small mb-1">Click to upload or drag and drop</div>
+                                <div class="text-slate-secondary extra-small mb-2">Supported formats: PDF • JPG • JPEG • PNG • WEBP</div>
+                                <span class="badge bg-white text-secondary border border-slate-200 shadow-sm">Max size: 10 MB</span>
+                                <div id="fileSelectedFeedback" class="mt-2 text-primary fw-bold small d-none">
+                                    <i class="fa-solid fa-file-image me-1"></i> <span id="fileNameLabel"></span>
+                                </div>
+                            </div>
+
+                            <input type="file" id="docFileInput" name="original_file" class="d-none" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" required>
+
+                            <div class="text-slate-secondary extra-small mt-auto">
+                                <i class="fa-solid fa-lock text-primary me-1"></i> Document securely processed after upload.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CARD 3: 03 LIVE SELFIE VERIFICATION -->
+                    <div class="col-lg-4">
+                        <div class="step-card-white">
+                            <div class="step-number-blue">03</div>
+                            <div class="step-title-navy">LIVE SELFIE VERIFICATION</div>
+
+                            <!-- Active Camera Panel (for photo docs) -->
+                            <div id="selfieActivePanel">
+                                <p class="text-slate-secondary small mb-3">
+                                    Capture a live photo using your camera for identity verification.
+                                </p>
+
+                                <div class="camera-preview-box-custom mb-3" id="cameraPreviewContainer">
+                                    <div id="cameraPlaceholder" class="text-center p-3 text-secondary">
+                                        <i class="fa-solid fa-camera fs-2 mb-2" style="color: #0875E1;"></i>
+                                        <div class="small fw-semibold text-navy">Camera is idle</div>
+                                        <div class="extra-small text-slate-secondary">Click below to open webcam</div>
+                                    </div>
+                                    <video id="webcamVideo" class="d-none" autoplay playsinline></video>
+                                    <canvas id="selfieCanvas" class="d-none"></canvas>
+                                    <img id="selfiePreviewImg" class="d-none" alt="Captured Selfie">
+                                </div>
+
+                                <!-- Camera Action Controls -->
+                                <div class="d-flex flex-column gap-2 mt-auto">
+                                    <button type="button" class="btn btn-cyber-secondary w-100" id="startCameraBtn">
+                                        <i class="fa-solid fa-video me-1 text-primary"></i> Start Camera
+                                    </button>
+                                    <button type="button" class="btn btn-cyber-primary w-100 d-none" id="captureSelfieBtn">
+                                        <i class="fa-solid fa-camera me-1"></i> Capture Photo
+                                    </button>
+                                    <div id="retakeControls" class="d-none d-flex gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-secondary w-50" id="retakeSelfieBtn">
+                                            <i class="fa-solid fa-rotate-left me-1"></i> Retake
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-success text-white w-50" id="useSelfieBtn">
+                                            <i class="fa-solid fa-check me-1"></i> Use Photo
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Post-capture Status Indicators -->
+                                <div id="selfieStatusInfo" class="mt-3 p-2 px-3 rounded-2 bg-light border border-slate-200 extra-small d-none">
+                                    <div class="d-flex justify-content-between text-navy mb-1">
+                                        <span>Document Photo:</span>
+                                        <span class="text-success fw-bold">✓ Detected</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-navy mb-1">
+                                        <span>Live Selfie:</span>
+                                        <span class="text-success fw-bold">✓ Captured</span>
+                                    </div>
+                                    <div class="d-flex justify-content-between text-navy">
+                                        <span>Face Verification:</span>
+                                        <span class="text-primary fw-bold">Ready</span>
+                                    </div>
+                                </div>
+
+                                <input type="file" id="selfieFileInput" name="applicant_selfie" class="d-none" accept="image/jpeg,image/png,image/webp">
+                            </div>
+
+                            <!-- PAN Notice Panel (for non-photo PAN template) -->
+                            <div id="selfiePanNoticePanel" class="d-none d-flex flex-column h-100 justify-content-between">
+                                <div class="p-3 rounded-3 bg-light border border-slate-200">
+                                    <div class="text-slate-secondary extra-small text-uppercase fw-bold mb-1">LIVE SELFIE</div>
+                                    <div class="fw-bold text-navy small mb-3">
+                                        <i class="fa-solid fa-circle-info text-primary me-1"></i> Not required for this document template.
+                                    </div>
+
+                                    <div class="text-slate-secondary extra-small text-uppercase fw-bold mb-1">FACE MATCHING</div>
+                                    <div class="text-slate-secondary small">
+                                        Not applicable because the selected PAN template does not contain a photograph.
+                                    </div>
+                                </div>
+
+                                <div class="p-3 rounded-3 bg-light border border-slate-200 mt-3 text-slate-secondary extra-small">
+                                    <i class="fa-solid fa-scale-balanced text-primary me-1"></i>
+                                    Zero risk penalty is assessed for omitted face biometrics on PAN templates.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Primary Submission CTA Button -->
+                <div class="text-center my-4">
+                    <button type="submit" class="btn btn-cyber-primary px-5 py-3 fs-5 shadow" id="startVerificationBtn">
+                        <i class="fa-solid fa-shield-check me-2"></i> Start Verification <i class="fa-solid fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </form>
+
+            <!-- Quick Evaluation Scenarios -->
+            <div class="card-white p-4 mx-auto text-start shadow-sm mt-4" style="max-width: 960px;">
+                <div class="d-flex flex-wrap align-items-center justify-content-between mb-2 gap-2">
+                    <span class="text-primary fw-bold small text-uppercase">
+                        <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Quick Evaluation Scenarios:
+                    </span>
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">Instant Execution</span>
+                </div>
+                <p class="text-slate-secondary small mb-3">
+                    Run immediate multi-level verification on predefined evaluation scenarios:
+                </p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="{% url 'documents:demo_launch' case_name='normal' %}" class="btn btn-sm btn-cyber-primary">
+                        <i class="fa-solid fa-circle-check me-1"></i> 1. Standard Aadhaar (Low Risk)
+                    </a>
+                    <a href="{% url 'documents:demo_launch' case_name='tampered' %}" class="btn btn-sm btn-cyber-secondary">
+                        <i class="fa-solid fa-shield-virus text-danger me-1"></i> 2. Tampered PAN (Review Required)
+                    </a>
+                    <a href="{% url 'documents:demo_launch' case_name='identity_mismatch' %}" class="btn btn-sm btn-cyber-secondary">
+                        <i class="fa-solid fa-arrows-split-up-and-left text-warning me-1"></i> 3. Identity Mismatch (DL)
+                    </a>
+                    <a href="{% url 'documents:demo_launch' case_name='poor_quality' %}" class="btn btn-sm btn-cyber-secondary">
+                        <i class="fa-solid fa-gauge-simple text-info me-1"></i> 4. Low Quality Image
+                    </a>
+                    <a href="{% url 'documents:demo_launch' case_name='face_mismatch' %}" class="btn btn-sm btn-cyber-secondary">
+                        <i class="fa-solid fa-user-slash text-danger me-1"></i> 5. Face Mismatch (Passport)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         3. VERIFICATION MODULES (#screening)
+         ====================================================================== -->
+    <section id="screening" class="section-light-blue">
+        <div class="container px-lg-5">
+            <div class="text-center mb-5">
+                <div class="section-badge-blue">
+                    <i class="fa-solid fa-layer-group"></i> MULTI-LEVEL VERIFICATION
+                </div>
+                <h2 class="heading-section-dark fs-1 mb-2">Document Verification Engine</h2>
+                <p class="desc-section-slate mx-auto" style="max-width: 600px;">
+                    Specialized verification modules analyze your document.
+                </p>
+            </div>
+
+            <!-- 4 White Cards -->
+            <div class="row g-4">
+                <!-- Card 1: OCR & Field Extraction -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="module-card-white">
+                        <div>
+                            <div class="module-icon-box bg-primary bg-opacity-10 text-primary">
+                                <i class="fa-solid fa-file-lines"></i>
+                            </div>
+                            <h5 class="fw-bold text-navy mb-2">OCR & Text Extraction</h5>
+                            <p class="text-slate-secondary small mb-3">
+                                Extracts name, document ID number, DOB, address and structured fields.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-slate-100">
+                            <span class="badge bg-light border border-slate-200 text-secondary">Optical Text Parsing</span>
+                            <span class="status-ready-pill"><i class="fa-solid fa-circle-check"></i> Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Face Verification -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="module-card-white">
+                        <div>
+                            <div class="module-icon-box bg-primary bg-opacity-10 text-primary">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <h5 class="fw-bold text-navy mb-2">Face Verification</h5>
+                            <p class="text-slate-secondary small mb-3">
+                                Compares the document photograph with live selfie when applicable.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-slate-100">
+                            <span class="badge bg-light border border-slate-200 text-secondary">Biometric Match</span>
+                            <span class="status-ready-pill"><i class="fa-solid fa-circle-check"></i> Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 3: Document Integrity -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="module-card-white">
+                        <div>
+                            <div class="module-icon-box bg-warning bg-opacity-10 text-warning">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h5 class="fw-bold text-navy mb-2">Document Integrity</h5>
+                            <p class="text-slate-secondary small mb-3">
+                                Detects digital manipulation, splicing and image inconsistencies.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-slate-100">
+                            <span class="badge bg-light border border-slate-200 text-secondary">Integrity Check</span>
+                            <span class="status-ready-pill"><i class="fa-solid fa-circle-check"></i> Ready</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 4: Risk Assessment -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="module-card-white">
+                        <div>
+                            <div class="module-icon-box bg-success bg-opacity-10 text-success">
+                                <i class="fa-solid fa-shield-check"></i>
+                            </div>
+                            <h5 class="fw-bold text-navy mb-2">Risk Assessment</h5>
+                            <p class="text-slate-secondary small mb-3">
+                                Combines verification signals into an auditable risk evaluation.
+                            </p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top border-slate-100">
+                            <span class="badge bg-light border border-slate-200 text-secondary">Multi-Signal Scoring</span>
+                            <span class="status-ready-pill"><i class="fa-solid fa-circle-check"></i> Ready</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         4. HOW IT WORKS (#how-it-works)
+         ====================================================================== -->
+    <section id="how-it-works" class="section-light-blue">
+        <div class="container px-lg-5">
+            <div class="text-center mb-5">
+                <div class="section-badge-blue">
+                    <i class="fa-solid fa-arrow-progress"></i> SIMPLE 4-STEP PIPELINE
+                </div>
+                <h2 class="heading-section-dark fs-1 mb-2">How It Works</h2>
+                <p class="desc-section-slate mx-auto" style="max-width: 600px;">
+                    Complete identity verification in four simple steps.
+                </p>
+            </div>
+
+            <!-- 4 White Cards / Blocks -->
+            <div class="row g-4 align-items-stretch">
+                <!-- Step 1 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="workflow-card-white">
+                        <div class="workflow-icon-circle">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </div>
+                        <div class="step-number-blue fs-5">01</div>
+                        <h5 class="fw-bold text-navy mb-2">UPLOAD</h5>
+                        <p class="text-slate-secondary small mb-0">Submit your identity document.</p>
+                    </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="workflow-card-white">
+                        <div class="workflow-icon-circle">
+                            <i class="fa-solid fa-font"></i>
+                        </div>
+                        <div class="step-number-blue fs-5">02</div>
+                        <h5 class="fw-bold text-navy mb-2">ANALYZE</h5>
+                        <p class="text-slate-secondary small mb-0">OCR and document analysis extract relevant information.</p>
+                    </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="workflow-card-white">
+                        <div class="workflow-icon-circle">
+                            <i class="fa-solid fa-user-check"></i>
+                        </div>
+                        <div class="step-number-blue fs-5">03</div>
+                        <h5 class="fw-bold text-navy mb-2">VERIFY</h5>
+                        <p class="text-slate-secondary small mb-0">Perform applicable liveness and identity checks.</p>
+                    </div>
+                </div>
+
+                <!-- Step 4 -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="workflow-card-white">
+                        <div class="workflow-icon-circle">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <div class="step-number-blue fs-5">04</div>
+                        <h5 class="fw-bold text-navy mb-2">ASSESS</h5>
+                        <p class="text-slate-secondary small mb-0">Generate a comprehensive risk assessment.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         5. VERIFICATION RESULT EXAMPLE (#result) - Background: #DFF2FF
+         ====================================================================== -->
+    <section id="result" class="section-result-light-blue">
+        <div class="container px-lg-5">
+            <div class="text-center mb-5">
+                <div class="section-badge-blue">
+                    <i class="fa-solid fa-clipboard-check"></i> RESULT OVERVIEW
+                </div>
+                <h2 class="heading-section-dark fs-1 mb-2">Verification Result</h2>
+                <p class="desc-section-slate mx-auto" style="max-width: 600px;">
+                    Summary of document verification assessment.
+                </p>
+            </div>
+
+            <!-- White Result Card on #DFF2FF -->
+            <div class="result-card-white p-4 p-md-5 mx-auto" style="max-width: 900px;">
+                <div class="row g-4 align-items-center">
+                    <!-- Left: Overall Status & Score -->
+                    <div class="col-lg-5 text-center text-lg-start border-lg-end pe-lg-4">
+                        <div class="p-4 rounded-3 bg-light border border-slate-200">
+                            <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle p-3 mb-3" style="width: 64px; height: 64px;">
+                                <i class="fa-solid fa-check fs-2"></i>
+                            </div>
+                            
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold mb-1">Overall Status</div>
+                            <div class="fs-2 fw-black text-success mb-2">LOW RISK</div>
+
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold mb-1">Risk Score</div>
+                            <div class="display-5 fw-black font-monospace text-navy mb-2">
+                                18 <span class="fs-5 text-muted">/ 100</span>
+                            </div>
+
+                            <!-- Subtle Progress Bar -->
+                            <div class="progress bg-slate-200 my-2" style="height: 6px;">
+                                <div class="progress-bar bg-success" style="width: 18%;"></div>
+                            </div>
+
+                            <div class="extra-small text-slate-secondary mt-2">
+                                Document validated with high confidence across all active verification signals.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Signal Verification Checklist -->
+                    <div class="col-lg-7 ps-lg-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="fw-bold text-navy mb-0">Multi-Signal Verification Breakdown</h6>
+                            <!-- Template Preview Switcher -->
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-outline-primary active" id="demoShowPhotoDocBtn">Aadhaar Card</button>
+                                <button type="button" class="btn btn-outline-primary" id="demoShowPanDocBtn">PAN Card</button>
+                            </div>
+                        </div>
+
+                        <div class="d-flex flex-column gap-2">
+                            <!-- OCR -->
+                            <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-light border border-slate-200">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-font text-primary small"></i>
+                                    <span class="fw-semibold text-navy small">Optical Character Recognition</span>
+                                </div>
+                                <span class="badge badge-risk-low small">✓ Passed</span>
+                            </div>
+
+                            <!-- Document Quality -->
+                            <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-light border border-slate-200">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-gauge-high text-primary small"></i>
+                                    <span class="fw-semibold text-navy small">Document Quality</span>
+                                </div>
+                                <span class="badge badge-risk-low small">✓ Passed</span>
+                            </div>
+
+                            <!-- Document Integrity -->
+                            <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-light border border-slate-200">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-shield-virus text-success small"></i>
+                                    <span class="fw-semibold text-navy small">Document Integrity</span>
+                                </div>
+                                <span class="badge badge-risk-low small">✓ Passed</span>
+                            </div>
+
+                            <!-- Face Verification (Toggleable between Match and NA for PAN) -->
+                            <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-light border border-slate-200" id="demoFaceRow">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-user-check text-primary small"></i>
+                                    <div>
+                                        <span class="fw-semibold text-navy small">Face Verification</span>
+                                        <div id="demoFaceReason" class="text-slate-secondary extra-small d-none">
+                                            Selected document template does not contain a photograph.
+                                        </div>
+                                    </div>
+                                </div>
+                                <span id="demoFaceBadge" class="badge badge-risk-low small">✓ Match</span>
+                            </div>
+
+                            <!-- Identity Consistency -->
+                            <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-light border border-slate-200">
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fa-solid fa-arrows-split-up-and-left text-primary small"></i>
+                                    <span class="fw-semibold text-navy small">Identity Consistency</span>
+                                </div>
+                                <span class="badge badge-risk-low small">✓ Passed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         6. SECURITY SECTION (#security)
+         ====================================================================== -->
+    <section id="security" class="section-light-blue">
+        <div class="container px-lg-5">
+            <div class="text-center mb-5">
+                <div class="section-badge-blue">
+                    <i class="fa-solid fa-lock"></i> ENTERPRISE SECURITY
+                </div>
+                <h2 class="heading-section-dark fs-1 mb-2">Built for Secure Verification</h2>
+                <p class="desc-section-slate mx-auto" style="max-width: 650px;">
+                    Multiple layers work together to identify suspicious documents and verification anomalies.
+                </p>
+            </div>
+
+            <!-- 6 White Cards -->
+            <div class="row g-4">
+                <!-- 1. Document Intelligence -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-file-shield"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Document Intelligence</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Automated text extraction, template classification, and layout validation.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 2. Document Integrity -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-shield-virus"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Document Integrity</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Artifact analysis, pixel inspection, and digital manipulation checks.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 3. Face Verification -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-camera"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Face Verification</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Real-time camera biometric verification with facial feature comparison.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4. Identity Consistency -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Identity Consistency</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Cross-field logic verification, checksum validation, and identity matching.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 5. Risk Assessment -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-scale-balanced"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Risk Assessment</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Multi-signal risk score (0–100) with detailed contributing factors and review routing.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 6. Audit Trail -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="security-card-white">
+                        <div class="security-icon-box">
+                            <i class="fa-solid fa-fingerprint"></i>
+                        </div>
+                        <h5 class="fw-bold text-navy mb-2">Audit Trail</h5>
+                        <p class="text-slate-secondary small mb-0">
+                            Secure system audit trail recording verification events, reviewer notes, and decision logs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================================================
+         7. ABOUT SECTION (#about)
+         ====================================================================== -->
+    <section id="about" class="section-light-blue pb-5">
+        <div class="container px-lg-5">
+            <!-- White About Card -->
+            <div class="card-white p-4 p-md-5">
+                <div class="row g-4 align-items-center">
+                    <div class="col-lg-8">
+                        <div class="section-badge-blue mb-2">
+                            <i class="fa-solid fa-shield-halved"></i> ABOUT VERIFYX
+                        </div>
+                        <h2 class="heading-section-dark fs-2 mb-3">About VerifyX</h2>
+                        <p class="text-slate-secondary fs-6 mb-4">
+                            VerifyX is a document screening and identity verification platform designed to verify documents, detect manipulation, validate identity information and provide clear verification results.
+                        </p>
+
+                        <!-- 4 Feature Indicators -->
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="p-2 px-3 rounded-2 bg-light border border-slate-200 text-slate-secondary small fw-bold">
+                                <i class="fa-solid fa-circle-check text-success me-1"></i> Automated Verification
+                            </div>
+                            <div class="p-2 px-3 rounded-2 bg-light border border-slate-200 text-slate-secondary small fw-bold">
+                                <i class="fa-solid fa-circle-check text-success me-1"></i> Multi-Level Verification
+                            </div>
+                            <div class="p-2 px-3 rounded-2 bg-light border border-slate-200 text-slate-secondary small fw-bold">
+                                <i class="fa-solid fa-circle-check text-success me-1"></i> Detailed Breakdown
+                            </div>
+                            <div class="p-2 px-3 rounded-2 bg-light border border-slate-200 text-slate-secondary small fw-bold">
+                                <i class="fa-solid fa-circle-check text-success me-1"></i> Secure Workflow
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 text-center text-lg-end">
+                        <a href="#verification" class="btn btn-cyber-primary px-4 py-3 fs-6">
+                            <i class="fa-solid fa-arrow-down me-2"></i> Start Verification
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. Centralized Capabilities & Dynamic PAN / Photo Document Logic
+    const capabilities = JSON.parse('{{ capabilities_json|default:"{}"|escapejs }}');
+    const docSelect = document.getElementById('documentTypeSelect');
+    const noticeHeader = document.getElementById('noticeHeader');
+    const noticeBody = document.getElementById('noticeBody');
+    const selfieActivePanel = document.getElementById('selfieActivePanel');
+    const selfiePanNoticePanel = document.getElementById('selfiePanNoticePanel');
+    const selfieInput = document.getElementById('selfieFileInput');
+    const selfieStatusInfo = document.getElementById('selfieStatusInfo');
+
+    function updateDocumentRequirements(docTypeKey) {
+        const dt = String(docTypeKey || '').trim().toLowerCase();
+
+        // Live selfie is active and required for all documents including PAN
+        if (selfieActivePanel) selfieActivePanel.classList.remove('d-none');
+        if (selfiePanNoticePanel) selfiePanNoticePanel.classList.add('d-none');
+
+        if (dt.includes('pan')) {
+            if (noticeHeader) noticeHeader.innerText = "PAN Card Verification";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Biometric & OCR verification enabled";
+        } else if (dt.includes('passport')) {
+            if (noticeHeader) noticeHeader.innerText = "Passport Data Page";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('driving')) {
+            if (noticeHeader) noticeHeader.innerText = "Driving License";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('voter')) {
+            if (noticeHeader) noticeHeader.innerText = "Voter ID (EPIC)";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('aadhaar')) {
+            if (noticeHeader) noticeHeader.innerText = "Photo Identity Document";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else {
+            if (noticeHeader) noticeHeader.innerText = "Identity Document";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Forensic screening active";
+        }
+    }
+
+    if (docSelect) {
+        docSelect.addEventListener('change', (e) => updateDocumentRequirements(e.target.value));
+        updateDocumentRequirements(docSelect.value);
+    }
+
+    // 2. Drag & Drop File Upload Handlers (JPG, JPEG, PNG, WEBP)
+    const dropzone = document.getElementById('docDropzone');
+    const fileInput = document.getElementById('docFileInput');
+    const feedback = document.getElementById('fileSelectedFeedback');
+    const fileNameLabel = document.getElementById('fileNameLabel');
+
+    if (dropzone && fileInput) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.remove('dragover');
+            });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelection(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelection(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelection(file) {
+            const MAX_SIZE_BYTES = 10 * 1024 * 1024; // 10 MB
+            const allowedExtensions = ['pdf', 'jpg', 'jpeg', 'png', 'webp'];
+            const fileExt = file.name.split('.').pop().toLowerCase();
+
+            if (!allowedExtensions.includes(fileExt)) {
+                alert("Unsupported file format. Please upload PDF, JPG, JPEG, PNG or WEBP.");
+                fileInput.value = '';
+                if (feedback) feedback.classList.add('d-none');
+                return;
+            }
+
+            if (file.size > MAX_SIZE_BYTES) {
+                alert("File size exceeds the 10 MB limit. Please upload a smaller document.");
+                fileInput.value = '';
+                if (feedback) feedback.classList.add('d-none');
+                return;
+            }
+
+            if (fileNameLabel) {
+                const iconClass = fileExt === 'pdf' ? 'fa-file-pdf text-danger' : 'fa-file-image text-primary';
+                const fileIcon = feedback.querySelector('i');
+                if (fileIcon) {
+                    fileIcon.className = 'fa-solid ' + iconClass + ' me-1';
+                }
+                const sizeFormatted = file.size > 1024 * 1024 
+                    ? (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+                    : (file.size / 1024).toFixed(1) + ' KB';
+                fileNameLabel.innerText = file.name + " (" + sizeFormatted + ")";
+                feedback.classList.remove('d-none');
+            }
+        }
+    }
+
+    // 3. Live Webcam Selfie Capture API
+    let mediaStream = null;
+    const startCameraBtn = document.getElementById('startCameraBtn');
+    const captureSelfieBtn = document.getElementById('captureSelfieBtn');
+    const retakeControls = document.getElementById('retakeControls');
+    const retakeSelfieBtn = document.getElementById('retakeSelfieBtn');
+    const useSelfieBtn = document.getElementById('useSelfieBtn');
+    const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+    const webcamVideo = document.getElementById('webcamVideo');
+    const selfieCanvas = document.getElementById('selfieCanvas');
+    const selfiePreviewImg = document.getElementById('selfiePreviewImg');
+
+    function stopCameraStream() {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+            mediaStream = null;
+        }
+    }
+
+    function resetSelfieState() {
+        if (webcamVideo) webcamVideo.classList.add('d-none');
+        if (selfiePreviewImg) {
+            selfiePreviewImg.classList.add('d-none');
+            selfiePreviewImg.src = '';
+        }
+        if (cameraPlaceholder) cameraPlaceholder.classList.remove('d-none');
+        if (startCameraBtn) startCameraBtn.classList.remove('d-none');
+        if (captureSelfieBtn) captureSelfieBtn.classList.add('d-none');
+        if (retakeControls) retakeControls.classList.add('d-none');
+        if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+        if (selfieInput) selfieInput.value = '';
+    }
+
+    if (startCameraBtn) {
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" },
+                    audio: false
+                });
+                webcamVideo.srcObject = mediaStream;
+                webcamVideo.classList.remove('d-none');
+                cameraPlaceholder.classList.add('d-none');
+                selfiePreviewImg.classList.add('d-none');
+                if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+                startCameraBtn.classList.add('d-none');
+                captureSelfieBtn.classList.remove('d-none');
+                retakeControls.classList.add('d-none');
+            } catch (err) {
+                alert("Camera access was not permitted or is unavailable: " + err.message);
+            }
+        });
+    }
+
+    if (captureSelfieBtn) {
+        captureSelfieBtn.addEventListener('click', () => {
+            if (!webcamVideo.videoWidth) return;
+            selfieCanvas.width = webcamVideo.videoWidth;
+            selfieCanvas.height = webcamVideo.videoHeight;
+            const ctx = selfieCanvas.getContext('2d');
+            ctx.drawImage(webcamVideo, 0, 0, selfieCanvas.width, selfieCanvas.height);
+
+            const dataUrl = selfieCanvas.toDataURL('image/jpeg', 0.95);
+            selfiePreviewImg.src = dataUrl;
+            selfiePreviewImg.classList.remove('d-none');
+            webcamVideo.classList.add('d-none');
+            captureSelfieBtn.classList.add('d-none');
+            retakeControls.classList.remove('d-none');
+            if (selfieStatusInfo) selfieStatusInfo.classList.remove('d-none');
+
+            selfieCanvas.toBlob((blob) => {
+                if (blob) {
+                    const file = new File([blob], "applicant_live_selfie.jpg", { type: "image/jpeg" });
+                    const container = new DataTransfer();
+                    container.items.add(file);
+                    selfieInput.files = container.files;
+                }
+            }, 'image/jpeg', 0.95);
+
+            stopCameraStream();
+        });
+    }
+
+    if (retakeSelfieBtn) {
+        retakeSelfieBtn.addEventListener('click', () => {
+            selfiePreviewImg.classList.add('d-none');
+            if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+            startCameraBtn.click();
+        });
+    }
+
+    if (useSelfieBtn) {
+        useSelfieBtn.addEventListener('click', () => {
+            if (selfieStatusInfo) selfieStatusInfo.classList.remove('d-none');
+        });
+    }
+
+    // 4. Interactive Demo Result Switcher (Photo Doc vs PAN)
+    const btnShowPhoto = document.getElementById('demoShowPhotoDocBtn');
+    const btnShowPan = document.getElementById('demoShowPanDocBtn');
+    const demoFaceBadge = document.getElementById('demoFaceBadge');
+    const demoFaceReason = document.getElementById('demoFaceReason');
+
+    if (btnShowPhoto && btnShowPan) {
+        btnShowPhoto.addEventListener('click', () => {
+            btnShowPhoto.classList.add('active');
+            btnShowPan.classList.remove('active');
+            demoFaceBadge.className = 'badge badge-risk-low small';
+            demoFaceBadge.innerText = '✓ Match';
+            demoFaceReason.classList.add('d-none');
+        });
+
+        btnShowPan.addEventListener('click', () => {
+            btnShowPan.classList.add('active');
+            btnShowPhoto.classList.remove('active');
+            demoFaceBadge.className = 'badge badge-risk-na small';
+            demoFaceBadge.innerText = '— Not Applicable';
+            demoFaceReason.classList.remove('d-none');
+        });
+    }
+});
+</script>
+{% endblock %}

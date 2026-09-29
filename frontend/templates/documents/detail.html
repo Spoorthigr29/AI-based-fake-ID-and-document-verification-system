@@ -1,0 +1,940 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification Result: {{ document.verification_id }} | VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container px-lg-5 py-4">
+
+    <!-- Top Breadcrumb & Actions -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-25 text-primary small fw-semibold mb-2">
+                <i class="fa-solid fa-shield-halved"></i> VERIFYX IDENTITY & DOCUMENT VERIFICATION REPORT
+            </div>
+            <h2 class="fw-bold text-dark mb-0">Verification Result</h2>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'documents:upload' %}" class="btn btn-sm btn-cyber-primary">
+                <i class="fa-solid fa-cloud-arrow-up me-1"></i> New Verification
+            </a>
+            <a href="{% url 'documents:list' %}" class="btn btn-sm btn-cyber-secondary">
+                <i class="fa-solid fa-list me-1"></i> History
+            </a>
+            <button class="btn btn-sm btn-cyber-outline" onclick="window.print()">
+                <i class="fa-solid fa-print me-1"></i> Export Report
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Dossier Header: Verification ID & Document Type -->
+    <div class="glass-card mb-4 p-4">
+        <div class="row align-items-center gy-3">
+            <div class="col-md-6">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Institutional Verification Tracking ID</div>
+                <div class="d-flex align-items-center gap-2 flex-wrap">
+                    <div class="fs-2 fw-black text-primary font-monospace">{{ document.verification_id }}</div>
+                    {% if document.is_demo %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small px-2 py-1">
+                            <i class="fa-solid fa-flask me-1"></i> DEMO SPECIMEN
+                        </span>
+                    {% endif %}
+                </div>
+                <div class="text-secondary small mt-1">
+                    Uploaded: <span class="fw-semibold text-dark">{{ document.upload_timestamp|date:"M d, Y H:i:s" }} UTC</span>
+                    • Status: <span class="badge badge-risk-low">{{ uploaded_file_status|default:"Analysis completed" }}</span>
+                </div>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <div class="text-muted small text-uppercase fw-bold mb-1">Classified Document Type</div>
+                <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded bg-light border border-slate-200">
+                    <i class="fa-solid {% if uploaded_file_type == 'PDF' %}fa-file-pdf text-danger{% else %}fa-id-card text-primary{% endif %} fs-5"></i>
+                    <span class="fs-5 fw-bold text-dark">
+                        {{ quality_analysis.classified_type|default:document.get_document_type_display }}
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Uploaded Document File Metadata Summary Strip -->
+        <div class="mt-3 pt-3 border-top border-slate-200 d-flex flex-wrap align-items-center justify-content-between gap-3 text-secondary small">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid {% if uploaded_file_type == 'PDF' %}fa-file-pdf text-danger{% else %}fa-file-image text-primary{% endif %} fs-6"></i>
+                <span>File: <strong class="text-dark">{{ uploaded_file_name }}</strong></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-light text-dark border border-slate-300 px-2 py-1">Type: <strong>{{ uploaded_file_type }}</strong></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span>Size: <strong class="text-dark">{{ uploaded_file_size }}</strong></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span>Status: <strong class="text-success">{{ uploaded_file_status|default:"Analysis completed" }}</strong></span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span>Risk: <strong class="{% if overall_risk_score <= 30 %}text-success{% elif overall_risk_score <= 70 %}text-warning{% else %}text-danger{% endif %}">{{ overall_risk_score }}/100 ({{ risk_category_display }})</strong></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================================
+         PRIMARY RESULT DASHBOARD CARD
+         ================================================================== -->
+    <div class="glass-card mb-4 p-4 p-md-5 border-top border-4 {% if decision == 'RESCAN' %}border-info{% elif risk_category == 'LOW_RISK' %}border-success{% elif risk_category == 'MANUAL_REVIEW' %}border-warning{% else %}border-danger{% endif %}">
+        <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom border-slate-200 gap-3">
+            <div>
+                <span class="text-uppercase fw-bold tracking-wider text-muted small">Official Assessment</span>
+                <h3 class="fw-black text-dark mb-0">VERIFICATION RESULT</h3>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge px-3 py-2 fs-6 fw-bold {% if decision == 'RESCAN' %}badge-risk-medium bg-info bg-opacity-25 text-primary border border-info{% elif risk_category == 'LOW_RISK' %}badge-risk-low{% elif risk_category == 'MANUAL_REVIEW' %}badge-risk-medium{% else %}badge-risk-high{% endif %}">
+                    {% if decision == 'RESCAN' %}
+                    <i class="fa-solid fa-camera-rotate me-2"></i> RESCAN REQUESTED
+                    {% elif risk_category == 'LOW_RISK' %}
+                    <i class="fa-solid fa-circle-check me-2"></i> LOW RISK
+                    {% elif risk_category == 'MANUAL_REVIEW' %}
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i> MANUAL REVIEW
+                    {% else %}
+                    <i class="fa-solid fa-ban me-2"></i> HIGH RISK
+                    {% endif %}
+                </span>
+            </div>
+        </div>
+
+        {% if decision == 'RESCAN' or rescan_message %}
+        <div class="alert alert-info border border-info border-opacity-30 d-flex align-items-center gap-3 p-3 mb-4 rounded-3 shadow-sm" role="alert">
+            <div class="fs-3 text-primary"><i class="fa-solid fa-circle-info"></i></div>
+            <div class="small">
+                <strong class="text-dark">Rescan Recommended:</strong>
+                <span class="text-secondary">{{ rescan_message|default:"Document image quality is too low or blurry to verify reliably. Please upload a clear, flat, glare-free photo of your document in high resolution." }}</span>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="row g-4 align-items-center">
+            <!-- Overall Status & Score -->
+            <div class="col-lg-5 text-center text-lg-start border-lg-end pe-lg-4">
+                <div class="p-4 rounded-3 bg-light border border-slate-200">
+                    <div class="text-muted small text-uppercase fw-bold mb-1">Overall Status</div>
+                    <div class="fs-3 fw-black mb-3 {% if decision == 'RESCAN' %}text-primary{% elif risk_category == 'LOW_RISK' %}text-success{% elif risk_category == 'MANUAL_REVIEW' %}text-warning{% else %}text-danger{% endif %}">
+                        {% if decision == 'RESCAN' %}RESCAN REQUESTED{% elif risk_category == 'LOW_RISK' %}LOW RISK{% elif risk_category == 'MANUAL_REVIEW' %}MANUAL REVIEW{% else %}HIGH RISK{% endif %}
+                    </div>
+
+                    <div class="text-muted small text-uppercase fw-bold mb-1">Risk Score</div>
+                    <div class="display-3 fw-black font-monospace {% if overall_risk_score <= 30 %}text-success{% elif overall_risk_score <= 70 %}text-warning{% else %}text-danger{% endif %}">
+                        {{ overall_risk_score }} <span class="fs-4 text-muted">/ 100</span>
+                    </div>
+
+                    <div class="mt-3 text-secondary small">
+                        {% if decision == 'RESCAN' %}
+                        <i class="fa-solid fa-camera-rotate text-primary me-1"></i> Image requires recapture. Please submit a clearer image.
+                        {% elif overall_risk_score <= 30 %}
+                        <i class="fa-solid fa-shield-check text-success me-1"></i> Document displays high optical, structural, and biometric integrity.
+                        {% elif overall_risk_score <= 70 %}
+                        <i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> Borderline metrics detected. Manual review recommended.
+                        {% else %}
+                        <i class="fa-solid fa-circle-exclamation text-danger me-1"></i> High anomaly score. Potential document manipulation detected.
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Signal Checklist -->
+            <div class="col-lg-7 ps-lg-4">
+                <h5 class="fw-bold text-dark mb-3">
+                    <i class="fa-solid fa-list-check text-primary me-2"></i>Multi-Level Evidence Verification
+                </h5>
+                <div class="d-flex flex-column gap-2">
+                    <!-- 1. Document Type -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-id-card"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Document Type</span>
+                        </div>
+                        <span class="badge badge-risk-low px-3 py-1 fw-bold">
+                            {{ quality_analysis.classified_type|default:document.get_document_type_display }} ✓
+                        </span>
+                    </div>
+
+                    <!-- 2. OCR Extraction -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-font"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Optical Character Recognition</span>
+                        </div>
+                        <span class="badge {% if ocr_conf_val >= 70 %}badge-risk-low{% else %}badge-risk-medium{% endif %} px-3 py-1 fw-bold">
+                            {% if ocr_conf_val >= 70 %}Passed ✓ ({{ ocr_conf_val }}%){% else %}Review Required ({{ ocr_conf_val }}%){% endif %}
+                        </span>
+                    </div>
+
+                    <!-- 3. Secure QR Code -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Verified' in qr_status_display %}bg-success bg-opacity-10 text-success{% elif 'Detected' in qr_status_display %}bg-warning bg-opacity-10 text-warning{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-qrcode"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">{% if document.document_type == 'PAN' or quality_analysis.classified_type == 'PAN' %}PAN QR / Document Check{% else %}Aadhaar Secure QR{% endif %}</span>
+                        </div>
+                        <span class="badge {% if 'Verified' in qr_status_display %}badge-risk-low{% elif 'Detected' in qr_status_display %}badge-risk-medium{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ qr_status_display }}
+                        </span>
+                    </div>
+
+                    <!-- 4. QR Consistency -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Matched' in qr_consistency_display or 'Consistent' in qr_consistency_display %}bg-success bg-opacity-10 text-success{% elif 'Mismatch' in qr_consistency_display or 'Inconsistent' in qr_consistency_display %}bg-danger bg-opacity-10 text-danger{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-code-compare"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">QR / Document Consistency</span>
+                        </div>
+                        <span class="badge {% if 'Matched' in qr_consistency_display or 'Consistent' in qr_consistency_display %}badge-risk-low{% elif 'Mismatch' in qr_consistency_display or 'Inconsistent' in qr_consistency_display %}badge-risk-high{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ qr_consistency_display }}
+                        </span>
+                    </div>
+
+                    <!-- 5. Tamper Analysis -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if tamper_status_display == 'Low' %}bg-success bg-opacity-10 text-success{% elif tamper_status_display == 'Medium' %}bg-warning bg-opacity-10 text-warning{% else %}bg-danger bg-opacity-10 text-danger{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-shield-virus"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Document Integrity</span>
+                        </div>
+                        <span class="badge {% if tamper_status_display == 'Low' %}badge-risk-low{% elif tamper_status_display == 'Medium' %}badge-risk-medium{% else %}badge-risk-high{% endif %} px-3 py-1 fw-bold">
+                            {{ tamper_status_display }} Risk ({{ tamper_risk_val }}%)
+                        </span>
+                    </div>
+
+                    <!-- 6. Document Photo -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Detected ✓' in doc_photo_display %}bg-success bg-opacity-10 text-success{% elif 'Not Detected' in doc_photo_display %}bg-danger bg-opacity-10 text-danger{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-id-badge"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Document Photo</span>
+                        </div>
+                        <span class="badge {% if 'Detected ✓' in doc_photo_display %}badge-risk-low{% elif 'Not Detected' in doc_photo_display %}badge-risk-high{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ doc_photo_display }}
+                        </span>
+                    </div>
+
+                    <!-- 7. Liveness -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Passed' in liveness_status_display %}bg-success bg-opacity-10 text-success{% elif 'Failed' in liveness_status_display %}bg-danger bg-opacity-10 text-danger{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-camera"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Liveness Verification</span>
+                        </div>
+                        <span class="badge {% if 'Passed' in liveness_status_display %}badge-risk-low{% elif 'Failed' in liveness_status_display %}badge-risk-high{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ liveness_status_display }}
+                        </span>
+                    </div>
+
+                    <!-- 8. Face Verification -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Matched ✓' in face_match_display %}bg-success bg-opacity-10 text-success{% elif 'Mismatch' in face_match_display or 'No Face' in face_match_display %}bg-danger bg-opacity-10 text-danger{% elif 'Review' in face_match_display %}bg-warning bg-opacity-10 text-warning{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-user-check"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Face Verification</span>
+                        </div>
+                        <span class="badge {% if 'Matched ✓' in face_match_display %}badge-risk-low{% elif 'Mismatch' in face_match_display or 'No Face' in face_match_display %}badge-risk-high{% elif 'Review' in face_match_display %}badge-risk-medium{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ face_match_display }}
+                        </span>
+                    </div>
+
+                    <!-- 9. Identity Consistency -->
+                    <div class="d-flex justify-content-between align-items-center p-2 px-3 rounded-3 bg-white border border-slate-200 shadow-sm">
+                        <div class="d-flex align-items-center gap-2">
+                            <div class="w-8 h-8 rounded-circle {% if 'Consistent ✓' in identity_consistency_display %}bg-success bg-opacity-10 text-success{% elif 'Inconsistent' in identity_consistency_display %}bg-danger bg-opacity-10 text-danger{% elif 'Review' in identity_consistency_display %}bg-warning bg-opacity-10 text-warning{% else %}bg-secondary bg-opacity-10 text-secondary{% endif %} d-flex align-items-center justify-content-center fw-bold small">
+                                <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                            </div>
+                            <span class="fw-bold text-dark small">Identity Consistency</span>
+                        </div>
+                        <span class="badge {% if 'Consistent ✓' in identity_consistency_display %}badge-risk-low{% elif 'Inconsistent' in identity_consistency_display %}badge-risk-high{% elif 'Review' in identity_consistency_display or 'Inconclusive' in identity_consistency_display %}badge-risk-medium{% else %}badge-risk-na{% endif %} px-3 py-1 fw-bold">
+                            {{ identity_consistency_display }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- OFFICIAL VERIFICATION NOTICE BANNER -->
+    <div class="alert alert-light border border-slate-200 d-flex align-items-center gap-3 p-3 mb-4 rounded-3 shadow-sm" role="alert">
+        <div class="fs-4 text-primary"><i class="fa-solid fa-building-columns"></i></div>
+        <div class="small">
+            <strong class="text-dark">Official Verification Status:</strong>
+            <span class="text-secondary">Automated institutional verification assessment completed. For official government identity records, consult authorized verification authorities.</span>
+        </div>
+    </div>
+
+    <!-- NON-PHOTO NOTICE BANNER (IF APPLICABLE) -->
+    {% if not is_face_applicable %}
+    <div class="alert alert-info bg-light border border-info border-opacity-30 d-flex align-items-center gap-3 p-3 mb-4 rounded-3 shadow-sm" role="alert">
+        <div class="fs-4 text-primary"><i class="fa-solid fa-circle-info"></i></div>
+        <div class="small">
+            <strong class="text-dark">Face Verification Not Applicable:</strong>
+            <span class="text-secondary">{{ face_na_reason }} Zero risk penalty was assessed for face matching.</span>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- 5 Key Metric Cards -->
+    <div class="row g-3 mb-4">
+        <!-- 1. DOCUMENT QUALITY -->
+        <div class="col-6 col-md-4 col-lg">
+            <div class="glass-card p-3 p-xl-4 h-100 text-center border-top border-4 border-info">
+                <div class="stat-icon mx-auto mb-2 bg-info bg-opacity-10 text-info">
+                    <i class="fa-solid fa-gauge-high"></i>
+                </div>
+                <div class="text-muted small fw-bold text-uppercase tracking-wider">Document Quality</div>
+                <div class="fs-3 fw-black text-dark my-1 font-monospace">{{ doc_quality_val }}%</div>
+                <div class="small {% if doc_quality_val >= 80 %}text-success{% elif doc_quality_val >= 60 %}text-warning{% else %}text-danger{% endif %} fw-semibold">
+                    <i class="fa-solid fa-circle-check me-1"></i> {% if doc_quality_val >= 80 %}High Clarity{% else %}Review Quality{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. OCR CONFIDENCE -->
+        <div class="col-6 col-md-4 col-lg">
+            <div class="glass-card p-3 p-xl-4 h-100 text-center border-top border-4 border-primary">
+                <div class="stat-icon mx-auto mb-2 bg-primary bg-opacity-10 text-primary">
+                    <i class="fa-solid fa-font"></i>
+                </div>
+                <div class="text-muted small fw-bold text-uppercase tracking-wider">OCR Confidence</div>
+                <div class="fs-3 fw-black text-dark my-1 font-monospace">{{ ocr_conf_val }}%</div>
+                <div class="small text-success fw-semibold">
+                    <i class="fa-solid fa-circle-check me-1"></i> Text Readable
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. FACE MATCH / VERIFICATION -->
+        <div class="col-6 col-md-4 col-lg">
+            <div class="glass-card p-3 p-xl-4 h-100 text-center border-top border-4 {% if is_face_applicable and 'Match' in face_match_display %}border-success{% elif is_face_applicable and 'Mismatch' in face_match_display %}border-danger{% elif is_face_applicable %}border-warning{% else %}border-secondary border-opacity-50{% endif %}">
+                <div class="stat-icon mx-auto mb-2 {% if is_face_applicable and 'Match' in face_match_display %}bg-success bg-opacity-10 text-success{% elif is_face_applicable and 'Mismatch' in face_match_display %}bg-danger bg-opacity-10 text-danger{% elif is_face_applicable %}bg-warning bg-opacity-10 text-warning{% else %}bg-light text-muted{% endif %}">
+                    <i class="fa-solid {% if is_face_applicable and 'Match' in face_match_display %}fa-user-check{% elif is_face_applicable and 'Mismatch' in face_match_display %}fa-user-xmark{% elif is_face_applicable %}fa-user-clock{% else %}fa-id-card-clip{% endif %}"></i>
+                </div>
+                <div class="text-muted small fw-bold text-uppercase tracking-wider">
+                    Face Verification
+                </div>
+                {% if is_face_applicable and face_match_val is not None %}
+                <div class="fs-3 fw-black text-dark my-1 font-monospace">{{ face_match_val }}%</div>
+                <div class="small {% if 'Match' in face_match_display %}text-success{% elif 'Mismatch' in face_match_display %}text-danger{% else %}text-warning{% endif %} fw-semibold">
+                    <i class="fa-solid {% if 'Match' in face_match_display %}fa-circle-check{% elif 'Mismatch' in face_match_display %}fa-circle-xmark{% else %}fa-triangle-exclamation{% endif %} me-1"></i> {{ face_match_display }}
+                </div>
+                {% else %}
+                <div class="fs-3 fw-black text-muted my-1 font-monospace">N/A</div>
+                <div class="small text-muted fw-semibold">
+                    <i class="fa-solid fa-minus me-1"></i> Not Applicable
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- 4. TAMPERING RISK -->
+        <div class="col-6 col-md-6 col-lg">
+            <div class="glass-card p-3 p-xl-4 h-100 text-center border-top border-4 {% if tamper_risk_val > 40 %}border-danger{% elif tamper_risk_val > 15 %}border-warning{% else %}border-success{% endif %}">
+                <div class="stat-icon mx-auto mb-2 {% if tamper_risk_val > 40 %}bg-danger bg-opacity-10 text-danger{% elif tamper_risk_val > 15 %}bg-warning bg-opacity-10 text-warning{% else %}bg-success bg-opacity-10 text-success{% endif %}">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+                <div class="text-muted small fw-bold text-uppercase tracking-wider">Tampering Risk</div>
+                <div class="fs-3 fw-black text-dark my-1 font-monospace">{{ tamper_risk_val }}%</div>
+                <div class="small {% if tamper_risk_val <= 15 %}text-success{% elif tamper_risk_val <= 40 %}text-warning{% else %}text-danger{% endif %} fw-semibold">
+                    {% if tamper_risk_val <= 15 %}<i class="fa-solid fa-circle-check me-1"></i> Clean Assessment{% else %}<i class="fa-solid fa-triangle-exclamation me-1"></i> Anomalies Detected{% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. IDENTITY CONSISTENCY -->
+        <div class="col-12 col-md-6 col-lg">
+            <div class="glass-card p-3 p-xl-4 h-100 text-center border-top border-4 border-primary">
+                <div class="stat-icon mx-auto mb-2 bg-primary bg-opacity-10 text-primary">
+                    <i class="fa-solid fa-arrows-split-up-and-left"></i>
+                </div>
+                <div class="text-muted small fw-bold text-uppercase tracking-wider">Identity Consistency</div>
+                <div class="fs-3 fw-black text-dark my-1 font-monospace">{{ consistency_val }}%</div>
+                <div class="small {% if consistency_val >= 80 %}text-success{% else %}text-warning{% endif %} fw-semibold">
+                    <i class="fa-solid fa-circle-check me-1"></i> All Fields Valid
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI VERIFICATION EXPLANATION (RAG-AUGMENTED INTELLIGENCE LAYER) -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fa-solid fa-brain text-primary me-2"></i>AI Verification Explanation
+                </h5>
+                <div class="text-muted extra-small">Context-augmented intelligence comparing forensic signals against official reference standards</div>
+            </div>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small">
+                <i class="fa-solid fa-book-bookmark me-1"></i> Knowledge Augmented
+            </span>
+        </div>
+
+        <div class="row g-3 mb-3">
+            <!-- 1. Evidence Found -->
+            <div class="col-lg-6">
+                <div class="p-3 rounded-3 bg-light border border-slate-200 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-microscope text-primary"></i>
+                        <span class="fw-bold text-dark small text-uppercase tracking-wider">Evidence Found</span>
+                    </div>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                        {% if rag_evidence %}
+                            {% for ev in rag_evidence %}
+                            <li class="d-flex align-items-start gap-2 small text-secondary">
+                                <i class="fa-solid fa-check text-success mt-1 flex-shrink-0"></i>
+                                <span>{{ ev }}</span>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="small text-muted">Standard forensic signals processed for document intake.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 2. Relevant Verification Information -->
+            <div class="col-lg-6">
+                <div class="p-3 rounded-3 bg-light border border-slate-200 h-100">
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <i class="fa-solid fa-scale-balanced text-primary"></i>
+                        <span class="fw-bold text-dark small text-uppercase tracking-wider">Relevant Verification Information</span>
+                    </div>
+                    <ul class="list-unstyled mb-0 d-flex flex-column gap-2">
+                        {% if rag_rules %}
+                            {% for rule in rag_rules %}
+                            <li class="d-flex align-items-start gap-2 small text-secondary">
+                                <i class="fa-solid fa-shield-halved text-primary mt-1 flex-shrink-0"></i>
+                                <span>{{ rule }}</span>
+                            </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="small text-muted">Statutory identity verification and checksum criteria applied.</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Risk Assessment & 4. Explanation -->
+        <div class="p-3 rounded-3 bg-light border border-slate-200">
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-2 pb-2 border-bottom border-slate-200">
+                <div class="d-flex align-items-center gap-2">
+                    <span class="fw-bold text-dark small text-uppercase tracking-wider">
+                        <i class="fa-solid fa-chart-pie text-primary me-1"></i> Risk Assessment:
+                    </span>
+                    <span class="badge {% if overall_risk_score <= 30 %}badge-risk-low{% elif overall_risk_score <= 70 %}badge-risk-medium{% else %}badge-risk-high{% endif %} px-3 py-1">
+                        {{ risk_category_display }} (Score: {{ overall_risk_score }}/100)
+                    </span>
+                </div>
+                <div class="extra-small text-muted">
+                    Decision: <strong>{% if overall_risk_score <= 30 %}APPROVED{% else %}MANUAL REVIEW REQUIRED{% endif %}</strong>
+                </div>
+            </div>
+
+            <div>
+                <div class="text-muted extra-small text-uppercase tracking-wider fw-bold mb-1">
+                    <i class="fa-solid fa-comment-dots text-primary me-1"></i> Explanation
+                </div>
+                <p class="text-secondary small mb-0">{{ rag_explanation|default:explanation_text }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- EXPLANATION & AUDIT NARRATIVE ROW -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-clipboard-check text-primary me-2"></i>Verification Details & Assessment Breakdown
+            </h5>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small">
+                Verification Details
+            </span>
+        </div>
+
+        <!-- Explanation Checklist -->
+        <div class="row g-2 mb-3">
+            {% for item in explanation_checklist %}
+            <div class="col-md-6">
+                <div class="p-3 rounded-3 bg-light border {% if item.is_na %}border-slate-200 text-muted{% elif item.passed %}border-success border-opacity-30 text-success{% else %}border-warning border-opacity-40 text-warning{% endif %} d-flex align-items-center gap-3">
+                    <span class="fs-5">
+                        {% if item.is_na %}
+                        <i class="fa-solid fa-minus text-muted"></i>
+                        {% elif item.passed %}
+                        <i class="fa-solid fa-circle-check text-success"></i>
+                        {% else %}
+                        <i class="fa-solid fa-triangle-exclamation text-warning"></i>
+                        {% endif %}
+                    </span>
+                    <span class="fw-semibold {% if item.is_na %}text-secondary{% else %}text-dark{% endif %} small">{{ item.text }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Narrative Text -->
+        <div class="p-3 rounded-3 bg-light border border-slate-200">
+            <div class="text-muted small text-uppercase tracking-wider fw-bold mb-1">
+                <i class="fa-solid fa-align-left text-primary me-1"></i> Decision Narrative
+            </div>
+            <p class="text-secondary small mb-0">{{ explanation_text }}</p>
+        </div>
+    </div>
+
+    <!-- VERIFICATION REPORT AUDIT TABLE -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fa-solid fa-clipboard-list text-primary me-2"></i>Document Verification Audit Report
+                </h5>
+                <div class="text-muted extra-small">Comprehensive multi-level document and biometric evaluation summary</div>
+            </div>
+            <span class="badge bg-light border border-slate-200 text-secondary small">Official Ledger</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-secondary small text-uppercase">
+                    <tr>
+                        <th style="width: 35%;">Verification Stage</th>
+                        <th style="width: 25%;">Evaluation Status</th>
+                        <th style="width: 40%;">Observations / Notes</th>
+                    </tr>
+                </thead>
+                <tbody class="small">
+                    {% for check in report_checks %}
+                    <tr>
+                        <td class="fw-bold text-dark">{{ check.name }}</td>
+                        <td>
+                            {% if check.status == 'PASSED' or check.status == 'MATCH' or check.status == 'COMPLETED' %}
+                            <span class="badge badge-risk-low px-3 py-1">
+                                <i class="fa-solid {{ check.icon }} me-1"></i> {{ check.status }}
+                            </span>
+                            {% elif check.status == 'NOT APPLICABLE' %}
+                            <span class="badge badge-risk-na px-3 py-1">
+                                <i class="fa-solid fa-minus me-1"></i> NOT APPLICABLE
+                            </span>
+                            {% elif check.status == 'MANUAL REVIEW' %}
+                            <span class="badge badge-risk-medium px-3 py-1">
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> REVIEW REQUIRED
+                            </span>
+                            {% else %}
+                            <span class="badge badge-risk-high px-3 py-1">
+                                <i class="fa-solid fa-ban me-1"></i> FAILED
+                            </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-secondary">
+                            {{ check.notes }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RISK FACTORS CHART & VERIFICATION TIMELINE ROW -->
+    <div class="row g-4 mb-4">
+        <!-- Risk Factors Chart (Chart.js Radar) -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="fa-solid fa-chart-radar text-primary me-2"></i>Risk Factors Radar
+                    </h5>
+                    <span class="badge bg-light border border-slate-200 text-secondary small">Integrity Metrics</span>
+                </div>
+                <p class="text-muted small mb-3">Multi-dimensional integrity breakdown across verification pillars.</p>
+
+                <div style="position: relative; height: 300px;">
+                    <canvas id="riskRadarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification Timeline -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold text-dark mb-0">
+                        <i class="fa-solid fa-timeline text-primary me-2"></i>Verification Pipeline Timeline
+                    </h5>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 small">Completed</span>
+                </div>
+                <p class="text-muted small mb-4">Sequential execution workflow for this document verification:</p>
+
+                <!-- Vertical Pipeline Timeline -->
+                <div class="verification-timeline position-relative ps-4 ms-2">
+                    <!-- Step 1: Upload -->
+                    <div class="timeline-step mb-3 position-relative">
+                        <span class="timeline-icon bg-success text-white"><i class="fa-solid fa-cloud-arrow-up"></i></span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">Upload & Ingestion</strong>
+                                <div class="text-muted extra-small">Document securely processed and indexed</div>
+                            </div>
+                            <span class="badge badge-risk-low small">Done</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: OCR -->
+                    <div class="timeline-step mb-3 position-relative">
+                        <span class="timeline-icon bg-primary text-white"><i class="fa-solid fa-font"></i></span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">OCR Text Extraction</strong>
+                                <div class="text-muted extra-small">Confidence: {{ ocr_conf_val }}% • Text fields extracted</div>
+                            </div>
+                            <span class="badge badge-risk-low small">Done</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Face -->
+                    <div class="timeline-step mb-3 position-relative">
+                        <span class="timeline-icon {% if is_face_applicable %}bg-primary text-white{% else %}bg-secondary text-white{% endif %}">
+                            <i class="fa-solid fa-id-badge"></i>
+                        </span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">Face Verification</strong>
+                                <div class="text-muted extra-small">
+                                    {% if is_face_applicable %}
+                                    Similarity: {{ face_match_val }}% • Biometric comparison completed
+                                    {% else %}
+                                    Not applicable (No photograph present)
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% if is_face_applicable %}
+                            <span class="badge badge-risk-low small">Done</span>
+                            {% else %}
+                            <span class="badge badge-risk-na small">N/A</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Step 4: Tampering -->
+                    <div class="timeline-step mb-3 position-relative">
+                        <span class="timeline-icon bg-warning text-dark"><i class="fa-solid fa-shield-virus"></i></span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">Document Integrity</strong>
+                                <div class="text-muted extra-small">Integrity Check: {{ tamper_risk_val }}% • Artifact analysis</div>
+                            </div>
+                            <span class="badge badge-risk-low small">Done</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Consistency -->
+                    <div class="timeline-step mb-3 position-relative">
+                        <span class="timeline-icon bg-info text-white"><i class="fa-solid fa-arrows-split-up-and-left"></i></span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">Identity Consistency</strong>
+                                <div class="text-muted extra-small">Score: {{ consistency_val }}/100 • Cross-field validation</div>
+                            </div>
+                            <span class="badge badge-risk-low small">Done</span>
+                        </div>
+                    </div>
+
+                    <!-- Step 6: Risk Score -->
+                    <div class="timeline-step position-relative">
+                        <span class="timeline-icon bg-primary text-white"><i class="fa-solid fa-shield-halved"></i></span>
+                        <div class="d-flex justify-content-between align-items-center p-2 rounded bg-light border border-slate-200">
+                            <div>
+                                <strong class="text-dark small">Risk Assessment</strong>
+                                <div class="text-muted extra-small">Score: {{ overall_risk_score }}/100 • {{ risk_category_display }}</div>
+                            </div>
+                            <span class="badge bg-primary text-white small">Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRANULAR RISK FACTORS BREAKDOWN TABLE -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-list-check text-primary me-2"></i>Granular Risk Factor Contributions
+            </h5>
+            <span class="badge bg-light border border-slate-200 text-secondary small">Point Breakdown</span>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-secondary small text-uppercase">
+                    <tr>
+                        <th>Verification Factor</th>
+                        <th>Observed Metric / Value</th>
+                        <th>Point Contribution</th>
+                        <th>Severity</th>
+                        <th>Explanation</th>
+                    </tr>
+                </thead>
+                <tbody class="small">
+                    {% for factor in factors %}
+                    <tr>
+                        <td class="fw-bold text-dark">{{ factor.name }}</td>
+                        <td class="font-monospace text-primary fw-semibold">{{ factor.value }}</td>
+                        <td class="font-monospace fw-bold {% if factor.contribution > 0 %}text-warning{% else %}text-success{% endif %}">
+                            +{{ factor.contribution }} pts
+                        </td>
+                        <td>
+                            {% if factor.severity == 'CRITICAL' %}
+                            <span class="badge bg-danger text-white">CRITICAL</span>
+                            {% elif factor.severity == 'HIGH' %}
+                            <span class="badge bg-danger bg-opacity-75 text-white">HIGH</span>
+                            {% elif factor.severity == 'MEDIUM' %}
+                            <span class="badge bg-warning text-dark">MEDIUM</span>
+                            {% else %}
+                            <span class="badge badge-risk-low">LOW</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-muted">{{ factor.description }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-3">No individual risk penalties incurred. Clean baseline.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- REGION-LEVEL TAMPER ANALYSIS -->
+    {% if tamper_region_scores %}
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h5 class="fw-bold text-dark mb-0">
+                    <i class="fa-solid fa-microscope text-primary me-2"></i>Granular Region-Level Integrity Analysis
+                </h5>
+                <div class="text-muted extra-small">Independent localized integrity analysis across critical card quadrants</div>
+            </div>
+            <span class="badge bg-light border border-slate-200 text-secondary small">Multi-Region Signals</span>
+        </div>
+
+        <div class="row g-3">
+            {% for region_key, region_val in tamper_region_scores.items %}
+            <div class="col-6 col-md-4 col-lg">
+                <div class="p-3 rounded bg-light border border-slate-200 text-center h-100">
+                    <div class="text-muted extra-small text-uppercase fw-bold mb-1">
+                        {{ region_key|title }} Region
+                    </div>
+                    <div class="fs-5 fw-bold {% if region_val.status == 'LOW' %}text-success{% elif region_val.status == 'MEDIUM' %}text-warning{% else %}text-danger{% endif %} mb-1">
+                        {{ region_val.status }}
+                    </div>
+                    <div class="badge {% if region_val.status == 'LOW' %}badge-risk-low{% elif region_val.status == 'MEDIUM' %}badge-risk-medium{% else %}badge-risk-high{% endif %} small">
+                        Score: {{ region_val.tamper_score|floatformat:2 }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- SECURE DOCUMENT ARTIFACTS ROW -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-file-shield text-primary me-2"></i>Secure Document Artifacts
+            </h5>
+            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 small">
+                <i class="fa-solid fa-lock me-1"></i> Access Controlled
+            </span>
+        </div>
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="p-3 rounded bg-light border border-slate-200 d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold text-dark small"><i class="fa-solid fa-id-card text-primary me-2"></i>Primary Identity Document</div>
+                        <div class="text-muted extra-small">Document Reference ID: {{ document.verification_id }}</div>
+                    </div>
+                    <a href="{% url 'documents:secure_file' verification_id=document.verification_id file_type='original' %}" target="_blank" class="btn btn-sm btn-cyber-outline">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Secure Stream
+                    </a>
+                </div>
+            </div>
+            {% if document.selfie_file %}
+            <div class="col-md-6">
+                <div class="p-3 rounded bg-light border border-slate-200 d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="fw-bold text-dark small"><i class="fa-solid fa-camera text-success me-2"></i>Biometric Live Selfie</div>
+                        <div class="text-muted extra-small">Live face capture artifact</div>
+                    </div>
+                    <a href="{% url 'documents:secure_file' verification_id=document.verification_id file_type='selfie' %}" target="_blank" class="btn btn-sm btn-cyber-outline">
+                        <i class="fa-solid fa-arrow-up-right-from-square me-1"></i> View Secure Stream
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- OFFICER REVIEW NOTES & TRIAGE SECTION -->
+    <div class="glass-card p-4 mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5 class="fw-bold text-dark mb-0">
+                <i class="fa-solid fa-user-shield text-primary me-2"></i>Reviewer Notes & Officer Triage
+            </h5>
+            <span class="badge bg-light border border-slate-200 text-secondary small">Audit Trail Enforced</span>
+        </div>
+
+        <!-- Add Review Note Form (For REVIEWER & ADMIN) -->
+        {% if can_add_review_note %}
+        <div class="p-3 rounded bg-light border border-slate-200 mb-4">
+            <h6 class="fw-bold text-primary small text-uppercase mb-2">
+                <i class="fa-solid fa-pen-to-square me-1"></i> Record Review Note
+            </h6>
+            <form method="POST" action="{% url 'documents:add_review_note' verification_id=document.verification_id %}">
+                {% csrf_token %}
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <textarea name="note" class="form-control bg-white text-dark border-slate-300 small" rows="2" placeholder="Enter findings, physical security verification notes, or suspicious indicator remarks..." required></textarea>
+                    </div>
+                    <div class="col-md-4 d-flex flex-column justify-content-between">
+                        <div>
+                            <label class="form-label small text-muted mb-1">Recommended Triage Action</label>
+                            <select name="recommended_action" class="form-select form-select-sm bg-white text-dark border-slate-300">
+                                <option value="APPROVE">Approve Document (Low Risk)</option>
+                                <option value="FURTHER_REVIEW" selected>Mark for Manual Review</option>
+                                <option value="REJECT">Reject Document (Tampered / Fraud)</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-sm btn-cyber-primary mt-2 w-100">
+                            <i class="fa-solid fa-stamp me-1"></i> Save to Audit Log
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        {% endif %}
+
+        <!-- Existing Review Notes List -->
+        <div class="review-notes-list">
+            {% for note in review_notes %}
+            <div class="p-3 rounded bg-light border border-slate-200 mb-2">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <div class="small fw-bold text-dark">
+                        <i class="fa-solid fa-user-tie text-primary me-1"></i> {{ note.author.get_full_name|default:note.author.username }}
+                        <span class="badge bg-white border border-slate-200 text-muted ms-2">{{ note.created_at|date:"M d, Y H:i" }}</span>
+                    </div>
+                    <div>
+                        {% if note.recommended_action == 'APPROVE' %}
+                        <span class="badge badge-risk-low">APPROVED</span>
+                        {% elif note.recommended_action == 'REJECT' %}
+                        <span class="badge badge-risk-high">REJECTED</span>
+                        {% else %}
+                        <span class="badge badge-risk-medium">MANUAL REVIEW</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <p class="text-secondary small mb-0">{{ note.note }}</p>
+            </div>
+            {% empty %}
+            <div class="text-center text-muted small py-3">
+                <i class="fa-solid fa-clipboard me-1"></i> No officer review notes recorded yet for this case.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+</div>
+
+<!-- Timeline CSS Styling -->
+<style>
+.verification-timeline::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    bottom: 15px;
+    left: 8px;
+    width: 2px;
+    background: #e2e8f0;
+}
+.timeline-icon {
+    position: absolute;
+    left: -28px;
+    top: 8px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chartData = JSON.parse('{{ chart_data_json|escapejs }}');
+    const ctx = document.getElementById('riskRadarChart');
+    if (!ctx) return;
+
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['OCR', 'Face Match', 'Tampering Safety', 'Consistency', 'Doc Quality'],
+            datasets: [{
+                label: 'Verification Fidelity Score (0-100)',
+                data: chartData.values,
+                backgroundColor: 'rgba(37, 99, 235, 0.15)',
+                borderColor: '#2563eb',
+                borderWidth: 2,
+                pointBackgroundColor: '#2563eb',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: '#2563eb'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(0, 0, 0, 0.08)' },
+                    grid: { color: 'rgba(0, 0, 0, 0.06)' },
+                    pointLabels: {
+                        color: '#334155',
+                        font: { size: 12, family: 'Inter', weight: '600' }
+                    },
+                    ticks: {
+                        backdropColor: 'transparent',
+                        color: '#64748b',
+                        min: 0,
+                        max: 100,
+                        stepSize: 20
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    labels: { color: '#0f172a', font: { family: 'Inter', weight: '600' } }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

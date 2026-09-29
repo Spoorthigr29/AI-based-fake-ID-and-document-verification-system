@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Audit Trail & Compliance Log | VERIFYX AI{% endblock %}
+
+{% block content %}
+<div class="container-fluid px-lg-5 py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-white mb-1">
+                <i class="fa-solid fa-fingerprint text-success me-2"></i>Audit Trail & Compliance Ledger
+            </h2>
+            <p class="text-muted small mb-0">Immutable record of all document screenings, officer actions, and system verifications</p>
+        </div>
+        <span class="badge bg-dark border border-success text-success p-2">
+            <i class="fa-solid fa-shield-check me-1"></i> Cryptographic Integrity Active
+        </span>
+    </div>
+
+    <div class="glass-card">
+        <div class="table-responsive">
+            <table class="table table-custom">
+                <thead>
+                    <tr>
+                        <th>Timestamp (UTC)</th>
+                        <th>Action Type</th>
+                        <th>User / Actor</th>
+                        <th>Document Reference</th>
+                        <th>Metadata Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for log in logs %}
+                    <tr>
+                        <td class="text-muted font-monospace small">{{ log.timestamp|date:"Y-m-d H:i:s" }}</td>
+                        <td>
+                            <span class="badge bg-dark border border-secondary text-info">{{ log.get_action_display }}</span>
+                        </td>
+                        <td>
+                            <span class="fw-semibold text-white">{{ log.user.username|default:"SYSTEM AUTOMATION" }}</span>
+                        </td>
+                        <td>
+                            {% if log.document %}
+                            <a href="{% url 'documents:detail' log.document.verification_id %}" class="text-info font-monospace">
+                                {{ log.document.verification_id }}
+                            </a>
+                            {% else %}
+                            <span class="text-muted">N/A</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="small font-monospace text-muted">{{ log.metadata|default:"{}" }}</span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-shield fs-2 d-block mb-3 text-secondary"></i>
+                            Audit trail initialized. All future verification scans, user logins, and risk assessments will be logged here.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

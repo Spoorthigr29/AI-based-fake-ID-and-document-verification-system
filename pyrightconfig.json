@@ -1,0 +1,40 @@
+{
+  "include": [
+    "."
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/__pycache__"
+  ],
+  "extraPaths": [
+    "c:/Users/SPOORTHI/OneDrive/Desktop/fake ID detection",
+    "C:/Users/SPOORTHI/AppData/Local/Programs/Python/Python313/Lib/site-packages"
+  ],
+  "typeCheckingMode": "off",
+  "reportMissingImports": "none",
+  "reportMissingTypeStubs": "none",
+  "reportAttributeAccessIssue": "none",
+  "reportGeneralTypeIssues": "none",
+  "reportOptionalMemberAccess": "none",
+  "reportMissingModuleSource": "none",
+  "reportUnnecessaryCast": "none",
+  "reportArgumentType": "none",
+  "reportCallIssue": "none",
+  "reportAssignmentType": "none",
+  "reportReturnType": "none",
+  "reportUnnecessaryComparison": "none",
+  "reportOptionalSubscript": "none",
+  "reportOptionalCall": "none",
+  "reportPrivateImportUsage": "none",
+  "executionEnvironments": [
+    {
+      "root": ".",
+      "pythonVersion": "3.13",
+      "extraPaths": [
+        "c:/Users/SPOORTHI/OneDrive/Desktop/fake ID detection",
+        "C:/Users/SPOORTHI/AppData/Local/Programs/Python/Python313/Lib/site-packages"
+      ]
+    }
+  ]
+}
+

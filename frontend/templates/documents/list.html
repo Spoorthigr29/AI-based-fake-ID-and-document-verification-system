@@ -1,0 +1,408 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification History | VERIFYX AI{% endblock %}
+
+{% block content %}
+<div class="container px-3 px-lg-5 py-4 py-lg-5">
+    <!-- Breadcrumb & Top Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-25 text-primary small fw-semibold mb-2">
+                <i class="fa-solid fa-clock-rotate-left"></i> VERIFICATION ARCHIVE
+            </div>
+            <h2 class="fw-bold text-dark mb-1">Verification History</h2>
+            <p class="text-secondary small mb-0">Browse and inspect previous automated identity screening records and forensic audit logs.</p>
+        </div>
+        <div class="d-flex align-items-center gap-2">
+            <a href="{% url 'dashboard:home' %}#verification" class="btn btn-cyber-primary shadow-sm">
+                <i class="fa-solid fa-plus me-1"></i> Start New Verification
+            </a>
+        </div>
+    </div>
+
+    <!-- Date Range & Search Filter Panel -->
+    <div class="glass-card p-3 p-lg-4 mb-4 border-slate-200 shadow-sm">
+        <form method="GET" action="{% url 'documents:history' %}" class="row g-3 align-items-end">
+            <!-- From Date Filter -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label text-secondary extra-small fw-bold text-uppercase mb-1">
+                    <i class="fa-regular fa-calendar me-1 text-primary"></i> From Date
+                </label>
+                <div class="input-group input-group-sm">
+                    <input type="text" name="from_date" class="form-control bg-white text-dark border-slate-300" placeholder="DD-MM-YYYY" value="{{ from_date }}">
+                </div>
+            </div>
+
+            <!-- To Date Filter -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label text-secondary extra-small fw-bold text-uppercase mb-1">
+                    <i class="fa-regular fa-calendar-check me-1 text-primary"></i> To Date
+                </label>
+                <div class="input-group input-group-sm">
+                    <input type="text" name="to_date" class="form-control bg-white text-dark border-slate-300" placeholder="DD-MM-YYYY" value="{{ to_date }}">
+                </div>
+            </div>
+
+            <!-- Search Record (Verification ID or Type) -->
+            <div class="col-12 col-sm-6 col-md-3">
+                <label class="form-label text-secondary extra-small fw-bold text-uppercase mb-1">
+                    <i class="fa-solid fa-magnifying-glass me-1 text-primary"></i> Search Record
+                </label>
+                <div class="input-group input-group-sm">
+                    <input type="text" name="q" class="form-control bg-white text-dark border-slate-300" placeholder="Verification ID..." value="{{ query }}">
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="col-12 col-sm-6 col-md-3 d-flex gap-2">
+                <button type="submit" class="btn btn-sm btn-cyber-primary flex-grow-1">
+                    <i class="fa-solid fa-filter me-1"></i> Apply Filter
+                </button>
+                {% if is_filtered %}
+                <a href="{% url 'documents:history' %}" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center justify-content-center" title="Clear Filter">
+                    <i class="fa-solid fa-rotate-left me-1"></i> Clear
+                </a>
+                {% endif %}
+            </div>
+
+            <!-- Secondary Filters Row (Status & Document Type) -->
+            <div class="col-6 col-md-3 mt-2">
+                <label class="form-label text-secondary extra-small fw-bold text-uppercase mb-1">Status</label>
+                <select name="status" class="form-select form-select-sm bg-white text-dark border-slate-300">
+                    <option value="">All Statuses</option>
+                    <option value="COMPLETED" {% if status_filter == 'COMPLETED' %}selected{% endif %}>Completed / Verified</option>
+                    <option value="MANUAL_REVIEW" {% if status_filter == 'MANUAL_REVIEW' %}selected{% endif %}>Manual Review</option>
+                    <option value="PROCESSING" {% if status_filter == 'PROCESSING' %}selected{% endif %}>Processing</option>
+                    <option value="UPLOADED" {% if status_filter == 'UPLOADED' %}selected{% endif %}>Uploaded</option>
+                    <option value="FAILED" {% if status_filter == 'FAILED' %}selected{% endif %}>Failed</option>
+                </select>
+            </div>
+
+            <div class="col-6 col-md-3 mt-2">
+                <label class="form-label text-secondary extra-small fw-bold text-uppercase mb-1">Document Type</label>
+                <select name="doc_type" class="form-select form-select-sm bg-white text-dark border-slate-300">
+                    <option value="">All Document Types</option>
+                    <option value="AADHAAR" {% if doc_type_filter == 'AADHAAR' %}selected{% endif %}>Aadhaar Card</option>
+                    <option value="PAN" {% if doc_type_filter == 'PAN' %}selected{% endif %}>PAN Card</option>
+                    <option value="PASSPORT" {% if doc_type_filter == 'PASSPORT' %}selected{% endif %}>Passport</option>
+                    <option value="DRIVING_LICENSE" {% if doc_type_filter == 'DRIVING_LICENSE' %}selected{% endif %}>Driving License</option>
+                    <option value="VOTER_ID" {% if doc_type_filter == 'VOTER_ID' %}selected{% endif %}>Voter ID</option>
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <!-- Summary Metrics Cards Row -->
+    <div class="row g-3 mb-4">
+        <!-- Total Documents Screened -->
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 border-slate-200 shadow-sm d-flex align-items-center gap-3">
+                <div class="w-10 h-10 rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fs-5 flex-shrink-0">
+                    <i class="fa-solid fa-file-shield"></i>
+                </div>
+                <div>
+                    <div class="text-secondary extra-small text-uppercase fw-bold">Total Screened</div>
+                    <div class="fw-bold text-dark fs-5">Documents Screened: {{ total_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verified -->
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 border-slate-200 shadow-sm d-flex align-items-center gap-3">
+                <div class="w-10 h-10 rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center fs-5 flex-shrink-0">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div>
+                    <div class="text-secondary extra-small text-uppercase fw-bold">Verified</div>
+                    <div class="fw-bold text-success fs-5">{{ verified_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Review Required -->
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 border-slate-200 shadow-sm d-flex align-items-center gap-3">
+                <div class="w-10 h-10 rounded-circle bg-warning bg-opacity-10 text-warning-emphasis d-flex align-items-center justify-content-center fs-5 flex-shrink-0">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                </div>
+                <div>
+                    <div class="text-secondary extra-small text-uppercase fw-bold">Review Required</div>
+                    <div class="fw-bold text-warning-emphasis fs-5">{{ review_count }}</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mismatch -->
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 border-slate-200 shadow-sm d-flex align-items-center gap-3">
+                <div class="w-10 h-10 rounded-circle bg-danger bg-opacity-10 text-danger d-flex align-items-center justify-content-center fs-5 flex-shrink-0">
+                    <i class="fa-solid fa-shield-virus"></i>
+                </div>
+                <div>
+                    <div class="text-secondary extra-small text-uppercase fw-bold">Mismatch</div>
+                    <div class="fw-bold text-danger fs-5">{{ mismatch_count }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- History Content Table Card -->
+    <div class="glass-card p-0 overflow-hidden shadow-sm">
+        <!-- Table Header Banner -->
+        <div class="d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-light bg-opacity-75 border-bottom border-slate-200 gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-list-check text-primary"></i>
+                <span class="fw-bold text-dark small">Verification Records</span>
+                {% if is_date_filtered %}
+                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">
+                    Filtered: {{ from_date|default:"Start" }} to {{ to_date|default:"Now" }}
+                </span>
+                {% endif %}
+            </div>
+            <div class="text-secondary small">
+                Showing <span class="text-dark fw-bold">{{ documents|length }}</span> of <span class="text-dark fw-bold">{{ total_count }}</span> matching records
+            </div>
+        </div>
+
+        <!-- Responsive Records Table -->
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="bg-light text-secondary small text-uppercase font-monospace border-bottom">
+                    <tr>
+                        <th class="ps-4 py-3">Date</th>
+                        <th class="py-3">Document ID</th>
+                        <th class="py-3">Document Type</th>
+                        <th class="py-3">Verification Result</th>
+                        <th class="py-3">Risk Score</th>
+                        <th class="py-3">Status</th>
+                        <th class="text-end pe-4 py-3">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="small">
+                    {% for doc in documents %}
+                    <tr style="cursor: pointer;" data-href="{% url 'documents:detail' doc.verification_id %}" onclick="window.location.href=this.getAttribute('data-href');">
+                        <!-- Date -->
+                        <td class="ps-4 py-3 text-secondary">
+                            <div class="fw-semibold text-dark">
+                                <i class="fa-regular fa-calendar me-1 text-muted"></i>{{ doc.created_at|date:"d-m-Y" }}
+                            </div>
+                            <div class="extra-small text-muted">
+                                <i class="fa-regular fa-clock me-1 text-muted"></i>{{ doc.created_at|date:"H:i:s" }}
+                            </div>
+                        </td>
+
+                        <!-- Document ID -->
+                        <td class="py-3">
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <i class="fa-solid fa-file-shield text-primary"></i>
+                                <a href="{% url 'documents:detail' doc.verification_id %}" class="fw-bold text-primary font-monospace text-decoration-none" onclick="event.stopPropagation();">
+                                    {{ doc.verification_id }}
+                                </a>
+                                {% if doc.is_demo %}
+                                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small fw-semibold px-1 py-0" title="Synthetic Demo Screening Specimen">
+                                        <i class="fa-solid fa-flask extra-small me-1"></i>DEMO
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </td>
+
+                        <!-- Document Type -->
+                        <td class="py-3">
+                            <span class="badge bg-white border border-slate-300 text-dark px-2 py-1">
+                                {% if doc.document_type == 'AADHAAR' or 'aadhaar' in doc.document_type|lower %}
+                                    <i class="fa-solid fa-id-card text-primary me-1"></i> Aadhaar
+                                {% elif doc.document_type == 'PAN' or 'pan' in doc.document_type|lower %}
+                                    <i class="fa-solid fa-credit-card text-warning me-1"></i> PAN
+                                {% elif doc.document_type == 'PASSPORT' or 'passport' in doc.document_type|lower %}
+                                    <i class="fa-solid fa-passport text-info me-1"></i> Passport
+                                {% elif doc.document_type == 'DRIVING_LICENSE' or 'driving' in doc.document_type|lower %}
+                                    <i class="fa-solid fa-id-badge text-success me-1"></i> Driving License
+                                {% elif doc.document_type == 'VOTER_ID' or 'voter' in doc.document_type|lower %}
+                                    <i class="fa-solid fa-check-to-slot text-secondary me-1"></i> Voter ID
+                                {% else %}
+                                    <i class="fa-solid fa-file-lines text-secondary me-1"></i> {{ doc.get_document_type_display|default:doc.document_type }}
+                                {% endif %}
+                            </span>
+                        </td>
+
+                        <!-- Verification Result -->
+                        <td class="py-3">
+                            {% if doc.verification_result %}
+                                {% if doc.verification_result.risk_category == 'LOW_RISK' %}
+                                    <span class="badge badge-risk-low d-inline-flex align-items-center gap-1">
+                                        <i class="fa-solid fa-circle-check"></i> Verified
+                                    </span>
+                                {% elif doc.verification_result.risk_category == 'HIGH_RISK' %}
+                                    <span class="badge badge-risk-high d-inline-flex align-items-center gap-1">
+                                        <i class="fa-solid fa-circle-xmark"></i> Mismatch
+                                    </span>
+                                {% elif doc.verification_result.risk_category == 'MODERATE_RISK' or doc.verification_result.risk_category == 'SUSPICIOUS_MANUAL_REVIEW' %}
+                                    <span class="badge badge-risk-medium d-inline-flex align-items-center gap-1">
+                                        <i class="fa-solid fa-triangle-exclamation"></i> Review Required
+                                    </span>
+                                {% else %}
+                                    <span class="badge badge-risk-medium d-inline-flex align-items-center gap-1">
+                                        <i class="fa-solid fa-user-shield"></i> Review Required
+                                    </span>
+                                {% endif %}
+                            {% elif doc.processing_status == 'COMPLETED' %}
+                                <span class="badge badge-risk-low d-inline-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Verified
+                                </span>
+                            {% elif doc.processing_status == 'MANUAL_REVIEW' %}
+                                <span class="badge badge-risk-medium d-inline-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Review Required
+                                </span>
+                            {% elif doc.processing_status == 'FAILED' %}
+                                <span class="badge badge-risk-high d-inline-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-triangle-exclamation"></i> Mismatch / Failed
+                                </span>
+                            {% else %}
+                                <span class="badge bg-light text-secondary border border-slate-200 d-inline-flex align-items-center gap-1">
+                                    <i class="fa-solid fa-spinner fa-spin"></i> Pending
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Risk Score -->
+                        <td class="py-3">
+                            {% if doc.verification_result %}
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="font-monospace fw-bold {% if doc.verification_result.overall_risk_score <= 30 %}text-success{% elif doc.verification_result.overall_risk_score <= 70 %}text-warning{% else %}text-danger{% endif %}">
+                                        {{ doc.verification_result.overall_risk_score|floatformat:0 }}
+                                    </span>
+                                    <div class="progress flex-grow-1" style="height: 6px; width: 50px; background-color: #e2e8f0;">
+                                        <div class="progress-bar risk-progress-bar {% if doc.verification_result.overall_risk_score <= 30 %}bg-success{% elif doc.verification_result.overall_risk_score <= 70 %}bg-warning{% else %}bg-danger{% endif %}" 
+                                             role="progressbar" 
+                                             data-risk-width="{{ doc.verification_result.overall_risk_score|floatformat:0 }}"></div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <span class="text-muted font-monospace">--</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Status -->
+                        <td class="py-3">
+                            {% if doc.processing_status == 'COMPLETED' %}
+                                <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-2 py-1">
+                                    <i class="fa-solid fa-check me-1"></i> Verified
+                                </span>
+                            {% elif doc.processing_status == 'MANUAL_REVIEW' %}
+                                <span class="badge bg-warning bg-opacity-10 text-warning-emphasis border border-warning border-opacity-25 px-2 py-1">
+                                    <i class="fa-solid fa-triangle-exclamation me-1"></i> Review Required
+                                </span>
+                            {% elif doc.processing_status == 'PROCESSING' %}
+                                <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 px-2 py-1">
+                                    <i class="fa-solid fa-arrows-rotate fa-spin me-1"></i> Processing
+                                </span>
+                            {% elif doc.processing_status == 'FAILED' %}
+                                <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-2 py-1">
+                                    <i class="fa-solid fa-xmark me-1"></i> Mismatch
+                                </span>
+                            {% else %}
+                                <span class="badge bg-secondary bg-opacity-10 text-secondary border border-secondary border-opacity-25 px-2 py-1">
+                                    <i class="fa-solid fa-cloud-arrow-up me-1"></i> {{ doc.get_processing_status_display|default:doc.processing_status }}
+                                </span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Action Link -->
+                        <td class="text-end pe-4 py-3" onclick="event.stopPropagation();">
+                            <a href="{% url 'documents:detail' doc.verification_id %}" class="btn btn-sm btn-cyber-primary d-inline-flex align-items-center gap-1 shadow-sm">
+                                <span>View Result</span>
+                                <i class="fa-solid fa-arrow-right extra-small"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="7" class="text-center py-5">
+                            <div class="py-4">
+                                <div class="d-inline-flex align-items-center justify-content-center bg-light rounded-circle p-4 mb-3 border border-slate-200">
+                                    <i class="fa-solid fa-folder-open fs-1 text-secondary opacity-50"></i>
+                                </div>
+                                {% if is_date_filtered %}
+                                <h5 class="fw-semibold text-secondary mb-2">No verification records found for the selected date range.</h5>
+                                <p class="text-muted small mb-4">Try adjusting your From Date and To Date filters, or clear the filter to view all historical records.</p>
+                                <a href="{% url 'documents:history' %}" class="btn btn-sm btn-outline-secondary">
+                                    <i class="fa-solid fa-rotate-left me-1"></i> Clear Filter
+                                </a>
+                                {% else %}
+                                <h5 class="fw-semibold text-secondary mb-2">No verification history available.</h5>
+                                <p class="text-muted small mb-4">Start your first document verification to see automated audit logs and fraud analysis here.</p>
+                                <a href="{% url 'dashboard:home' %}#verification" class="btn btn-sm btn-cyber-primary">
+                                    <i class="fa-solid fa-plus me-1"></i> Begin Document Verification
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Footer -->
+        {% if page_obj.has_other_pages %}
+        <div class="d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-light border-top border-slate-200 gap-2">
+            <div class="small text-secondary">
+                Page <span class="fw-bold text-dark">{{ page_obj.number }}</span> of <span class="fw-bold text-dark">{{ page_obj.paginator.num_pages }}</span>
+            </div>
+            <nav aria-label="Verification history pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if from_date %}&from_date={{ from_date }}{% endif %}{% if to_date %}&to_date={{ to_date }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if doc_type_filter %}&doc_type={{ doc_type_filter }}{% endif %}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo; Previous</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">&laquo; Previous</span>
+                    </li>
+                    {% endif %}
+
+                    {% for num in page_obj.paginator.page_range %}
+                        {% if num == page_obj.number %}
+                        <li class="page-item active" aria-current="page">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if from_date %}&from_date={{ from_date }}{% endif %}{% if to_date %}&to_date={{ to_date }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if doc_type_filter %}&doc_type={{ doc_type_filter }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if from_date %}&from_date={{ from_date }}{% endif %}{% if to_date %}&to_date={{ to_date }}{% endif %}{% if query %}&q={{ query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}{% if doc_type_filter %}&doc_type={{ doc_type_filter }}{% endif %}" aria-label="Next">
+                            <span aria-hidden="true">Next &raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <span class="page-link">Next &raquo;</span>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.risk-progress-bar[data-risk-width]').forEach(function(el) {
+        var w = el.getAttribute('data-risk-width');
+        if (w !== null && w !== '') {
+            el.style.width = w + '%';
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,432 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verify Identity Document | VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container px-lg-5 py-4">
+
+    <!-- Section Header -->
+    <div class="text-center mb-5">
+        <div class="hero-badge mb-2">
+            <i class="fa-solid fa-file-shield"></i> DOCUMENT VERIFICATION
+        </div>
+        <h2 class="fw-black text-dark mb-2">Verify Your Identity Document</h2>
+        <p class="text-secondary mx-auto" style="max-width: 650px;">
+            Upload your document for automated multi-level verification and identity validation.
+        </p>
+    </div>
+
+    <!-- Multi-Part Verification Form -->
+    <form id="verificationUploadForm" method="POST" action="{% url 'documents:upload' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <!-- 3-Column Card Layout -->
+        <div class="row g-4 mb-4">
+            <!-- CARD 1: 01 SELECT DOCUMENT TYPE -->
+            <div class="col-lg-4">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <div class="step-title">SELECT DOCUMENT TYPE</div>
+                    
+                    <p class="text-secondary small mb-3">
+                        Choose the document type you are submitting for verification.
+                    </p>
+
+                    <div class="mb-3">
+                        <label for="documentTypeSelect" class="form-label text-muted small fw-bold mb-1">
+                            Document Category
+                        </label>
+                        <select id="documentTypeSelect" name="document_type" class="form-select form-select-lg border-slate-300 shadow-sm fs-6" required>
+                            <option value="sample_aadhaar" selected>Aadhaar Card</option>
+                            <option value="sample_pan">PAN Card</option>
+                            <option value="sample_passport">Passport Data Page</option>
+                            <option value="sample_driving_license">Driving License</option>
+                            <option value="sample_voter_id">Voter ID (EPIC)</option>
+                            <option value="other">Other Government Issued ID</option>
+                        </select>
+                    </div>
+
+                    <!-- Dynamic Document Capability Notice -->
+                    <div class="mt-auto">
+                        <div id="docRequirementNotice" class="p-3 rounded-3 bg-light border border-slate-200 small">
+                            <div class="fw-bold text-dark mb-1">
+                                <i class="fa-solid fa-circle-check text-success me-1"></i>
+                                <span id="noticeHeader">Photo Identity Document</span>
+                            </div>
+                            <div id="noticeBody" class="text-secondary">
+                                ✓ Live selfie required<br>
+                                ✓ Face matching enabled
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 2: 02 UPLOAD DOCUMENT -->
+            <div class="col-lg-4">
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <div class="step-title">UPLOAD DOCUMENT</div>
+
+                    <p class="text-secondary small mb-3">
+                        Submit a clear image of the identity document for verification and integrity check.
+                    </p>
+
+                    <!-- Drag & Drop Upload Dropzone -->
+                    <div class="upload-dropzone mb-3" id="docDropzone" onclick="document.getElementById('docFileInput').click()">
+                        <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
+                        <div class="fw-bold text-dark small mb-1">Click to upload or drag and drop</div>
+                        <div class="text-muted extra-small mb-2">Supported formats: PDF • JPG • JPEG • PNG • WEBP</div>
+                        <span class="badge bg-light text-secondary border border-slate-200">Max size: 10 MB</span>
+                        <div id="fileSelectedFeedback" class="mt-2 text-primary fw-bold small d-none">
+                            <i class="fa-solid fa-file-image me-1" id="fileFeedbackIcon"></i> <span id="fileNameLabel"></span>
+                        </div>
+                    </div>
+
+                    <input type="file" id="docFileInput" name="original_file" class="d-none" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/jpeg,image/png,image/webp" required>
+
+                    <div class="text-muted extra-small mt-auto">
+                        <i class="fa-solid fa-lock text-primary me-1"></i> Document securely processed after upload.
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD 3: 03 LIVE SELFIE VERIFICATION -->
+            <div class="col-lg-4">
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <div class="step-title">LIVE SELFIE VERIFICATION</div>
+
+                    <!-- Active Camera Panel (for photo docs) -->
+                    <div id="selfieActivePanel">
+                        <p class="text-secondary small mb-3">
+                            Capture a live photo using your camera for identity verification.
+                        </p>
+
+                        <div class="camera-preview-box mb-3" id="cameraPreviewContainer">
+                            <div id="cameraPlaceholder" class="text-center p-3 text-muted">
+                                <i class="fa-solid fa-camera fs-2 text-primary mb-2"></i>
+                                <div class="small fw-semibold">Camera is idle</div>
+                                <div class="extra-small">Click below to open webcam</div>
+                            </div>
+                            <video id="webcamVideo" class="d-none" autoplay playsinline></video>
+                            <canvas id="selfieCanvas" class="d-none"></canvas>
+                            <img id="selfiePreviewImg" class="d-none" alt="Captured Selfie">
+                        </div>
+
+                        <!-- Camera Action Controls -->
+                        <div class="d-flex flex-column gap-2 mt-auto">
+                            <button type="button" class="btn btn-cyber-secondary w-100" id="startCameraBtn">
+                                <i class="fa-solid fa-video me-1 text-primary"></i> Start Camera
+                            </button>
+                            <button type="button" class="btn btn-cyber-primary w-100 d-none" id="captureSelfieBtn">
+                                <i class="fa-solid fa-camera me-1"></i> Capture Photo
+                            </button>
+                            <div id="retakeControls" class="d-none d-flex gap-2">
+                                <button type="button" class="btn btn-sm btn-outline-secondary w-50" id="retakeSelfieBtn">
+                                    <i class="fa-solid fa-rotate-left me-1"></i> Retake
+                                </button>
+                                <button type="button" class="btn btn-sm btn-success text-white w-50" id="useSelfieBtn">
+                                    <i class="fa-solid fa-check me-1"></i> Use Photo
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Post-capture Status Indicators -->
+                        <div id="selfieStatusInfo" class="mt-3 p-2 px-3 rounded-2 bg-light border border-slate-200 extra-small d-none">
+                            <div class="d-flex justify-content-between text-dark mb-1">
+                                <span>Document Photo:</span>
+                                <span class="text-success fw-bold">✓ Detected</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-dark mb-1">
+                                <span>Live Selfie:</span>
+                                <span class="text-success fw-bold">✓ Captured</span>
+                            </div>
+                            <div class="d-flex justify-content-between text-dark">
+                                <span>Face Verification:</span>
+                                <span class="text-primary fw-bold">Ready</span>
+                            </div>
+                        </div>
+
+                        <input type="file" id="selfieFileInput" name="applicant_selfie" class="d-none" accept="image/jpeg,image/png,image/webp">
+                    </div>
+
+                    <!-- PAN Notice Panel (for non-photo PAN template) -->
+                    <div id="selfiePanNoticePanel" class="d-none d-flex flex-column h-100 justify-content-between">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200">
+                            <div class="text-muted extra-small text-uppercase fw-bold mb-1">Live Selfie</div>
+                            <div class="fw-bold text-dark small mb-2">
+                                <i class="fa-solid fa-circle-info text-primary me-1"></i> Not required for this document template.
+                            </div>
+
+                            <div class="text-muted extra-small text-uppercase fw-bold mb-1 mt-3">Face Matching</div>
+                            <div class="text-secondary small">
+                                Not applicable because the selected PAN template does not contain a photograph.
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 mt-3 text-muted extra-small">
+                            <i class="fa-solid fa-scale-balanced text-primary me-1"></i>
+                            Zero risk penalty is assessed for omitted face biometrics on PAN templates.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Primary Submission CTA Button -->
+        <div class="text-center my-4">
+            <button type="submit" class="btn btn-cyber-primary px-5 py-3 fs-5" id="startVerificationBtn">
+                <i class="fa-solid fa-bolt me-2"></i> Start Verification <i class="fa-solid fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </form>
+
+    <!-- Quick Evaluation Scenarios -->
+    <div class="glass-card p-4 mx-auto text-start shadow-sm mt-4" style="max-width: 960px;">
+        <div class="d-flex flex-wrap align-items-center justify-content-between mb-2 gap-2">
+            <span class="text-primary fw-bold small text-uppercase">
+                <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Quick Evaluation Scenarios:
+            </span>
+            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">Instant Execution</span>
+        </div>
+        <p class="text-muted small mb-3">
+            Run immediate multi-level screening on pre-configured verification test scenarios:
+        </p>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'documents:demo_launch' case_name='normal' %}" class="btn btn-sm btn-cyber-primary">
+                <i class="fa-solid fa-circle-check me-1"></i> 1. Standard Aadhaar (Low Risk)
+            </a>
+            <a href="{% url 'documents:demo_launch' case_name='tampered' %}" class="btn btn-sm btn-cyber-secondary">
+                <i class="fa-solid fa-shield-virus text-danger me-1"></i> 2. Tampered PAN (Non-Photo)
+            </a>
+            <a href="{% url 'documents:demo_launch' case_name='identity_mismatch' %}" class="btn btn-sm btn-cyber-secondary">
+                <i class="fa-solid fa-arrows-split-up-and-left text-warning me-1"></i> 3. Information Discrepancy (DL)
+            </a>
+            <a href="{% url 'documents:demo_launch' case_name='poor_quality' %}" class="btn btn-sm btn-cyber-secondary">
+                <i class="fa-solid fa-gauge-simple text-info me-1"></i> 4. Low-Quality Document
+            </a>
+            <a href="{% url 'documents:demo_launch' case_name='face_mismatch' %}" class="btn btn-sm btn-cyber-secondary">
+                <i class="fa-solid fa-user-slash text-danger me-1"></i> 5. Facial Discrepancy (Passport)
+            </a>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const capabilities = JSON.parse('{{ capabilities_json|default:"{}"|escapejs }}');
+    const docSelect = document.getElementById('documentTypeSelect');
+    const noticeHeader = document.getElementById('noticeHeader');
+    const noticeBody = document.getElementById('noticeBody');
+    const selfieActivePanel = document.getElementById('selfieActivePanel');
+    const selfiePanNoticePanel = document.getElementById('selfiePanNoticePanel');
+    const selfieInput = document.getElementById('selfieFileInput');
+    const selfieStatusInfo = document.getElementById('selfieStatusInfo');
+
+    function updateDocumentRequirements(docTypeKey) {
+        const dt = String(docTypeKey || '').trim().toLowerCase();
+
+        // Live selfie is active and required for all documents including PAN
+        if (selfieActivePanel) selfieActivePanel.classList.remove('d-none');
+        if (selfiePanNoticePanel) selfiePanNoticePanel.classList.add('d-none');
+
+        if (dt.includes('pan')) {
+            if (noticeHeader) noticeHeader.innerText = "PAN Card Verification";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Biometric & OCR verification enabled";
+        } else if (dt.includes('passport')) {
+            if (noticeHeader) noticeHeader.innerText = "Passport Data Page";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('driving')) {
+            if (noticeHeader) noticeHeader.innerText = "Driving License";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('voter')) {
+            if (noticeHeader) noticeHeader.innerText = "Voter ID (EPIC)";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else if (dt.includes('aadhaar')) {
+            if (noticeHeader) noticeHeader.innerText = "Photo Identity Document";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Face matching enabled";
+        } else {
+            if (noticeHeader) noticeHeader.innerText = "Identity Document";
+            if (noticeBody) noticeBody.innerHTML = "✓ Live selfie required<br>✓ Forensic screening active";
+        }
+    }
+
+    if (docSelect) {
+        docSelect.addEventListener('change', (e) => updateDocumentRequirements(e.target.value));
+        updateDocumentRequirements(docSelect.value);
+    }
+
+    // Drag & drop handlers
+    const dropzone = document.getElementById('docDropzone');
+    const fileInput = document.getElementById('docFileInput');
+    const feedback = document.getElementById('fileSelectedFeedback');
+    const fileNameLabel = document.getElementById('fileNameLabel');
+
+    if (dropzone && fileInput) {
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.add('dragover');
+            });
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropzone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                dropzone.classList.remove('dragover');
+            });
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                fileInput.files = files;
+                handleFileSelection(files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                handleFileSelection(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelection(file) {
+            if (!file) return;
+
+            // 1. Max Size Check (10 MB)
+            if (file.size > 10 * 1024 * 1024) {
+                alert("File size exceeds the 10 MB limit. Please upload a smaller document.");
+                fileInput.value = "";
+                if (feedback) feedback.classList.add('d-none');
+                return;
+            }
+
+            // 2. Extension Check
+            const ext = "." + file.name.split('.').pop().toLowerCase();
+            const allowed = ['.pdf', '.jpg', '.jpeg', '.png', '.webp'];
+            if (!allowed.includes(ext)) {
+                alert("Unsupported file format. Please upload PDF, JPG, JPEG, PNG or WEBP.");
+                fileInput.value = "";
+                if (feedback) feedback.classList.add('d-none');
+                return;
+            }
+
+            if (fileNameLabel) {
+                const icon = document.getElementById('fileFeedbackIcon');
+                if (icon) {
+                    icon.className = ext === '.pdf' ? 'fa-solid fa-file-pdf text-danger me-1' : 'fa-solid fa-file-image text-primary me-1';
+                }
+                const sizeStr = file.size >= 1024 * 1024 ? (file.size / (1024 * 1024)).toFixed(1) + " MB" : (file.size / 1024).toFixed(1) + " KB";
+                fileNameLabel.innerText = file.name + " (" + sizeStr + ")";
+                feedback.classList.remove('d-none');
+            }
+        }
+    }
+
+    // Camera capture
+    let mediaStream = null;
+    const startCameraBtn = document.getElementById('startCameraBtn');
+    const captureSelfieBtn = document.getElementById('captureSelfieBtn');
+    const retakeControls = document.getElementById('retakeControls');
+    const retakeSelfieBtn = document.getElementById('retakeSelfieBtn');
+    const useSelfieBtn = document.getElementById('useSelfieBtn');
+    const cameraPlaceholder = document.getElementById('cameraPlaceholder');
+    const webcamVideo = document.getElementById('webcamVideo');
+    const selfieCanvas = document.getElementById('selfieCanvas');
+    const selfiePreviewImg = document.getElementById('selfiePreviewImg');
+
+    function stopCameraStream() {
+        if (mediaStream) {
+            mediaStream.getTracks().forEach(track => track.stop());
+            mediaStream = null;
+        }
+    }
+
+    function resetSelfieState() {
+        if (webcamVideo) webcamVideo.classList.add('d-none');
+        if (selfiePreviewImg) {
+            selfiePreviewImg.classList.add('d-none');
+            selfiePreviewImg.src = '';
+        }
+        if (cameraPlaceholder) cameraPlaceholder.classList.remove('d-none');
+        if (startCameraBtn) startCameraBtn.classList.remove('d-none');
+        if (captureSelfieBtn) captureSelfieBtn.classList.add('d-none');
+        if (retakeControls) retakeControls.classList.add('d-none');
+        if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+        if (selfieInput) selfieInput.value = '';
+    }
+
+    if (startCameraBtn) {
+        startCameraBtn.addEventListener('click', async () => {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({
+                    video: { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" },
+                    audio: false
+                });
+                webcamVideo.srcObject = mediaStream;
+                webcamVideo.classList.remove('d-none');
+                cameraPlaceholder.classList.add('d-none');
+                selfiePreviewImg.classList.add('d-none');
+                if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+                startCameraBtn.classList.add('d-none');
+                captureSelfieBtn.classList.remove('d-none');
+                retakeControls.classList.add('d-none');
+            } catch (err) {
+                alert("Camera access was not permitted or is unavailable: " + err.message);
+            }
+        });
+    }
+
+    if (captureSelfieBtn) {
+        captureSelfieBtn.addEventListener('click', () => {
+            if (!webcamVideo.videoWidth) return;
+            selfieCanvas.width = webcamVideo.videoWidth;
+            selfieCanvas.height = webcamVideo.videoHeight;
+            const ctx = selfieCanvas.getContext('2d');
+            ctx.drawImage(webcamVideo, 0, 0, selfieCanvas.width, selfieCanvas.height);
+
+            const dataUrl = selfieCanvas.toDataURL('image/jpeg', 0.95);
+            selfiePreviewImg.src = dataUrl;
+            selfiePreviewImg.classList.remove('d-none');
+            webcamVideo.classList.add('d-none');
+            captureSelfieBtn.classList.add('d-none');
+            retakeControls.classList.remove('d-none');
+            if (selfieStatusInfo) selfieStatusInfo.classList.remove('d-none');
+
+            selfieCanvas.toBlob((blob) => {
+                if (blob) {
+                    const file = new File([blob], "applicant_live_selfie.jpg", { type: "image/jpeg" });
+                    const container = new DataTransfer();
+                    container.items.add(file);
+                    selfieInput.files = container.files;
+                }
+            }, 'image/jpeg', 0.95);
+
+            stopCameraStream();
+        });
+    }
+
+    if (retakeSelfieBtn) {
+        retakeSelfieBtn.addEventListener('click', () => {
+            selfiePreviewImg.classList.add('d-none');
+            if (selfieStatusInfo) selfieStatusInfo.classList.add('d-none');
+            startCameraBtn.click();
+        });
+    }
+
+    if (useSelfieBtn) {
+        useSelfieBtn.addEventListener('click', () => {
+            if (selfieStatusInfo) selfieStatusInfo.classList.remove('d-none');
+        });
+    }
+});
+</script>
+{% endblock %}

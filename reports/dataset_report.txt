@@ -1,0 +1,42 @@
+============================================================
+VERIFYX AI - DATASET INTEGRITY & QUALITY REPORT
+============================================================
+Total Document Images: 3000
+Total Unique Images:   3000
+Corrupted Images:      0
+Duplicate Images:      0
+Image Dimensions:      [(500, 315), (500, 340)]
+
+--- SPLIT DISTRIBUTION ---
+TRAIN Set (70%):
+  REAL: 1050
+  FAKE: 1050
+VALIDATION Set (15%):
+  REAL: 225
+  FAKE: 225
+TEST Set (15% held-out unseen):
+  REAL: 225
+  FAKE: 225
+
+--- DOCUMENT CATEGORY BREAKDOWN ---
+PAN:
+  REAL = 300
+  FAKE = 300
+AADHAAR:
+  REAL = 300
+  FAKE = 300
+PASSPORT:
+  REAL = 300
+  FAKE = 300
+DRIVING LICENSE:
+  REAL = 300
+  FAKE = 300
+VOTER ID:
+  REAL = 300
+  FAKE = 300
+
+--- CLASS BALANCE ANALYSIS ---
+Class Balance Ratio (Real/Fake): 1.00
+Status: PERFECTLY BALANCED (1:1 Ratio preserved across all splits).
+Data Leakage Prevention: Base citizen records partitioned across splits with zero identity crossover.
+============================================================

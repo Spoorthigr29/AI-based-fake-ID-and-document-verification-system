@@ -1,0 +1,56 @@
+=================================================================
+VERIFYX AI - DOCUMENT AUTHENTICITY HELD-OUT TEST REPORT
+=================================================================
+
+Total Test Images:        450
+Overall Accuracy:         100.00%
+Weighted Precision:       1.0000
+Weighted Recall:          1.0000
+Weighted F1 Score:        1.0000
+ROC-AUC Score:            1.0000
+
+--- CRITICAL FAKE-DOCUMENT DETECTION METRICS ---
+Fake Document Precision:  100.00%
+Fake Document Recall:     100.00%
+Fake Document F1 Score:   100.00%
+False Positives (Fake predicted as Real): 0
+False Negatives (Real predicted as Fake): 0
+
+--- CLASSIFICATION REPORT ---
+              precision    recall  f1-score   support
+
+        FAKE     1.0000    1.0000    1.0000       225
+        REAL     1.0000    1.0000    1.0000       225
+
+    accuracy                         1.0000       450
+   macro avg     1.0000    1.0000    1.0000       450
+weighted avg     1.0000    1.0000    1.0000       450
+
+
+--- PER-CATEGORY ACCURACY BREAKDOWN ---
+PAN:
+  Overall Accuracy: 100.0% (90/90)
+  Real Accurate:    45/45
+  Fake Accurate:    45/45
+
+AADHAAR:
+  Overall Accuracy: 100.0% (90/90)
+  Real Accurate:    45/45
+  Fake Accurate:    45/45
+
+PASSPORT:
+  Overall Accuracy: 100.0% (90/90)
+  Real Accurate:    45/45
+  Fake Accurate:    45/45
+
+DRIVING LICENSE:
+  Overall Accuracy: 100.0% (90/90)
+  Real Accurate:    45/45
+  Fake Accurate:    45/45
+
+VOTER ID:
+  Overall Accuracy: 100.0% (90/90)
+  Real Accurate:    45/45
+  Fake Accurate:    45/45
+
+=================================================================

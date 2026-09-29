@@ -1,0 +1,67 @@
+{
+  "model_name": "Logistic Regression",
+  "training_date": "2026-09-27T11:35:28.961417",
+  "dataset_filename": "verifyx_120_records_training_dataset.csv",
+  "dataset_path": "C:\\Users\\SPOORTHI\\OneDrive\\Desktop\\fake ID detection\\backend\\dataset\\verifyx_120_records_training_dataset.csv",
+  "number_of_training_records": 96,
+  "number_of_testing_records": 24,
+  "feature_names": [
+    "document_quality",
+    "ocr_confidence",
+    "face_similarity",
+    "tampering_probability",
+    "identity_consistency",
+    "name_match",
+    "dob_match",
+    "id_format_valid",
+    "address_match"
+  ],
+  "numerical_features": [
+    "document_quality",
+    "ocr_confidence",
+    "face_similarity",
+    "tampering_probability",
+    "identity_consistency"
+  ],
+  "binary_features": [
+    "name_match",
+    "dob_match",
+    "id_format_valid",
+    "address_match"
+  ],
+  "target_name": "risk_category",
+  "classes": [
+    "LOW_RISK",
+    "MANUAL_REVIEW"
+  ],
+  "evaluation_metrics": {
+    "test_accuracy": 0.875,
+    "test_precision_macro": 0.7,
+    "test_recall_macro": 0.9318181818181819,
+    "test_f1_macro": 0.7491289198606272,
+    "test_f1_weighted": 0.8972125435540069,
+    "cv_accuracy": 0.8336842105263157,
+    "cv_f1_macro": 0.6642691622103387,
+    "confusion_matrix": [
+      [
+        19,
+        3
+      ],
+      [
+        0,
+        2
+      ]
+    ],
+    "classes": [
+      "LOW_RISK",
+      "MANUAL_REVIEW"
+    ]
+  },
+  "random_state": 42,
+  "models_compared": [
+    "Logistic Regression",
+    "Random Forest",
+    "Gradient Boosting"
+  ],
+  "disclaimer": "The model achieved these performance metrics on the supplied synthetic evaluation dataset. These results represent performance on the synthetic dataset only and should not be interpreted as real-world fraud-detection performance."
+}

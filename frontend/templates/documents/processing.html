@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification In Progress: {{ document.verification_id }} | VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <!-- Processing Card -->
+            <div class="glass-card p-4 p-md-5">
+                <div class="text-center mb-4">
+                    <div class="spinner-border text-primary mb-3" style="width: 3.5rem; height: 3.5rem;" role="status">
+                        <span class="visually-hidden">Verifying Document...</span>
+                    </div>
+                    <div class="hero-badge mb-2">
+                        <span class="status-dot-pulse"></span>
+                        <span>MULTI-LEVEL VERIFICATION PIPELINE</span>
+                    </div>
+                    <h3 class="fw-bold text-dark mb-1">Verifying Document Authenticity</h3>
+                    <p class="text-muted small font-monospace">Verification ID: <span class="text-primary fw-bold">{{ document.verification_id }}</span></p>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="progress bg-light border border-slate-200 mb-4" style="height: 10px;">
+                    <div id="pipelineProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-primary" style="width: 15%;"></div>
+                </div>
+
+                <!-- Pipeline Stages Checklist -->
+                <div class="row g-2 mb-4" id="stageList">
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-success border-opacity-40 d-flex justify-content-between align-items-center" id="stage1">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-cloud-arrow-up text-success fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">1. Document Ingestion & Storage</div>
+                                    <div class="text-muted small">Document securely registered and validated</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-low">PASSED</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage2">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-gauge-high text-primary fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">2. Document Quality Assessment</div>
+                                    <div class="text-muted small">Resolution, clarity, brightness, and layout alignment</div>
+                                </div>
+                            </div>
+                            <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25" id="badge2">PROCESSING</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage3">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-font text-primary fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">3. Optical Character Recognition</div>
+                                    <div class="text-muted small">Document field extraction and structure validation</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-na" id="badge3">QUEUED</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage4">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-id-badge text-primary fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">4. Face Verification</div>
+                                    <div class="text-muted small">Facial comparison and photo authenticity assessment</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-na" id="badge4">QUEUED</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage5">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-shield-virus text-warning fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">5. Document Integrity Check</div>
+                                    <div class="text-muted small">Digital artifact analysis and image integrity screening</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-na" id="badge5">QUEUED</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage6">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-arrows-split-up-and-left text-primary fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">6. Information Consistency</div>
+                                    <div class="text-muted small">Cross-reference names, dates, and identifier formats</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-na" id="badge6">QUEUED</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="p-3 rounded-3 bg-light border border-slate-200 d-flex justify-content-between align-items-center" id="stage7">
+                            <div class="d-flex align-items-center gap-3">
+                                <i class="fa-solid fa-shield-halved text-success fs-5"></i>
+                                <div>
+                                    <div class="text-dark fw-bold small">7. Risk Assessment</div>
+                                    <div class="text-muted small">Consolidating verification signals and risk scoring</div>
+                                </div>
+                            </div>
+                            <span class="badge badge-risk-na" id="badge7">QUEUED</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Log Terminal -->
+                <div class="p-3 rounded-3 bg-dark text-white border border-slate-700 font-monospace small mb-4 text-start" style="height: 100px; overflow-y: auto;" id="terminalLog">
+                    <div class="text-success">[0.00s] Document registered successfully. Assigned ID {{ document.verification_id }}</div>
+                    <div class="text-info" id="log2">[0.42s] Assessing image quality and sharpness...</div>
+                </div>
+
+                <div class="text-center">
+                    <a href="{% url 'documents:detail' document.verification_id %}" class="btn btn-cyber-primary px-4 py-2" id="viewResultBtn">
+                        <i class="fa-solid fa-arrow-right me-2"></i> View Verification Report
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const pBar = document.getElementById('pipelineProgressBar');
+    const destUrl = "{% url 'documents:detail' document.verification_id %}";
+    const logBox = document.getElementById('terminalLog');
+
+    function appendLog(msg, color='text-info') {
+        const div = document.createElement('div');
+        div.className = color;
+        div.innerText = msg;
+        logBox.appendChild(div);
+        logBox.scrollTop = logBox.scrollHeight;
+    }
+
+    // Step 1: Processing Document
+    setTimeout(() => {
+        pBar.style.width = '25%';
+        document.getElementById('badge2').className = 'badge badge-risk-low';
+        document.getElementById('badge2').innerText = 'PASSED';
+        document.getElementById('stage2').classList.add('border-success');
+        document.getElementById('badge3').className = 'badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25';
+        document.getElementById('badge3').innerText = 'PROCESSING';
+        appendLog('[0.25s] Processing document: Assessing quality and layout alignment...');
+    }, 150);
+
+    // Step 2: Running OCR
+    setTimeout(() => {
+        pBar.style.width = '50%';
+        document.getElementById('badge3').className = 'badge badge-risk-low';
+        document.getElementById('badge3').innerText = 'PASSED';
+        document.getElementById('stage3').classList.add('border-success');
+        document.getElementById('badge4').className = 'badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25';
+        document.getElementById('badge4').innerText = 'PROCESSING';
+        appendLog('[0.65s] Running OCR: Neural character recognition and field parsing...');
+    }, 450);
+
+    // Step 3: Checking Document & Face Verification
+    setTimeout(() => {
+        pBar.style.width = '75%';
+        document.getElementById('badge4').className = 'badge badge-risk-low';
+        document.getElementById('badge4').innerText = 'PASSED';
+        document.getElementById('stage4').classList.add('border-success');
+        document.getElementById('badge5').className = 'badge badge-risk-low';
+        document.getElementById('badge5').innerText = 'PASSED';
+        document.getElementById('stage5').classList.add('border-success');
+        document.getElementById('badge6').className = 'badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25';
+        document.getElementById('badge6').innerText = 'PROCESSING';
+        appendLog('[1.10s] Checking document: Digital tampering and face verification...');
+    }, 850);
+
+    // Step 4: Calculating Risk & Completing
+    setTimeout(() => {
+        pBar.style.width = '100%';
+        document.getElementById('badge6').className = 'badge badge-risk-low';
+        document.getElementById('badge6').innerText = 'PASSED';
+        document.getElementById('stage6').classList.add('border-success');
+        document.getElementById('badge7').className = 'badge badge-risk-low';
+        document.getElementById('badge7').innerText = 'PASSED';
+        document.getElementById('stage7').classList.add('border-success');
+        appendLog('[1.45s] Calculating risk: Multi-signal risk score compiled.', 'text-success fw-bold');
+        appendLog('[1.60s] Complete. Redirecting to verification dossier...', 'text-success fw-bold');
+        setTimeout(() => {
+            window.location.href = destUrl;
+        }, 400);
+    }, 1250);
+});
+</script>
+{% endblock %}

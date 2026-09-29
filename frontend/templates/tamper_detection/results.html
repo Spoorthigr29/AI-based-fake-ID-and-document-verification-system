@@ -1,0 +1,246 @@
+{% extends 'base.html' %}
+
+{% block title %}Document Integrity | {{ document.verification_id }} - VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-secondary border-opacity-25">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:main' %}" class="text-info text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'verification:detail' document.verification_id %}" class="text-info text-decoration-none">{{ document.verification_id }}</a></li>
+                    <li class="breadcrumb-item active text-muted" aria-current="page">Document Integrity</li>
+                </ol>
+            </nav>
+            <h2 class="h4 text-white fw-bold mb-0">
+                <i class="fa-solid fa-shield-halved text-warning me-2"></i>Document Integrity Assessment
+            </h2>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <span class="badge bg-dark border border-secondary text-white font-monospace px-3 py-2">
+                ID: {{ document.verification_id }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Forensic Panel -->
+        <div class="col-lg-8">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-shield-virus text-warning me-2"></i>DOCUMENT INTEGRITY ANALYSIS
+                    </h5>
+                    {% if tamper_analysis %}
+                        {% if tamper_analysis.risk_level == 'HIGH' %}
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger px-3 py-1 fw-bold">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> HIGH RISK
+                        </span>
+                        {% elif tamper_analysis.risk_level == 'MODERATE' %}
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning px-3 py-1 fw-bold">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> REVIEW REQUIRED
+                        </span>
+                        {% else %}
+                        <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-1 fw-bold">
+                            <i class="fa-solid fa-circle-check me-1"></i> LOW RISK
+                        </span>
+                        {% endif %}
+                    {% else %}
+                    <span class="badge bg-secondary px-3 py-1">Pending Analysis</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    {% if tamper_analysis %}
+                    <!-- Top Score Summary -->
+                    <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 mb-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4 text-center border-end border-secondary border-opacity-25">
+                                <div class="text-muted small">Tampering Risk</div>
+                                <div class="h2 mb-0 fw-bold {% if tamper_analysis.tampering_probability >= 0.65 %}text-danger{% elif tamper_analysis.tampering_probability >= 0.30 %}text-warning{% else %}text-success{% endif %}">
+                                    {% widthratio tamper_analysis.tampering_probability 1 100 %}%
+                                </div>
+                                <div class="small text-muted">Integrity Risk Index</div>
+                            </div>
+                            <div class="col-md-4 text-center border-end border-secondary border-opacity-25">
+                                <div class="text-muted small">Risk Determination</div>
+                                <div class="h4 mb-0 fw-bold {% if tamper_analysis.risk_level == 'HIGH' %}text-danger{% elif tamper_analysis.risk_level == 'MODERATE' %}text-warning{% else %}text-success{% endif %}">
+                                    {{ tamper_analysis.risk_level }} RISK
+                                </div>
+                                <div class="small text-muted">Status: Completed</div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="text-muted small">Suspicious Regions</div>
+                                <div class="h3 mb-0 fw-bold text-info">
+                                    {{ tamper_analysis.suspicious_regions|length }}
+                                </div>
+                                <div class="small text-muted">Anomalous Zones</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Visual Forensics (Annotated Heatmap & ELA Map) -->
+                    <div class="row g-3 mb-4">
+                        <!-- Annotated Heatmap -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                                <div class="text-muted small text-uppercase tracking-wider mb-2 fw-semibold">
+                                    <i class="fa-solid fa-draw-polygon me-1 text-warning"></i> Document Integrity Overlay
+                                </div>
+                                <div class="text-center my-2">
+                                    {% if tamper_analysis.annotated_image %}
+                                    <img src="/media/{{ tamper_analysis.annotated_image }}" alt="Tamper Heatmap" class="img-fluid rounded border border-secondary shadow" style="max-height: 220px; object-fit: contain;">
+                                    {% elif document.original_file %}
+                                    <img src="{{ document.original_file.url }}" alt="Document" class="img-fluid rounded border border-secondary shadow" style="max-height: 220px; object-fit: contain;">
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- ELA Error Map -->
+                        <div class="col-md-6">
+                            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 h-100">
+                                <div class="text-muted small text-uppercase tracking-wider mb-2 fw-semibold">
+                                    <i class="fa-solid fa-layer-group me-1 text-info"></i> Error Level Analysis
+                                </div>
+                                <div class="text-center my-2">
+                                    {% if tamper_analysis.ela_image %}
+                                    <img src="/media/{{ tamper_analysis.ela_image }}" alt="ELA Map" class="img-fluid rounded border border-info border-opacity-40 shadow" style="max-height: 220px; object-fit: contain;">
+                                    {% else %}
+                                    <div class="p-4 text-muted bg-dark rounded border border-dashed border-secondary small">
+                                        Analysis map not available.
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Signals Breakdown -->
+                    <div class="mb-4">
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fa-solid fa-signal text-info me-2"></i>Integrity Signals & Observations
+                        </h6>
+                        <div class="list-group list-group-flush bg-transparent">
+                            {% for sig in tamper_analysis.signals %}
+                            <div class="list-group-item bg-dark bg-opacity-50 border-secondary border-opacity-25 px-3 py-2 d-flex align-items-center">
+                                {% if 'No ' in sig or 'uniform' in sig %}
+                                <i class="fa-solid fa-check text-success me-3"></i>
+                                <span class="text-success-emphasis small">{{ sig }}</span>
+                                {% else %}
+                                <i class="fa-solid fa-triangle-exclamation text-warning me-3"></i>
+                                <span class="text-warning-emphasis fw-semibold small">{{ sig }}</span>
+                                {% endif %}
+                            </div>
+                            {% empty %}
+                            <div class="text-muted small p-2">No specific signals recorded.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    {% if tamper_analysis.suspicious_regions %}
+                    <!-- Suspicious Regions List -->
+                    <div>
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fa-solid fa-crosshairs text-danger me-2"></i>Detected Visual Inconsistencies
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-sm table-bordered border-secondary border-opacity-25 mb-0 small">
+                                <thead>
+                                    <tr class="text-muted">
+                                        <th>Type</th>
+                                        <th>Coordinates (X, Y)</th>
+                                        <th>Dimensions (W × H)</th>
+                                        <th>Assessment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for reg in tamper_analysis.suspicious_regions %}
+                                    <tr>
+                                        <td class="text-warning font-monospace">{{ reg.type }}</td>
+                                        <td class="font-monospace">({{ reg.x }}, {{ reg.y }})</td>
+                                        <td class="font-monospace">{{ reg.width }} × {{ reg.height }} px</td>
+                                        <td class="text-info font-monospace">Flagged</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% else %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-shield-halved fa-3x mb-3 text-secondary"></i>
+                        <h5>No Integrity Analysis Recorded</h5>
+                        <p class="small">Click "Run Integrity Analysis" below to execute verification.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Panel -->
+        <div class="col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-sliders text-info me-2"></i>Actions & Analysis
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <button class="btn btn-cyber-primary w-100 mb-3 py-2" id="runTamperBtn" onclick="triggerTamperAnalysis('{{ document.verification_id }}')">
+                        <i class="fa-solid fa-rotate me-2"></i> Run Integrity Analysis
+                    </button>
+
+                    <a href="{% url 'verification:detail' document.verification_id %}" class="btn btn-cyber-secondary w-100 py-2 mb-3">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Document Report
+                    </a>
+
+                    <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 text-muted small">
+                        <div class="text-white fw-semibold mb-1">
+                            <i class="fa-solid fa-circle-info text-info me-1"></i> Assessment Principle
+                        </div>
+                        Document integrity checks assess digital image consistency and compression artifacts. High risk documents are routed for human manual review.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function triggerTamperAnalysis(verificationId) {
+    const btn = document.getElementById('runTamperBtn');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing Forensics...';
+
+    try {
+        const response = await fetch(`/api/tamper/analyze/${verificationId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Error running tamper analysis: ' + (data.error || 'Server error'));
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Tampering Analysis';
+        }
+    } catch (err) {
+        alert('Network or server error: ' + err.message);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Tampering Analysis';
+    }
+}
+</script>
+{% endblock %}

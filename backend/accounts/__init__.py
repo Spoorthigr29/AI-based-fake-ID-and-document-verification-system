@@ -1,0 +1,1 @@
+"""Init for accounts app."""

@@ -1,0 +1,214 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}VERIFYX | Identity & Document Verification System{% endblock %}</title>
+    <meta name="description" content="Secure identity document verification, tamper detection, facial comparison, and audit reporting.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Design System CSS -->
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbarMain" data-bs-offset="100" tabindex="0">
+
+    <!-- 1. DARK BLUE NAVBAR (#071426) -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top" id="mainNavbar">
+        <div class="container-fluid px-lg-5">
+            <!-- Left: Shield icon + VERIFYX -->
+            <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="{% url 'dashboard:home' %}#home">
+                <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 36px; height: 36px;">
+                    <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <span class="fs-4 brand-badge">VERIFYX</span>
+            </a>
+            
+            <!-- Mobile Hamburger Menu Button -->
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <!-- Navigation Items with Smooth Scroll to Sections -->
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{% url 'dashboard:home' %}#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}#verification">Verification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}#screening">Screening Modules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'documents:history' %}">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}#security">Security</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard:home' %}#about">About</a>
+                    </li>
+                </ul>
+
+                <!-- Right Side: Online Status & Start Verification Button -->
+                <div class="d-flex align-items-center gap-2 gap-sm-3">
+                    <div class="status-pill-online d-none d-xl-inline-flex">
+                        <span class="status-dot-pulse"></span>
+                        <span>Verification System Online</span>
+                    </div>
+
+                    {% if user.is_authenticated %}
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-info dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="fa-solid fa-circle-user text-info"></i>
+                                <span class="d-none d-md-inline">{{ user.first_name|default:user.username }}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary border-opacity-50" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(10px);">
+                                <li><h6 class="dropdown-header text-info small">{{ user.email|default:user.username }}</h6></li>
+                                <li><a class="dropdown-item small" href="{% url 'documents:history' %}"><i class="fa-solid fa-clock-rotate-left me-2 text-info"></i>History</a></li>
+                                <li><hr class="dropdown-divider border-secondary border-opacity-25"></li>
+                                <li><a class="dropdown-item small text-danger" href="{% url 'accounts:logout' %}"><i class="fa-solid fa-right-from-bracket me-2"></i>Sign Out</a></li>
+                            </ul>
+                        </div>
+                    {% else %}
+                        <a href="{% url 'accounts:login' %}" class="btn btn-sm btn-outline-info">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i> Sign In
+                        </a>
+                    {% endif %}
+
+                    <a href="{% url 'dashboard:home' %}#verification" class="btn btn-sm btn-cyber-primary">
+                        <i class="fa-solid fa-bolt me-1"></i> Start Verification
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Messages (if any) -->
+    {% if messages %}
+    <div class="container px-lg-5 pt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show border shadow-sm rounded-3 d-flex align-items-center justify-content-between p-3" role="alert">
+            <div class="d-flex align-items-center gap-2">
+                <i class="fa-solid fa-circle-info text-primary"></i>
+                <span class="small fw-semibold">{{ message }}</span>
+            </div>
+            <button type="button" class="btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content Area -->
+    <main class="flex-grow-1">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Dark Navy Footer (#071426) -->
+    <footer class="footer-dark-navy">
+        <div class="container px-lg-5">
+            <div class="row g-4 align-items-center justify-content-between">
+                <!-- Left: Branding & Tagline -->
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="d-inline-flex align-items-center gap-2 mb-2">
+                        <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 34px; height: 34px;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="fs-4 fw-black text-white">VERIFYX</span>
+                    </div>
+                    <p class="text-slate-secondary text-light small mb-0">Institutional Identity & Document Verification Platform</p>
+                    <div class="text-muted extra-small mt-2">Enterprise Verification Standard &bull; Secure Audit Trail Enforced</div>
+                </div>
+
+                <!-- Right: Navigation Links -->
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-3 mb-2">
+                        <a href="{% url 'dashboard:home' %}#home" class="footer-link">Home</a>
+                        <a href="{% url 'dashboard:home' %}#verification" class="footer-link">Verification</a>
+                        <a href="{% url 'dashboard:home' %}#screening" class="footer-link">Screening Modules</a>
+                        <a href="{% url 'dashboard:home' %}#how-it-works" class="footer-link">How It Works</a>
+                        <a href="{% url 'dashboard:home' %}#security" class="footer-link">Security</a>
+                        <a href="{% url 'dashboard:home' %}#about" class="footer-link">About</a>
+                    </div>
+                    <div class="text-muted extra-small">
+                        <a href="{% url 'dashboard:main' %}" class="footer-link me-2"><i class="fa-solid fa-chart-pie me-1"></i> Operations Dashboard</a>
+                        <a href="{% url 'documents:list' %}" class="footer-link"><i class="fa-solid fa-clock-rotate-left me-1"></i> Verification History</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- ScrollSpy & Smooth Scroll Active State Controller -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('#navbarMain .nav-link');
+        const sections = document.querySelectorAll('section[id]');
+
+        function updateActiveNav() {
+            let scrollY = window.pageYOffset;
+            sections.forEach(current => {
+                const sectionHeight = current.offsetHeight;
+                const sectionTop = current.offsetTop - 120;
+                const sectionId = current.getAttribute('id');
+
+                if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').endsWith('#' + sectionId)) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener('scroll', updateActiveNav);
+
+        // Smooth scroll handler for anchor links
+        document.querySelectorAll('a[href^="#"], a[href*="/#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                const targetId = href.split('#')[1];
+                if (targetId) {
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        e.preventDefault();
+                        targetEl.scrollIntoView({ behavior: 'smooth' });
+                        const navbarCollapse = document.getElementById('navbarMain');
+                        if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+                            bootstrap.Collapse.getInstance(navbarCollapse)?.hide();
+                        }
+                    }
+                }
+            });
+        });
+    });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

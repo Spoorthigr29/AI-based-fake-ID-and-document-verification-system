@@ -1,0 +1,745 @@
+/* ==========================================================================
+   VERIFYX AI — Professional AI Identity & Document Screening Design System
+   Exact Color Progression Architecture:
+   DARK BLUE NAVBAR (#071426)
+           ↓
+   DARK BLUE HERO (#071426)
+           ↓
+   LIGHT BLUE MAIN BACKGROUND (#EAF6FF)
+           ↓
+   WHITE CONTENT CARDS (#FFFFFF)
+   ========================================================================== */
+
+:root {
+    /* Top Dark Navbar & Dark Hero Colors */
+    --bg-dark-navy: #071426;
+    --text-hero-heading: #FFFFFF;
+    --text-hero-desc: #CBD5E1;
+    --accent-cyan: #08BFEA;
+    --accent-blue-btn: #0875E1;
+    --accent-blue-hover: #0764c2;
+
+    /* Main Content Area (Soft Light Blue - NOT White, NOT Dark, NOT Purple) */
+    --bg-light-blue: #EAF6FF;
+    --bg-light-blue-gradient: linear-gradient(180deg, #EAF6FF 0%, #F2F9FF 100%);
+    --bg-result-light-blue: #DFF2FF;
+
+    /* White Content Card Tokens */
+    --bg-card: #FFFFFF;
+    --border-card: #D5E8F5;
+    --shadow-card: 0 4px 16px rgba(8, 117, 225, 0.07), 0 1px 3px rgba(15, 23, 42, 0.04);
+    --shadow-card-hover: 0 10px 24px rgba(8, 117, 225, 0.12), 0 2px 6px rgba(15, 23, 42, 0.06);
+
+    /* Text Colors for Light Blue & White Cards (High Contrast, Accessible) */
+    --text-main-heading: #0F172A;
+    --text-body: #334155;
+    --text-secondary: #475569;
+    --text-muted-label: #475569;
+    --color-step-number: #0875E1;
+
+    /* Forensic Status Colors */
+    --status-success: #059669;
+    --status-success-bg: #ecfdf5;
+    --status-success-border: #a7f3d0;
+    
+    --status-warning: #d97706;
+    --status-warning-bg: #fffbeb;
+    --status-warning-border: #fde68a;
+    
+    --status-danger: #dc2626;
+    --status-danger-bg: #fef2f2;
+    --status-danger-border: #fecaca;
+    
+    --status-neutral: #64748b;
+    --status-neutral-bg: #f1f5f9;
+    --status-neutral-border: #cbd5e1;
+
+    /* Geometry */
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
+    --border-radius-lg: 16px;
+    --border-radius-xl: 20px;
+
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Smooth Scrolling & Section Offset */
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+section {
+    scroll-margin-top: 80px;
+}
+
+/* Base Body Styles */
+body {
+    background-color: var(--bg-light-blue);
+    color: var(--text-body);
+    font-family: var(--font-family);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   1. DARK BLUE NAVBAR (#071426)
+   ========================================================================== */
+
+.navbar-custom {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background-color: var(--bg-dark-navy) !important;
+    border-bottom: 1px solid rgba(8, 191, 234, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    padding: 0.85rem 0;
+}
+
+.brand-badge {
+    color: #FFFFFF;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    font-size: 1.25rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+}
+
+.brand-logo-icon {
+    color: var(--accent-cyan) !important;
+    background: rgba(8, 191, 234, 0.12);
+    border: 1px solid rgba(8, 191, 234, 0.25);
+}
+
+.brand-badge-ai {
+    background: var(--accent-cyan);
+    color: #071426;
+    padding: 2px 7px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    margin-left: 6px;
+}
+
+.nav-link {
+    color: #CBD5E1 !important;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 0.45rem 0.85rem !important;
+    border-radius: var(--border-radius-sm);
+    transition: all 0.2s ease-in-out;
+}
+
+.nav-link:hover {
+    color: var(--accent-cyan) !important;
+    background-color: rgba(8, 191, 234, 0.1);
+}
+
+.nav-link.active {
+    color: var(--accent-cyan) !important;
+    background-color: rgba(8, 191, 234, 0.12);
+    font-weight: 700;
+}
+
+.navbar-toggler {
+    border: 1px solid rgba(203, 213, 225, 0.3) !important;
+    color: #FFFFFF !important;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Live Online Status Pill (Navbar) */
+.status-pill-online {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #34d399;
+}
+
+.status-dot-pulse {
+    width: 8px;
+    height: 8px;
+    background-color: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+/* ==========================================================================
+   2. DARK BLUE HERO SECTION (#071426)
+   ========================================================================== */
+
+.hero-section-dark {
+    background-color: var(--bg-dark-navy) !important;
+    color: var(--text-hero-heading);
+    padding: 4.5rem 0 4rem 0;
+    border-bottom: 1px solid rgba(8, 191, 234, 0.15);
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-badge-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(8, 191, 234, 0.12);
+    border: 1px solid rgba(8, 191, 234, 0.3);
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    color: var(--accent-cyan);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin-bottom: 1.25rem;
+}
+
+.hero-heading-dark {
+    font-size: 3.25rem;
+    font-weight: 900;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
+    color: #FFFFFF;
+}
+
+.hero-subheading-dark {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--accent-cyan);
+    margin-bottom: 1rem;
+}
+
+.hero-desc-dark {
+    font-size: 1.15rem;
+    color: #CBD5E1;
+    max-width: 600px;
+    line-height: 1.6;
+}
+
+.trust-pill-dark {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(203, 213, 225, 0.2);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #E2E8F0;
+}
+
+/* Hero Synthetic Visual Mockup */
+.mockup-container-hero {
+    position: relative;
+    padding: 1.5rem;
+}
+
+.mockup-card-hero {
+    background: #0d213a;
+    border: 1px solid rgba(8, 191, 234, 0.35);
+    border-radius: 18px;
+    padding: 1.5rem;
+    box-shadow: 0 20px 35px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+}
+
+.mockup-floating-pill {
+    position: absolute;
+    background: #102a45;
+    border: 1px solid rgba(8, 191, 234, 0.4);
+    border-radius: 12px;
+    padding: 10px 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 3;
+    animation: float 4s ease-in-out infinite;
+}
+
+.mockup-pill-top {
+    top: -10px;
+    right: 0px;
+    animation-delay: 0s;
+}
+
+.mockup-pill-bottom {
+    bottom: -15px;
+    left: -10px;
+    animation-delay: 2s;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+/* ==========================================================================
+   3. MAIN CONTENT AREA (LIGHT BLUE: #EAF6FF) & WHITE CARDS (#FFFFFF)
+   ========================================================================== */
+
+.main-content-light-blue {
+    background-color: var(--bg-light-blue);
+    background-image: var(--bg-light-blue-gradient);
+    min-height: 100vh;
+}
+
+.section-light-blue {
+    background-color: var(--bg-light-blue);
+    padding: 4.5rem 0;
+}
+
+.section-result-light-blue {
+    background-color: var(--bg-result-light-blue) !important;
+    padding: 4.5rem 0;
+    border-top: 1px solid #cce7fc;
+    border-bottom: 1px solid #cce7fc;
+}
+
+/* Typography on Light Blue Background */
+.heading-section-dark {
+    color: var(--text-main-heading) !important; /* #0F172A */
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.desc-section-slate {
+    color: var(--text-secondary) !important; /* #475569 */
+    font-size: 1.05rem;
+}
+
+.text-navy {
+    color: var(--text-main-heading) !important; /* #0F172A */
+}
+
+.text-slate-secondary {
+    color: var(--text-secondary) !important; /* #475569 */
+}
+
+.section-badge-blue {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: #dbeafe;
+    border: 1px solid #bfdbfe;
+    border-radius: 9999px;
+    font-size: 0.82rem;
+    color: var(--accent-blue-btn);
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   4. WHITE CONTENT CARDS (#FFFFFF, Border: #D5E8F5)
+   ========================================================================== */
+
+.card-white {
+    background-color: var(--bg-card) !important; /* #FFFFFF */
+    border: 1px solid var(--border-card) !important; /* #D5E8F5 */
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-white:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: #b9daf3 !important;
+}
+
+.step-card-white {
+    background-color: #FFFFFF !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s ease;
+}
+
+.step-card-white:hover {
+    box-shadow: var(--shadow-card-hover);
+    border-color: #b9daf3 !important;
+}
+
+.step-number-blue {
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--color-step-number) !important; /* #0875E1 */
+    font-family: var(--font-family);
+    line-height: 1;
+    margin-bottom: 0.4rem;
+}
+
+.step-title-navy {
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-main-heading) !important; /* #0F172A */
+    margin-bottom: 1rem;
+}
+
+/* Dropzone on White Card */
+.upload-dropzone-custom {
+    border: 2px dashed #93c5fd;
+    background-color: #f8fbfe;
+    border-radius: var(--border-radius-md);
+    padding: 1.75rem 1rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 180px;
+}
+
+.upload-dropzone-custom:hover, .upload-dropzone-custom.dragover {
+    border-color: var(--accent-blue-btn);
+    background-color: #eff6ff;
+}
+
+.camera-preview-box-custom {
+    width: 100%;
+    min-height: 180px;
+    background-color: #f8fbfe;
+    border: 1px solid #d5e8f5;
+    border-radius: var(--border-radius-md);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.camera-preview-box-custom video, .camera-preview-box-custom img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+}
+
+/* ==========================================================================
+   BUTTONS (Blue + White Text)
+   ========================================================================== */
+
+.btn-cyber-primary {
+    background-color: var(--accent-blue-btn);
+    border: 1px solid var(--accent-blue-btn);
+    color: #FFFFFF !important;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--border-radius-md);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(8, 117, 225, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-cyber-primary:hover, .btn-cyber-primary:focus {
+    background-color: var(--accent-blue-hover);
+    border-color: var(--accent-blue-hover);
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(8, 117, 225, 0.35);
+}
+
+.btn-cyber-secondary {
+    background-color: #FFFFFF;
+    border: 1px solid #cbd5e1;
+    color: var(--text-main-heading) !important;
+    font-weight: 600;
+    padding: 0.65rem 1.4rem;
+    border-radius: var(--border-radius-md);
+    transition: all 0.2s ease-in-out;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+
+.btn-cyber-secondary:hover, .btn-cyber-secondary:focus {
+    background-color: #f0f7ff;
+    border-color: var(--accent-blue-btn);
+    color: var(--accent-blue-btn) !important;
+    transform: translateY(-1px);
+}
+
+.btn-cyan-hero {
+    background-color: var(--accent-cyan);
+    border: 1px solid var(--accent-cyan);
+    color: #071426 !important;
+    font-weight: 700;
+    padding: 0.75rem 1.6rem;
+    border-radius: var(--border-radius-md);
+    box-shadow: 0 4px 15px rgba(8, 191, 234, 0.35);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.btn-cyan-hero:hover {
+    background-color: #00d4ff;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(8, 191, 234, 0.5);
+    color: #071426 !important;
+}
+
+.btn-hero-outline {
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(203, 213, 225, 0.4);
+    color: #FFFFFF !important;
+    font-weight: 600;
+    padding: 0.75rem 1.6rem;
+    border-radius: var(--border-radius-md);
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.btn-hero-outline:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: #FFFFFF;
+    color: #FFFFFF !important;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   AI SCREENING ENGINE (4 WHITE CARDS)
+   ========================================================================== */
+
+.module-card-white {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: var(--shadow-card);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.module-card-white:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: #b9daf3 !important;
+}
+
+.module-icon-box {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    margin-bottom: 1.25rem;
+}
+
+.status-ready-pill {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--status-success);
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ==========================================================================
+   HOW IT WORKS (4 WHITE CARDS / CONTENT BLOCKS)
+   ========================================================================== */
+
+.workflow-card-white {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: var(--border-radius-lg);
+    padding: 1.75rem 1.25rem;
+    text-align: center;
+    height: 100%;
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s ease;
+}
+
+.workflow-card-white:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: #b9daf3 !important;
+}
+
+.workflow-icon-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #dbeafe;
+    border: 2px solid #bfdbfe;
+    color: var(--accent-blue-btn);
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.25rem auto;
+    transition: all 0.2s ease;
+}
+
+.workflow-card-white:hover .workflow-icon-circle {
+    background: var(--accent-blue-btn);
+    color: #FFFFFF;
+    border-color: var(--accent-blue-btn);
+}
+
+/* ==========================================================================
+   VERIFICATION RESULT DASHBOARD (WHITE RESULT CARD ON #DFF2FF)
+   ========================================================================== */
+
+.result-card-white {
+    background: #FFFFFF !important;
+    border: 1px solid #c5e2f7 !important;
+    border-radius: 18px;
+    box-shadow: 0 10px 25px rgba(8, 117, 225, 0.08);
+    overflow: hidden;
+}
+
+.badge-risk-low {
+    background-color: var(--status-success-bg) !important;
+    color: var(--status-success) !important;
+    border: 1px solid var(--status-success-border) !important;
+    font-weight: 700;
+}
+
+.badge-risk-medium {
+    background-color: var(--status-warning-bg) !important;
+    color: var(--status-warning) !important;
+    border: 1px solid var(--status-warning-border) !important;
+    font-weight: 700;
+}
+
+.badge-risk-high {
+    background-color: var(--status-danger-bg) !important;
+    color: var(--status-danger) !important;
+    border: 1px solid var(--status-danger-border) !important;
+    font-weight: 700;
+}
+
+.badge-risk-na {
+    background-color: var(--status-neutral-bg) !important;
+    color: var(--status-neutral) !important;
+    border: 1px solid var(--status-neutral-border) !important;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   SECURITY SECTION (6 WHITE CARDS) & ABOUT
+   ========================================================================== */
+
+.security-card-white {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-card) !important;
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem 1.25rem;
+    height: 100%;
+    box-shadow: var(--shadow-card);
+    transition: all 0.2s ease;
+}
+
+.security-card-white:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-card-hover);
+    border-color: #b9daf3 !important;
+}
+
+.security-icon-box {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: #dbeafe;
+    color: var(--accent-blue-btn);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+/* ==========================================================================
+   DARK NAVY FOOTER (#071426)
+   ========================================================================== */
+
+.footer-dark-navy {
+    background-color: var(--bg-dark-navy) !important;
+    color: #e2e8f0;
+    padding: 3.5rem 0 2rem 0;
+    margin-top: auto;
+    border-top: 1px solid rgba(8, 191, 234, 0.2);
+}
+
+.footer-link {
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.92rem;
+    transition: color 0.15s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent-cyan);
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN BREAKPOINTS
+   ========================================================================== */
+
+@media (max-width: 991.98px) {
+    .hero-heading-dark {
+        font-size: 2.5rem;
+    }
+    .hero-section-dark {
+        padding: 3rem 0 2.5rem 0;
+        text-align: center;
+    }
+    .hero-desc-dark {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-heading-dark {
+        font-size: 2.1rem;
+    }
+    .step-card-white {
+        margin-bottom: 1rem;
+    }
+}

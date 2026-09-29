@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% block title %}Face Verification | {{ document.verification_id }} - VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb & Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-secondary border-opacity-25">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:main' %}" class="text-info text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'verification:detail' document.verification_id %}" class="text-info text-decoration-none">{{ document.verification_id }}</a></li>
+                    <li class="breadcrumb-item active text-muted" aria-current="page">Face Verification</li>
+                </ol>
+            </nav>
+            <h2 class="h4 text-white fw-bold mb-0">
+                <i class="fa-solid fa-user-check text-info me-2"></i>Biometric Face Verification
+            </h2>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <span class="badge bg-dark border border-secondary text-white font-monospace px-3 py-2">
+                ID: {{ document.verification_id }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Face Verification Card -->
+        <div class="col-lg-8">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-id-badge text-primary me-2"></i>FACE VERIFICATION
+                    </h5>
+                    {% if face_result %}
+                        {% if face_result.match_status == 'MATCH' %}
+                        <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-1">
+                            <i class="fa-solid fa-check-circle me-1"></i> PASSED
+                        </span>
+                        {% elif face_result.match_status == 'MISMATCH' %}
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger px-3 py-1">
+                            <i class="fa-solid fa-circle-xmark me-1"></i> FAILED (MISMATCH)
+                        </span>
+                        {% elif face_result.match_status in 'NOT_APPLICABLE,NOT_PERFORMED' %}
+                        <span class="badge bg-secondary bg-opacity-25 text-secondary border border-secondary px-3 py-1">
+                            <i class="fa-solid fa-minus me-1"></i> NOT AVAILABLE
+                        </span>
+                        {% else %}
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning px-3 py-1">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> REVIEW REQUIRED
+                        </span>
+                        {% endif %}
+                    {% else %}
+                    <span class="badge bg-secondary px-3 py-1">Pending Analysis</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    <!-- Face Crop Visual Comparison -->
+                    <div class="row g-4 mb-4">
+                        <!-- Document Face -->
+                        <div class="col-md-6 text-center">
+                            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="text-muted small text-uppercase tracking-wider mb-2 fw-semibold">
+                                        <i class="fa-solid fa-id-card me-1 text-info"></i> Document Face
+                                    </div>
+                                    <div class="position-relative d-inline-block my-2">
+                                        {% if face_result and face_result.document_face_crop %}
+                                        <img src="/media/{{ face_result.document_face_crop }}" alt="Document Face Crop" class="img-fluid rounded border border-info border-opacity-50 shadow" style="max-height: 180px; object-fit: cover;">
+                                        {% elif document.original_file %}
+                                        <img src="{{ document.original_file.url }}" alt="Document" class="img-fluid rounded border border-secondary shadow" style="max-height: 180px; object-fit: contain;">
+                                        {% else %}
+                                        <div class="p-5 text-muted bg-dark rounded border border-dashed border-secondary">
+                                            <i class="fa-solid fa-image fa-2x mb-2 d-block"></i> No Document Image
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    {% if face_result and face_result.document_face_detected %}
+                                    <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-40">
+                                        <i class="fa-solid fa-check me-1"></i> Detected
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-danger bg-opacity-20 text-danger border border-danger border-opacity-40">
+                                        <i class="fa-solid fa-xmark me-1"></i> Not Detected
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Selfie Face -->
+                        <div class="col-md-6 text-center">
+                            <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 h-100 d-flex flex-column justify-content-between">
+                                <div>
+                                    <div class="text-muted small text-uppercase tracking-wider mb-2 fw-semibold">
+                                        <i class="fa-solid fa-camera me-1 text-primary"></i> Selfie Face
+                                    </div>
+                                    <div class="position-relative d-inline-block my-2">
+                                        {% if face_result and face_result.selfie_face_crop %}
+                                        <img src="/media/{{ face_result.selfie_face_crop }}" alt="Selfie Face Crop" class="img-fluid rounded border border-primary border-opacity-50 shadow" style="max-height: 180px; object-fit: cover;">
+                                        {% elif document.selfie_file %}
+                                        <img src="{{ document.selfie_file.url }}" alt="Selfie" class="img-fluid rounded border border-secondary shadow" style="max-height: 180px; object-fit: contain;">
+                                        {% else %}
+                                        <div class="p-5 text-muted bg-dark rounded border border-dashed border-secondary">
+                                            <i class="fa-solid fa-user-slash fa-2x mb-2 d-block"></i> No Selfie Uploaded
+                                        </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="mt-2">
+                                    {% if face_result and face_result.selfie_face_detected %}
+                                    <span class="badge bg-success bg-opacity-20 text-success border border-success border-opacity-40">
+                                        <i class="fa-solid fa-check me-1"></i> Detected
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-danger bg-opacity-20 text-danger border border-danger border-opacity-40">
+                                        <i class="fa-solid fa-xmark me-1"></i> Not Detected
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Biometric Score Metrics -->
+                    {% if face_result %}
+                    <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 mb-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-4 text-center border-end border-secondary border-opacity-25">
+                                <div class="text-muted small">Similarity Score</div>
+                                <div class="h2 mb-0 fw-bold {% if face_result.match_status == 'MATCH' %}text-success{% elif face_result.match_status == 'MISMATCH' %}text-danger{% else %}text-warning{% endif %}">
+                                    {% if face_result.similarity_score is not None %}{% widthratio face_result.similarity_score 1 100 %}%{% else %}N/A{% endif %}
+                                </div>
+                                <div class="small text-muted">Biometric Match Index</div>
+                            </div>
+                            <div class="col-md-4 text-center border-end border-secondary border-opacity-25">
+                                <div class="text-muted small">Confidence</div>
+                                <div class="h2 mb-0 fw-bold text-info">
+                                    {% if face_result.confidence is not None %}{% widthratio face_result.confidence 1 100 %}%{% else %}N/A{% endif %}
+                                </div>
+                                <div class="small text-muted">Extraction Confidence</div>
+                            </div>
+                            <div class="col-md-4 text-center">
+                                <div class="text-muted small">Verification Result</div>
+                                <div class="h5 mb-0 fw-bold {% if face_result.match_status == 'MATCH' %}text-success{% elif face_result.match_status == 'MISMATCH' %}text-danger{% elif face_result.match_status == 'NOT_APPLICABLE' %}text-muted{% else %}text-warning{% endif %}">
+                                    {% if face_result.match_status == 'MATCH' %}PASSED{% elif face_result.match_status == 'MISMATCH' %}FAILED{% elif face_result.match_status == 'NOT_APPLICABLE' %}NOT AVAILABLE{% else %}REVIEW REQUIRED{% endif %}
+                                </div>
+                                <div class="small text-muted">{{ face_result.explanation|default:'Biometric Assessment' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Issues / Flags -->
+                    {% if face_result and face_result.issues %}
+                    <div class="alert alert-warning border-warning border-opacity-50 bg-warning bg-opacity-10 py-3 mb-0">
+                        <div class="fw-bold text-warning mb-2">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> Verification Findings:
+                        </div>
+                        <ul class="mb-0 ps-3 text-warning-emphasis small">
+                            {% for issue in face_result.issues %}
+                            <li>{{ issue }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Panel: Actions & Audit Notice -->
+        <div class="col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-sliders text-info me-2"></i>Actions & Analysis
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <button class="btn btn-cyber-primary w-100 mb-3 py-2" id="runFaceVerificationBtn" onclick="triggerFaceVerification('{{ document.verification_id }}')">
+                        <i class="fa-solid fa-rotate me-2"></i> Run Face Verification
+                    </button>
+
+                    <a href="{% url 'verification:detail' document.verification_id %}" class="btn btn-cyber-secondary w-100 py-2 mb-3">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Document Report
+                    </a>
+
+                    <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 text-muted small">
+                        <div class="text-white fw-semibold mb-1">
+                            <i class="fa-solid fa-shield-halved text-info me-1"></i> Verification Principle
+                        </div>
+                        Face verification provides biometric comparison signals. Face mismatches indicate additional manual review required.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function triggerFaceVerification(verificationId) {
+    const btn = document.getElementById('runFaceVerificationBtn');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Processing Biometrics...';
+
+    try {
+        const response = await fetch(`/api/face-verification/${verificationId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Error running face verification: ' + (data.error || 'Server error'));
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Face Verification';
+        }
+    } catch (err) {
+        alert('Network or server error: ' + err.message);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Face Verification';
+    }
+}
+</script>
+{% endblock %}

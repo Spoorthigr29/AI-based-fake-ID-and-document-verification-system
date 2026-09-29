@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% block title %}Identity Consistency | {{ document.verification_id }} - VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-2 border-bottom border-secondary border-opacity-25">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1 small">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:main' %}" class="text-info text-decoration-none">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'verification:detail' document.verification_id %}" class="text-info text-decoration-none">{{ document.verification_id }}</a></li>
+                    <li class="breadcrumb-item active text-muted" aria-current="page">Identity Consistency</li>
+                </ol>
+            </nav>
+            <h2 class="h4 text-white fw-bold mb-0">
+                <i class="fa-solid fa-arrows-split-up-and-left text-info me-2"></i>Cross-Field Identity Consistency
+            </h2>
+        </div>
+        <div class="mt-2 mt-sm-0">
+            <span class="badge bg-dark border border-secondary text-white font-monospace px-3 py-2">
+                ID: {{ document.verification_id }}
+            </span>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Consistency Card -->
+        <div class="col-lg-8">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-list-check text-info me-2"></i>Identity Consistency
+                    </h5>
+                    {% if consistency_check %}
+                        {% if consistency_check.status == 'CONSISTENT' %}
+                        <span class="badge bg-success bg-opacity-25 text-success border border-success px-3 py-1 fw-bold">
+                            <i class="fa-solid fa-circle-check me-1"></i> CONSISTENT
+                        </span>
+                        {% else %}
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning px-3 py-1 fw-bold">
+                            <i class="fa-solid fa-triangle-exclamation me-1"></i> REVIEW REQUIRED
+                        </span>
+                        {% endif %}
+                    {% else %}
+                    <span class="badge bg-secondary px-3 py-1">Pending Check</span>
+                    {% endif %}
+                </div>
+
+                <div class="card-body p-4">
+                    {% if consistency_check %}
+                    <!-- Score & Determination Panel -->
+                    <div class="p-3 rounded bg-black bg-opacity-40 border border-secondary border-opacity-25 mb-4">
+                        <div class="row g-3 align-items-center">
+                            <div class="col-md-6 text-center border-end border-secondary border-opacity-25">
+                                <div class="text-muted small">Consistency Score</div>
+                                <div class="h1 mb-0 fw-bold {% if consistency_check.consistency_score >= 80 %}text-success{% elif consistency_check.consistency_score >= 60 %}text-warning{% else %}text-danger{% endif %}">
+                                    {{ consistency_check.consistency_score }}<span class="fs-4 text-muted">/100</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6 text-center">
+                                <div class="text-muted small">Verification Status</div>
+                                <div class="h4 mb-0 fw-bold {% if consistency_check.status == 'CONSISTENT' %}text-success{% else %}text-warning{% endif %}">
+                                    {{ consistency_check.status|cut:"_" }}
+                                </div>
+                                <div class="small text-muted">Completed</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Explainable Checklist Items -->
+                    <div class="mb-4">
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fa-solid fa-clipboard-check text-info me-2"></i>Verification Signals
+                        </h6>
+                        <div class="row g-2">
+                            {% for item in consistency_check.checklist %}
+                            <div class="col-sm-6">
+                                <div class="p-3 rounded bg-black bg-opacity-50 border {% if '✓' in item %}border-success border-opacity-30 text-success{% else %}border-warning border-opacity-40 text-warning{% endif %} fw-semibold small">
+                                    {{ item }}
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="col-12 text-muted small">No checklist generated.</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Detailed Field-by-Field Table -->
+                    {% if consistency_check.field_details %}
+                    <div>
+                        <h6 class="text-white fw-bold mb-3">
+                            <i class="fa-solid fa-table text-primary me-2"></i>Field Comparison Breakdown
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table table-dark table-sm table-bordered border-secondary border-opacity-25 mb-0 small">
+                                <thead>
+                                    <tr class="text-muted">
+                                        <th>Field</th>
+                                        <th>Document Extracted Value</th>
+                                        <th>Reference / Claimed Value</th>
+                                        <th>Match Status</th>
+                                        <th>Similarity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for fname, fval in consistency_check.field_details.items %}
+                                    <tr>
+                                        <td class="text-capitalize text-info fw-semibold">{{ fname|cut:"_" }}</td>
+                                        <td class="font-monospace text-white">{{ fval.extracted|default:"--" }}</td>
+                                        <td class="font-monospace text-white">{{ fval.claimed|default:"--" }}</td>
+                                        <td>
+                                            {% if fval.match %}
+                                            <span class="badge bg-success bg-opacity-25 text-success border border-success">Matched</span>
+                                            {% else %}
+                                            <span class="badge bg-warning bg-opacity-25 text-warning border border-warning">Mismatch</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="font-monospace text-muted">
+                                            {% if fval.score is not None %}{% widthratio fval.score 1 100 %}%{% else %}--{% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    {% else %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fa-solid fa-scale-balanced fa-3x mb-3 text-secondary"></i>
+                        <h5>No Consistency Check Recorded</h5>
+                        <p class="small">Click "Run Consistency Check" below to compare cross-document fields.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side Panel -->
+        <div class="col-lg-4">
+            <div class="card bg-dark border-secondary border-opacity-25 shadow-lg mb-4">
+                <div class="card-header bg-black bg-opacity-40 border-secondary border-opacity-25 py-3">
+                    <h5 class="mb-0 text-white fw-bold">
+                        <i class="fa-solid fa-sliders text-info me-2"></i>Actions & Analysis
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <button class="btn btn-cyber-primary w-100 mb-3 py-2" id="runConsistencyBtn" onclick="triggerConsistencyCheck('{{ document.verification_id }}')">
+                        <i class="fa-solid fa-rotate me-2"></i> Run Consistency Check
+                    </button>
+
+                    <a href="{% url 'verification:detail' document.verification_id %}" class="btn btn-cyber-secondary w-100 py-2 mb-3">
+                        <i class="fa-solid fa-arrow-left me-2"></i> Document Report
+                    </a>
+
+                    <div class="p-3 rounded bg-black bg-opacity-50 border border-secondary border-opacity-25 text-muted small">
+                        <div class="text-white fw-semibold mb-1">
+                            <i class="fa-solid fa-shield-halved text-info me-1"></i> Verification Principle
+                        </div>
+                        String matching and address normalization account for minor transcription errors. Inconsistencies route to manual review.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+async function triggerConsistencyCheck(verificationId) {
+    const btn = document.getElementById('runConsistencyBtn');
+    if (!btn) return;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i> Comparing Fields...';
+
+    try {
+        const response = await fetch(`/api/verify/consistency/${verificationId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            }
+        });
+        const data = await response.json();
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            alert('Error running consistency check: ' + (data.error || 'Server error'));
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Consistency Check';
+        }
+    } catch (err) {
+        alert('Network error: ' + err.message);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-rotate me-2"></i> Run Consistency Check';
+    }
+}
+</script>
+{% endblock %}

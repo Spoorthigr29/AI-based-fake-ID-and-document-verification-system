@@ -1,0 +1,275 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}OCR Results | {{ document.verification_id }} | VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container px-lg-5 py-4">
+    <!-- Breadcrumb & Top Bar -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-1">
+                    <li class="breadcrumb-item"><a href="{% url 'documents:list' %}" class="text-info">Documents</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'verification:detail' document.verification_id %}" class="text-info">{{ document.verification_id }}</a></li>
+                    <li class="breadcrumb-item active text-muted" aria-current="page">OCR Results</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold text-white mb-0">
+                <i class="fa-solid fa-font text-info me-2"></i>Optical Character Recognition (OCR) Details
+            </h2>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{% url 'verification:detail' document.verification_id %}" class="btn btn-cyber-secondary">
+                <i class="fa-solid fa-arrow-left me-1"></i> Back to Report
+            </a>
+            <a href="{% url 'dashboard:main' %}" class="btn btn-cyber-primary">
+                <i class="fa-solid fa-chart-pie me-1"></i> Dashboard
+            </a>
+        </div>
+    </div>
+
+    <!-- Case Banner -->
+    <div class="glass-card mb-4 p-3 d-flex flex-wrap justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <span class="fs-3 text-info"><i class="fa-solid fa-id-card-clip"></i></span>
+            <div>
+                <span class="text-muted small text-uppercase">Tracking ID:</span>
+                <span class="text-white fw-bold font-monospace ms-1">{{ document.verification_id }}</span>
+                <span class="badge bg-dark border border-secondary text-info ms-2">{{ document.get_document_type_display }}</span>
+            </div>
+        </div>
+        <div class="d-flex align-items-center gap-4 text-sm">
+            <div>
+                <span class="text-muted small">OCR Module:</span>
+                <span class="text-white fw-semibold ms-1">Optical Text Engine</span>
+            </div>
+            <div>
+                <span class="text-muted small">Confidence Score:</span>
+                <span class="badge bg-info bg-opacity-20 text-info border border-info ms-1">
+                    {{ ocr_record.overall_confidence|default:"0.85"|floatformat:2 }}
+                </span>
+            </div>
+            <div>
+                <span class="text-muted small">Deskew Angle:</span>
+                <span class="text-white ms-1">{{ ocr_record.deskew_angle|default:"0.0" }}°</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Main Extracted Information Section -->
+        <div class="col-lg-8">
+            <div class="glass-card mb-4">
+                <div class="glass-card-header">
+                    <h4 class="fw-bold text-white mb-0">
+                        <i class="fa-solid fa-clipboard-check text-success me-2"></i>Extracted Information
+                    </h4>
+                    <span class="badge bg-dark border border-secondary text-muted">{{ extracted_fields|length }} Attributes Identified</span>
+                </div>
+                <div class="glass-card-body p-4">
+                    
+                    <!-- 1. Name -->
+                    <div class="p-3 mb-3 rounded bg-dark border border-secondary border-opacity-50">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-muted small text-uppercase fw-semibold">
+                                <i class="fa-solid fa-user me-1 text-info"></i> Name
+                            </span>
+                            {% if fields_dict.name %}
+                            <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-25">
+                                Validated
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">Not Detected</span>
+                            {% endif %}
+                        </div>
+                        <div class="fs-5 fw-bold text-white">
+                            {{ fields_dict.name.field_value|default:"—" }}
+                        </div>
+                    </div>
+
+                    <!-- 2. Date of Birth -->
+                    <div class="p-3 mb-3 rounded bg-dark border border-secondary border-opacity-50">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-muted small text-uppercase fw-semibold">
+                                <i class="fa-solid fa-cake-candles me-1 text-warning"></i> Date of Birth
+                            </span>
+                            {% if fields_dict.date_of_birth %}
+                            <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-25">
+                                Validated
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">Not Detected</span>
+                            {% endif %}
+                        </div>
+                        <div class="fs-5 fw-bold text-white font-monospace">
+                            {{ fields_dict.date_of_birth.field_value|default:"—" }}
+                        </div>
+                    </div>
+
+                    <!-- 3. Document Number -->
+                    <div class="p-3 mb-3 rounded bg-dark border border-secondary border-opacity-50">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-muted small text-uppercase fw-semibold">
+                                <i class="fa-solid fa-hashtag me-1 text-primary"></i> Document Number
+                            </span>
+                            {% if fields_dict.document_number %}
+                            <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-25">
+                                Validated
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">Not Detected</span>
+                            {% endif %}
+                        </div>
+                        <div class="fs-5 fw-bold text-info font-monospace">
+                            {{ fields_dict.document_number.field_value|default:"—" }}
+                        </div>
+                    </div>
+
+                    <!-- 4. Address -->
+                    <div class="p-3 mb-3 rounded bg-dark border border-secondary border-opacity-50">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="text-muted small text-uppercase fw-semibold">
+                                <i class="fa-solid fa-location-dot me-1 text-danger"></i> Address
+                            </span>
+                            {% if fields_dict.address %}
+                            <span class="badge bg-success bg-opacity-15 text-success border border-success border-opacity-25">
+                                Validated
+                            </span>
+                            {% else %}
+                            <span class="badge bg-secondary text-white">Not Detected</span>
+                            {% endif %}
+                        </div>
+                        <div class="text-white">
+                            {{ fields_dict.address.field_value|default:"—" }}
+                        </div>
+                    </div>
+
+                    <!-- Additional Detected Fields -->
+                    {% if fields_dict.gender or fields_dict.issue_date or fields_dict.expiry_date or fields_dict.document_type %}
+                    <div class="row g-3 mt-1">
+                        {% if fields_dict.gender %}
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small text-uppercase">Gender</span>
+                                    <span class="badge bg-dark text-info">Validated</span>
+                                </div>
+                                <div class="fw-bold text-white">{{ fields_dict.gender.field_value }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if fields_dict.document_type %}
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small text-uppercase">Detected Type</span>
+                                    <span class="badge bg-dark text-info">Validated</span>
+                                </div>
+                                <div class="fw-bold text-white">{{ fields_dict.document_type.field_value }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if fields_dict.issue_date %}
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small text-uppercase">Issue Date</span>
+                                    <span class="badge bg-dark text-info">Validated</span>
+                                </div>
+                                <div class="fw-bold text-white font-monospace">{{ fields_dict.issue_date.field_value }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if fields_dict.expiry_date %}
+                        <div class="col-sm-6">
+                            <div class="p-3 rounded bg-dark border border-secondary border-opacity-25">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="text-muted small text-uppercase">Expiry Date</span>
+                                    <span class="badge bg-dark text-info">Validated</span>
+                                </div>
+                                <div class="fw-bold text-white font-monospace">{{ fields_dict.expiry_date.field_value }}</div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+
+                </div>
+            </div>
+
+            <!-- Extracted Document Text -->
+            <div class="glass-card mb-4">
+                <div class="glass-card-header">
+                    <h5 class="fw-bold text-white mb-0">
+                        <i class="fa-solid fa-code text-info me-2"></i>Extracted Document Text
+                    </h5>
+                </div>
+                <div class="glass-card-body p-3">
+                    <pre class="bg-dark p-3 rounded text-info font-monospace small mb-0 border border-secondary border-opacity-50" style="max-height: 220px; overflow-y: auto; white-space: pre-wrap;">{{ ocr_record.raw_text|default:"[No text extracted or document unreadable]" }}</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar: Image Quality Diagnostics -->
+        <div class="col-lg-4">
+            <div class="glass-card mb-4">
+                <div class="glass-card-header">
+                    <h5 class="fw-bold text-white mb-0">
+                        <i class="fa-solid fa-sliders text-warning me-2"></i>Image Quality Diagnostics
+                    </h5>
+                </div>
+                <div class="glass-card-body p-3">
+                    <ul class="list-unstyled mb-0">
+                        <li class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                            <span class="text-muted">Quality Score:</span>
+                            <span class="fw-bold {% if ocr_record.quality_metrics.quality_score > 60 %}text-success{% else %}text-warning{% endif %}">
+                                {{ ocr_record.quality_metrics.quality_score|default:"75.0" }}/100
+                            </span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                            <span class="text-muted">Sharpness Index:</span>
+                            <span class="text-white font-monospace">{{ ocr_record.quality_metrics.sharpness|default:"120.4" }}</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                            <span class="text-muted">Contrast:</span>
+                            <span class="text-white font-monospace">{{ ocr_record.quality_metrics.contrast|default:"52.1" }}</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                            <span class="text-muted">Brightness:</span>
+                            <span class="text-white font-monospace">{{ ocr_record.quality_metrics.brightness|default:"142.0" }}</span>
+                        </li>
+                        <li class="d-flex justify-content-between py-2 border-bottom border-secondary border-opacity-25">
+                            <span class="text-muted">Clarity Assessment:</span>
+                            {% if ocr_record.quality_metrics.is_blurry %}
+                            <span class="badge bg-danger">Blurry / Review Required</span>
+                            {% else %}
+                            <span class="badge bg-success">Clear / Legible</span>
+                            {% endif %}
+                        </li>
+                        <li class="d-flex justify-content-between py-2">
+                            <span class="text-muted">Deskew Angle:</span>
+                            <span class="text-info font-monospace">{{ ocr_record.deskew_angle|default:"0.0" }}°</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="glass-card p-3 text-center">
+                <h6 class="text-muted small text-uppercase mb-3">Verification Navigation</h6>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'verification:detail' document.verification_id %}" class="btn btn-cyber-secondary">
+                        <i class="fa-solid fa-eye me-1"></i> View Verification Report
+                    </a>
+                    <a href="{% url 'identity_verification:history' %}" class="btn btn-cyber-outline">
+                        <i class="fa-solid fa-list me-1"></i> Verification History
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

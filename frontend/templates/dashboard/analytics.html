@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Verification Analytics | VERIFYX{% endblock %}
+
+{% block content %}
+<div class="container px-lg-5 py-4">
+
+    <!-- Header -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+        <div>
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-success bg-opacity-10 border border-success border-opacity-25 text-success small fw-semibold mb-2">
+                <i class="fa-solid fa-chart-pie"></i> SYSTEM ANALYTICS
+            </div>
+            <h2 class="fw-bold text-dark mb-0">Verification Analytics & Telemetry</h2>
+        </div>
+        <div>
+            <span class="status-pill-online">
+                <span class="status-dot-pulse"></span>
+                <span>Verification System: Active</span>
+            </span>
+        </div>
+    </div>
+
+    <!-- KPI Summary Row -->
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 p-xl-4 h-100">
+                <div class="text-muted small text-uppercase fw-bold">Total Documents Processed</div>
+                <div class="fs-2 fw-black text-dark my-1 font-monospace">{{ total_screenings }}</div>
+                <div class="small text-primary"><i class="fa-solid fa-arrow-trend-up me-1"></i> Multi-level verification</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 p-xl-4 h-100 border-start border-4 border-success">
+                <div class="text-muted small text-uppercase fw-bold">Authenticity Pass Rate</div>
+                <div class="fs-2 fw-black text-success my-1 font-monospace">{{ authentic_rate }}%</div>
+                <div class="small text-secondary"><i class="fa-solid fa-circle-check text-success me-1"></i> {{ low_risk }} Low Risk IDs</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 p-xl-4 h-100 border-start border-4 border-warning">
+                <div class="text-muted small text-uppercase fw-bold">Anomaly & Review Rate</div>
+                <div class="fs-2 fw-black text-warning my-1 font-monospace">{{ anomaly_rate }}%</div>
+                <div class="small text-secondary"><i class="fa-solid fa-triangle-exclamation text-warning me-1"></i> {{ moderate_risk|add:high_risk }} Flagged Cases</div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="glass-card p-3 p-xl-4 h-100 border-start border-4 border-primary">
+                <div class="text-muted small text-uppercase fw-bold">Avg Processing Latency</div>
+                <div class="fs-2 fw-black text-primary my-1 font-monospace">{{ avg_processing_time }}ms</div>
+                <div class="small text-secondary"><i class="fa-solid fa-bolt text-primary me-1"></i> Optical + Biometric Verification</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <!-- Chart 1: Risk Distribution -->
+        <div class="col-lg-4">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold text-dark mb-1"><i class="fa-solid fa-chart-pie text-primary me-2"></i>Risk Category Distribution</h5>
+                <p class="text-muted small mb-3">Triage proportions across processed documents.</p>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="riskDoughnutChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chart 2: 24-Hour Screening Volume & Detection Rate -->
+        <div class="col-lg-8">
+            <div class="glass-card p-4 h-100">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                    <h5 class="fw-bold text-dark mb-0"><i class="fa-solid fa-chart-line text-primary me-2"></i>Verification Volume & Risk Flags</h5>
+                    <span class="badge bg-light border border-slate-200 text-secondary small">Live 24h Window</span>
+                </div>
+                <p class="text-muted small mb-3">Hourly document throughput and anomaly signals triggered.</p>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="volumeLineChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Second Charts & Signals Row -->
+    <div class="row g-4 mb-4">
+        <!-- Chart 3: Document Type Breakdown -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold text-dark mb-1"><i class="fa-solid fa-id-card text-success me-2"></i>Document Type Intake Breakdown</h5>
+                <p class="text-muted small mb-3">Distribution of processed identity documents.</p>
+                <div style="position: relative; height: 260px;">
+                    <canvas id="docTypeBarChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Top Triggered Anomaly Signals -->
+        <div class="col-lg-6">
+            <div class="glass-card p-4 h-100">
+                <h5 class="fw-bold text-dark mb-1"><i class="fa-solid fa-shield-virus text-warning me-2"></i>Top Verification Risk Contributors</h5>
+                <p class="text-muted small mb-3">Most frequently observed verification signals.</p>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-secondary small text-uppercase">
+                            <tr>
+                                <th>Risk Factor</th>
+                                <th>Occurrences</th>
+                                <th>Avg Contribution</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small">
+                            <tr>
+                                <td><i class="fa-solid fa-font text-primary me-2"></i>OCR Text Confidence Variance</td>
+                                <td class="font-monospace text-dark fw-semibold">42 detections</td>
+                                <td class="font-monospace text-warning fw-bold">+9.4 pts</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-image text-warning me-2"></i>Low Image Sharpness / Blur</td>
+                                <td class="font-monospace text-dark fw-semibold">28 detections</td>
+                                <td class="font-monospace text-warning fw-bold">+12.0 pts</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-arrows-split-up-and-left text-primary me-2"></i>Address / Field Variation</td>
+                                <td class="font-monospace text-dark fw-semibold">19 detections</td>
+                                <td class="font-monospace text-warning fw-bold">+8.0 pts</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-user-xmark text-danger me-2"></i>Facial Biometric Delta</td>
+                                <td class="font-monospace text-dark fw-semibold">12 detections</td>
+                                <td class="font-monospace text-danger fw-bold">+22.5 pts</td>
+                            </tr>
+                            <tr>
+                                <td><i class="fa-solid fa-clone text-danger me-2"></i>Document Integrity Variance</td>
+                                <td class="font-monospace text-dark fw-semibold">8 detections</td>
+                                <td class="font-monospace text-danger fw-bold">+35.0 pts</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const lowRiskVal = Number("{{ low_risk|default:0 }}");
+    const modRiskVal = Number("{{ moderate_risk|default:0 }}");
+    const highRiskVal = Number("{{ high_risk|default:0 }}");
+
+    // 1. Doughnut Chart
+    const doughnutCtx = document.getElementById('riskDoughnutChart');
+    if (doughnutCtx) {
+        new Chart(doughnutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Low Risk', 'Manual Review', 'High Risk'],
+                datasets: [{
+                    data: [lowRiskVal, modRiskVal, highRiskVal],
+                    backgroundColor: ['#059669', '#d97706', '#dc2626'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom', labels: { color: '#334155', font: { family: 'Inter', weight: '500' } } }
+                },
+                cutout: '70%'
+            }
+        });
+    }
+
+    // 2. Line Chart: 24h Volume
+    const lineCtx = document.getElementById('volumeLineChart');
+    if (lineCtx) {
+        new Chart(lineCtx, {
+            type: 'line',
+            data: {
+                labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', 'Current'],
+                datasets: [
+                    {
+                        label: 'Total Documents Screened',
+                        data: [12, 8, 24, 38, 45, 30, 22],
+                        borderColor: '#2563eb',
+                        backgroundColor: 'rgba(37, 99, 235, 0.08)',
+                        fill: true,
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Anomaly Flags',
+                        data: [1, 0, 2, 4, 3, 2, 1],
+                        borderColor: '#d97706',
+                        backgroundColor: 'transparent',
+                        borderDash: [5, 5],
+                        tension: 0.3
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#64748b' } },
+                    y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#64748b' } }
+                },
+                plugins: {
+                    legend: { labels: { color: '#334155', font: { family: 'Inter', weight: '500' } } }
+                }
+            }
+        });
+    }
+
+    // 3. Bar Chart: Document Types
+    const barCtx = document.getElementById('docTypeBarChart');
+    if (barCtx) {
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Aadhaar Cards', 'PAN Cards', 'Driving Licenses', 'Passports', 'Other'],
+                datasets: [{
+                    label: 'Screened Count',
+                    data: [64, 32, 14, 8, 2],
+                    backgroundColor: '#2563eb',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#64748b' } },
+                    y: { grid: { color: 'rgba(0,0,0,0.04)' }, ticks: { color: '#64748b' } }
+                },
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

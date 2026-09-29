@@ -1,0 +1,332 @@
+[
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_1",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "Aadhaar Card Official Verification Knowledge Reference",
+    "text": "# Aadhaar Card Official Verification Knowledge Reference\n\n**Document Type:** AADHAAR\n**Issuing Authority:** Unique Identification Authority of India (UIDAI), Government of India\n**Statutory Framework:** Aadhaar (Targeted Delivery of Financial and Other Subsidies, Benefits and Services) Act, 2016\n\n---",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_1",
+      "section_title": "Aadhaar Card Official Verification Knowledge Reference",
+      "word_count": 37
+    }
+  },
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_2",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "1. Expected Document Fields and Structure",
+    "text": "## 1. Expected Document Fields and Structure\n\nAn authentic Aadhaar document contains the following standard demographic and biometric indicators:\n1. **12-Digit Aadhaar Identification Number:**\n   - Formatted as `XXXX XXXX XXXX` (3 groups of 4 digits separated by spaces).\n   - The number complies with the mathematical **Verhoeff Checksum Algorithm** to prevent transcription errors.\n   - For privacy/security, masked Aadhaar documents display only the last 4 digits (e.g., `XXXX XXXX 1234`).\n2. **Cardholder Full Name:**\n   - Printed prominently in English and often in the regional language of issuance.\n3. **Date of Birth / Year of Birth:**\n   - Standard format: `DOB: DD/MM/YYYY` or `Year of Birth: YYYY`.\n4. **Gender:**\n   - Values: `Male` / `Female` / `Transgender` (or regional language equivalent).\n5. **Residential Address:**\n   - Full residential address with mandatory 6-digit Indian Postal PIN code.\n6. **Government Insignia:**\n   - National Emblem of India (Lion Capital of Ashoka) and UIDAI corporate emblem with official tagline.\n\n---",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_2",
+      "section_title": "1. Expected Document Fields and Structure",
+      "word_count": 150
+    }
+  },
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_3",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "2. Document Layouts and Forms",
+    "text": "## 2. Document Layouts and Forms\n\nAadhaar documents are officially issued and distributed in four genuine formats:\n1. **Standard Aadhaar Letter:**\n   - Two-part physical sheet. The upper section contains greeting and enrollment details; the lower section contains the detachable identity card with portrait photo, demographic text, and a prominent QR code.\n2. **e-Aadhaar (Digital PDF):**\n   - Digitally signed PDF with Adobe cryptographic signature verification checkmark and embedded high-density QR code.\n3. **PVC Aadhaar Card:**\n   - Durable wallet-sized plastic card with holographic security overlay, ghost image, micro-text, and secure QR code.\n4. **mAadhaar Mobile Card:**\n   - Digital profile displayed inside the official UIDAI mobile application with dynamic QR representation.\n\n---",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_3",
+      "section_title": "2. Document Layouts and Forms",
+      "word_count": 109
+    }
+  },
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_4",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "3. QR Code & Digital Signature Specifications",
+    "text": "## 3. QR Code & Digital Signature Specifications\n\nThe QR code is the primary machine-verifiable security feature on an Aadhaar card:\n1. **Secure QR Code (V2 Specification):**\n   - High-density binary QR code containing gzip-compressed, base64-encoded structured demographic data.\n   - Digitally signed using UIDAI's 2048-bit RSA / ECC private key.\n   - Contains an embedded JPEG image of the cardholder's biometric portrait (approx. 5,000\u20138,000 bytes) along with Name, DOB, Gender, and Address.\n2. **Standard QR Code (V1 Legacy Specification):**\n   - Contains plain or XML-formatted demographic text without an embedded photograph.\n3. **Offline e-KYC Verification:**\n   - Verification involves decoding the QR code, verifying the cryptographic digital signature against the official UIDAI public key certificate, and comparing the decoded data against printed text.\n\n---",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_4",
+      "section_title": "3. QR Code & Digital Signature Specifications",
+      "word_count": 120
+    }
+  },
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_5",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "4. Official Verification Procedures",
+    "text": "## 4. Official Verification Procedures\n\nA complete verification analysis evaluates four distinct dimensions:\n1. **Format Validation:** Verify that the 12-digit number satisfies the Verhoeff algorithm.\n2. **Cryptographic Validation:** Verify the digital signature of the Secure QR code.\n3. **QR / OCR Cross-Validation:** Cross-check the Name, DOB, Gender, and Address extracted from the QR code against the OCR text read from the physical card. A match confirms that printed text was not altered.\n4. **Biometric Face Verification:** Compare the applicant's live selfie against the photograph extracted from the Secure QR code or cropped from the document surface.\n\n---",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_5",
+      "section_title": "4. Official Verification Procedures",
+      "word_count": 97
+    }
+  },
+  {
+    "chunk_id": "aadhaar_verification_reference_chunk_6",
+    "doc_id": "aadhaar_verification_reference",
+    "doc_type": "AADHAAR",
+    "section_title": "5. Common Inconsistencies & Diagnostic Guidelines",
+    "text": "## 5. Common Inconsistencies & Diagnostic Guidelines\n\nWhen evaluating potential anomalies, observe these critical forensic distinctions:\n1. **Image Degradation vs. Tampering:**\n   - Tilted angles, low camera resolution, glare on laminated cards, or WhatsApp image compression can cause OCR text extraction drops or false ELA noise.\n   - Low OCR confidence or missing QR codes due to cropping MUST be treated as an image quality issue requiring manual review, NOT as conclusive proof of fraud.\n2. **Face Extraction Failures:**\n   - If the document photo is heavily compressed, dark, or laminated with glare, facial landmarks may not be detected. This is a biometric capture limitation, not evidence of a forged identity.\n3. **Splicing and Digital Modification:**\n   - Only flag high tampering risk when there is localized font mismatch, inconsistent character alignment, sharp Error Level Analysis (ELA) discontinuities around numbers, or direct contradictions between QR payload and printed text.",
+    "metadata": {
+      "filename": "aadhaar_verification_reference.md",
+      "doc_type": "AADHAAR",
+      "title": "Aadhaar Card Official Verification Knowledge Reference",
+      "chunk_id": "aadhaar_verification_reference_chunk_6",
+      "section_title": "5. Common Inconsistencies & Diagnostic Guidelines",
+      "word_count": 145
+    }
+  },
+  {
+    "chunk_id": "driving_license_reference_chunk_1",
+    "doc_id": "driving_license_reference",
+    "doc_type": "DRIVING_LICENSE",
+    "section_title": "Driving License Official Verification Knowledge Reference",
+    "text": "# Driving License Official Verification Knowledge Reference\n\n**Document Type:** DRIVING_LICENSE\n**Issuing Authority:** Ministry of Road Transport and Highways (MoRTH), Regional Transport Offices (RTO), State Governments of India\n**Statutory Framework:** Motor Vehicles Act, 1988 & Central Motor Vehicles Rules, 1989\n\n---",
+    "metadata": {
+      "filename": "driving_license_reference.md",
+      "doc_type": "DRIVING_LICENSE",
+      "title": "Driving License Official Verification Knowledge Reference",
+      "chunk_id": "driving_license_reference_chunk_1",
+      "section_title": "Driving License Official Verification Knowledge Reference",
+      "word_count": 40
+    }
+  },
+  {
+    "chunk_id": "driving_license_reference_chunk_2",
+    "doc_id": "driving_license_reference",
+    "doc_type": "DRIVING_LICENSE",
+    "section_title": "1. Expected Document Fields and Structure",
+    "text": "## 1. Expected Document Fields and Structure\n\nAn authentic Indian Driving License contains:\n1. **Driving License Number:**\n   - Standardized 16-character format: `SS-RRYYYYNNNNNNN` or `SSRR YYYYNNNNNNN`\n   - Breakdown:\n     - `SS`: 2-letter State/UT code (e.g. `DL`, `MH`, `KA`, `TN`, `UP`).\n     - `RR`: 2-digit RTO office code.\n     - `YYYY`: 4-digit Year of initial issuance.\n     - `NNNNNNN`: 7-digit sequential unique number.\n2. **Cardholder Demographics:**\n   - Full Name, Son/Daughter/Spouse Name, Date of Birth (`DD-MM-YYYY`), Blood Group, Residential Address.\n3. **Vehicle Class Authorizations:**\n   - Authorized vehicle categories (e.g., `MCWG` - Motorcycle with Gear, `LMV` - Light Motor Vehicle, `TRANS` - Transport).\n4. **Validity Periods:**\n   - Non-Transport validity (up to age 50 or 20 years from issue), Transport validity (standard 5-year or 3-year Hazardous validity).\n5. **Physical & Digital Indicators:**\n   - Embedded Smart Chip or QR code, photograph, signature, state emblem.\n\n---",
+    "metadata": {
+      "filename": "driving_license_reference.md",
+      "doc_type": "DRIVING_LICENSE",
+      "title": "Driving License Official Verification Knowledge Reference",
+      "chunk_id": "driving_license_reference_chunk_2",
+      "section_title": "1. Expected Document Fields and Structure",
+      "word_count": 135
+    }
+  },
+  {
+    "chunk_id": "driving_license_reference_chunk_3",
+    "doc_id": "driving_license_reference",
+    "doc_type": "DRIVING_LICENSE",
+    "section_title": "2. Official Verification Procedures & Guidelines",
+    "text": "## 2. Official Verification Procedures & Guidelines\n\n1. **Format Validation:** Verify that the DL number adheres to the SARATHI nationwide format.\n2. **Age & Class Consistency:** Validate that the cardholder was at least 18 years old on the issuance date for LMV/MCWG.\n3. **SARATHI / Parivahan Database Lookup:** In production environments, query the national Parivahan portal.",
+    "metadata": {
+      "filename": "driving_license_reference.md",
+      "doc_type": "DRIVING_LICENSE",
+      "title": "Driving License Official Verification Knowledge Reference",
+      "chunk_id": "driving_license_reference_chunk_3",
+      "section_title": "2. Official Verification Procedures & Guidelines",
+      "word_count": 56
+    }
+  },
+  {
+    "chunk_id": "general_verification_guidelines_chunk_1",
+    "doc_id": "general_verification_guidelines",
+    "doc_type": "GENERAL / MULTI-DOCUMENT",
+    "section_title": "Institutional Identity Document Screening & Risk Assessment Guidelines",
+    "text": "# Institutional Identity Document Screening & Risk Assessment Guidelines\n\n**Document Type:** GENERAL / MULTI-DOCUMENT\n**Purpose:** Principles of Responsible Forensic Analysis & Explainable AI Verification\n\n---",
+    "metadata": {
+      "filename": "general_verification_guidelines.md",
+      "doc_type": "GENERAL / MULTI-DOCUMENT",
+      "title": "Institutional Identity Document Screening & Risk Assessment Guidelines",
+      "chunk_id": "general_verification_guidelines_chunk_1",
+      "section_title": "Institutional Identity Document Screening & Risk Assessment Guidelines",
+      "word_count": 25
+    }
+  },
+  {
+    "chunk_id": "general_verification_guidelines_chunk_2",
+    "doc_id": "general_verification_guidelines",
+    "doc_type": "GENERAL / MULTI-DOCUMENT",
+    "section_title": "1. Core Principles of Evidence-Based Verification",
+    "text": "## 1. Core Principles of Evidence-Based Verification\n\n1. **Multi-Signal Convergence:**\n   - No single technical signal (e.g., OCR confidence drop, missing QR code, or biometric threshold variance) is independently sufficient to brand a document as counterfeit or fraudulent.\n   - Genuine fraud requires converging positive evidence: deliberate font alteration, content splicing, conflicting checksums, or direct contradiction with cryptographically signed payloads.\n2. **Distinguishing Acquisition Artifacts from Tampering:**\n   - **Physical & Acquisition Artifacts:** Camera shake, poor ambient lighting, flash glare, lamination scratches, perspective distortion, and lossy compression (e.g., WhatsApp downsampling) degrade algorithmic metrics but do NOT indicate forgery.\n   - **Forensic Tampering:** Sharp ELA compression boundaries, copy-paste cloning, mismatched background patterns, unnatural font weights, and character misalignments.\n3. **Template-Aware Biometrics:**\n   - Identity documents without photographs (e.g. non-photo PAN templates, corporate tax cards) must not be penalized for absent facial biometrics.\n4. **Proportional Risk Scoring & Manual Review:**\n   - **Low Risk (0\u201330):** Document conforms to expected structure, format, and biometric rules.\n   - **Manual Review (31\u201370):** Ambiguity due to image quality, unreadable QR, or borderline biometric match. Manual officer inspection recommended.\n   - **High Risk (71\u2013100):** Converging forensic anomalies, direct cryptographic mismatch, or explicit digital tampering.",
+    "metadata": {
+      "filename": "general_verification_guidelines.md",
+      "doc_type": "GENERAL / MULTI-DOCUMENT",
+      "title": "Institutional Identity Document Screening & Risk Assessment Guidelines",
+      "chunk_id": "general_verification_guidelines_chunk_2",
+      "section_title": "1. Core Principles of Evidence-Based Verification",
+      "word_count": 188
+    }
+  },
+  {
+    "chunk_id": "pan_verification_reference_chunk_1",
+    "doc_id": "pan_verification_reference",
+    "doc_type": "PAN",
+    "section_title": "Permanent Account Number (PAN) Card Official Verification Reference",
+    "text": "# Permanent Account Number (PAN) Card Official Verification Reference\n\n**Document Type:** PAN\n**Issuing Authority:** Income Tax Department, Ministry of Finance, Government of India (managed through Protean / NSDL e-Gov and UTIITSL)\n**Statutory Framework:** Income Tax Act, 1961 (Section 139A)\n\n---",
+    "metadata": {
+      "filename": "pan_verification_reference.md",
+      "doc_type": "PAN",
+      "title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "chunk_id": "pan_verification_reference_chunk_1",
+      "section_title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "word_count": 40
+    }
+  },
+  {
+    "chunk_id": "pan_verification_reference_chunk_2",
+    "doc_id": "pan_verification_reference",
+    "doc_type": "PAN",
+    "section_title": "1. Expected Document Fields and Structure",
+    "text": "## 1. Expected Document Fields and Structure\n\nAn authentic PAN card contains the following standard demographic and institutional fields:\n1. **Permanent Account Number (PAN):**\n   - A unique 10-character alphanumeric identifier formatted strictly as `AAAAA9999A`.\n   - **Structure breakdown:**\n     - **Characters 1 to 3 (AAA):** Alphabetic series from `AAA` to `ZZZ`.\n     - **Character 4 (P):** Status / Entity category of the PAN holder:\n       - `P` = Individual (Person)\n       - `C` = Company\n       - `H` = Hindu Undivided Family (HUF)\n       - `F` = Partnership Firm / Limited Liability Partnership (LLP)\n       - `A` = Association of Persons (AOP)\n       - `T` = Trust\n       - `B` = Body of Individuals (BOI)\n       - `L` = Local Authority\n       - `J` = Artificial Juridical Person\n       - `G` = Government Agency\n     - **Character 5 (A):** First character of the cardholder's surname (last name) for individuals, or legal entity name for non-individuals.\n     - **Characters 6 to 9 (9999):** Sequential 4-digit number from `0001` to `9999`.\n     - **Character 10 (A):** Alphabetic check digit.\n2. **Cardholder Full Name:**\n   - Printed in English capital letters below the national header.\n3. **Father's Name / Parent's Name:**\n   - Name of the cardholder's father (or mother if selected during application).\n4. **Date of Birth (DOB) / Date of Incorporation:**\n   - Formatted strictly as `DD/MM/YYYY`.\n5. **Cardholder Signature:**\n   - Physical or digitally uploaded specimen signature.\n6. **Government Insignia & Hologram:**\n   - \"INCOME TAX DEPARTMENT / \u0906\u092f\u0915\u0930 \u0935\u093f\u092d\u093e\u0917\" and \"GOVT. OF INDIA / \u092d\u093e\u0930\u0924 \u0938\u0930\u0915\u093e\u0930\".\n   - Official national hologram and security guilloche wavy line background patterns.\n\n---",
+    "metadata": {
+      "filename": "pan_verification_reference.md",
+      "doc_type": "PAN",
+      "title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "chunk_id": "pan_verification_reference_chunk_2",
+      "section_title": "1. Expected Document Fields and Structure",
+      "word_count": 248
+    }
+  },
+  {
+    "chunk_id": "pan_verification_reference_chunk_3",
+    "doc_id": "pan_verification_reference",
+    "doc_type": "PAN",
+    "section_title": "2. Card Templates & Variants",
+    "text": "## 2. Card Templates & Variants\n\nPAN cards exist in multiple officially valid physical and electronic versions:\n1. **Older Physical PAN Cards (Pre-2017):**\n   - Traditional plastic cards containing hologram, text, signature, and photo. Some business/entity PAN cards omit photographs entirely.\n2. **Newer Enhanced Quick Response (QR) PAN Cards (Post-2017):**\n   - Includes an enhanced QR code containing cardholder details, photograph, and digital signature for offline verification.\n3. **e-PAN (Instant Digital PAN):**\n   - Issued electronically via Aadhaar e-KYC. Features QR code, photo, and digital signature.\n4. **Non-Photo PAN Templates:**\n   - PAN cards issued to corporations, firms, trusts, or certain older individual issuances do NOT contain a photograph. Face verification MUST be marked as NOT APPLICABLE with zero risk penalty.\n\n---",
+    "metadata": {
+      "filename": "pan_verification_reference.md",
+      "doc_type": "PAN",
+      "title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "chunk_id": "pan_verification_reference_chunk_3",
+      "section_title": "2. Card Templates & Variants",
+      "word_count": 118
+    }
+  },
+  {
+    "chunk_id": "pan_verification_reference_chunk_4",
+    "doc_id": "pan_verification_reference",
+    "doc_type": "PAN",
+    "section_title": "3. Official Verification Procedures",
+    "text": "## 3. Official Verification Procedures\n\nA thorough PAN verification process includes:\n1. **PAN Format & Syntax Regex Validation:**\n   - Match against standard regular expression `^[A-Z]{5}[0-9]{4}[A-Z]{1}$`.\n2. **Entity & Surname Consistency Check:**\n   - Cross-check the 4th character against the applicant type (e.g. `P` for individual applicants).\n   - Cross-check the 5th character against the initial letter of the extracted surname.\n3. **DOB & Date Format Consistency:**\n   - Validate that the Date of Birth represents a plausible past date and is consistent with other applicant records.\n4. **Income Tax Department / NSDL Database Verification:**\n   - In production systems, query the NSDL / UTIITSL PAN verification API to confirm active status.\n\n---",
+    "metadata": {
+      "filename": "pan_verification_reference.md",
+      "doc_type": "PAN",
+      "title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "chunk_id": "pan_verification_reference_chunk_4",
+      "section_title": "3. Official Verification Procedures",
+      "word_count": 108
+    }
+  },
+  {
+    "chunk_id": "pan_verification_reference_chunk_5",
+    "doc_id": "pan_verification_reference",
+    "doc_type": "PAN",
+    "section_title": "4. Common Inconsistencies & Diagnostic Guidelines",
+    "text": "## 4. Common Inconsistencies & Diagnostic Guidelines\n\nWhen analyzing PAN document captures:\n1. **Missing Photo on Non-Photo Templates:**\n   - If the card does not have a photo area or is a non-individual/older card, absence of a photo is completely expected and legitimate. It must not increase the risk score.\n2. **Wear, Tear, and Reflection on Hologram:**\n   - The metallic hologram frequently reflects camera flash, causing localized bright spots or high Error Level Analysis (ELA) scores. This is a common physical capture artifact, not digital tampering.\n3. **Signs of Actual Forgery:**\n   - Inconsistent fonts, mismatched letter spacing in the 10-digit PAN string, altered birth dates with visible background smudging, or 4th character mismatch with person status.",
+    "metadata": {
+      "filename": "pan_verification_reference.md",
+      "doc_type": "PAN",
+      "title": "Permanent Account Number (PAN) Card Official Verification Reference",
+      "chunk_id": "pan_verification_reference_chunk_5",
+      "section_title": "4. Common Inconsistencies & Diagnostic Guidelines",
+      "word_count": 115
+    }
+  },
+  {
+    "chunk_id": "passport_verification_reference_chunk_1",
+    "doc_id": "passport_verification_reference",
+    "doc_type": "PASSPORT",
+    "section_title": "Indian Passport Official Verification Knowledge Reference",
+    "text": "# Indian Passport Official Verification Knowledge Reference\n\n**Document Type:** PASSPORT\n**Issuing Authority:** Ministry of External Affairs (MEA), Consular, Passport and Visa (CPV) Division, Government of India\n**Statutory Framework:** Passports Act, 1967 & ICAO Document 9303 (Machine Readable Travel Documents)\n\n---",
+    "metadata": {
+      "filename": "passport_verification_reference.md",
+      "doc_type": "PASSPORT",
+      "title": "Indian Passport Official Verification Knowledge Reference",
+      "chunk_id": "passport_verification_reference_chunk_1",
+      "section_title": "Indian Passport Official Verification Knowledge Reference",
+      "word_count": 40
+    }
+  },
+  {
+    "chunk_id": "passport_verification_reference_chunk_2",
+    "doc_id": "passport_verification_reference",
+    "doc_type": "PASSPORT",
+    "section_title": "1. Expected Document Fields and Structure",
+    "text": "## 1. Expected Document Fields and Structure\n\nAn authentic Indian Passport biodata page contains:\n1. **Passport Number:**\n   - Starts with one uppercase letter (e.g., `A`, `B`, `J`, `K`, `L`, `M`, `P`, `R`, `S`, `T`, `U`, `V`, `Z`) followed by 7 digits (e.g., `A1234567`).\n2. **Document Type & Country Code:**\n   - Type `P` (Ordinary Passport), Country Code `IND`.\n3. **Cardholder Demographics:**\n   - Given Names, Surname, Nationality (`INDIAN`), Sex (`M`, `F`, `X`), Date of Birth (`DD/MM/YYYY`), Place of Birth.\n4. **Dates & Issuing Authority:**\n   - Date of Issue, Date of Expiry (standard 10-year validity for adults, 5-year for minors), Place of Issue.\n5. **Machine Readable Zone (MRZ):**\n   - 2 lines of 44 alphanumeric characters each adhering to ICAO 9303 Type 3 standard.\n   - Contains passport number, check digits, birth date, expiry date, and holder name.\n\n---",
+    "metadata": {
+      "filename": "passport_verification_reference.md",
+      "doc_type": "PASSPORT",
+      "title": "Indian Passport Official Verification Knowledge Reference",
+      "chunk_id": "passport_verification_reference_chunk_2",
+      "section_title": "1. Expected Document Fields and Structure",
+      "word_count": 134
+    }
+  },
+  {
+    "chunk_id": "passport_verification_reference_chunk_3",
+    "doc_id": "passport_verification_reference",
+    "doc_type": "PASSPORT",
+    "section_title": "2. Official Verification Procedures",
+    "text": "## 2. Official Verification Procedures\n\n1. **MRZ Format & Mathematical Checksum Verification:**\n   - Calculate and verify check digits for passport number, date of birth, date of expiry, and composite checksum.\n2. **Visual & MRZ Cross-Consistency:**\n   - Compare name, passport number, DOB, sex, and expiry between the upper visual inspection zone (VIZ) and the lower MRZ.\n3. **Security Features & Biometrics:**\n   - Ghost photograph, optical security guilloche patterns, intaglio printing texture.",
+    "metadata": {
+      "filename": "passport_verification_reference.md",
+      "doc_type": "PASSPORT",
+      "title": "Indian Passport Official Verification Knowledge Reference",
+      "chunk_id": "passport_verification_reference_chunk_3",
+      "section_title": "2. Official Verification Procedures",
+      "word_count": 70
+    }
+  },
+  {
+    "chunk_id": "voter_id_reference_chunk_1",
+    "doc_id": "voter_id_reference",
+    "doc_type": "VOTER_ID",
+    "section_title": "Voter ID (EPIC) Official Verification Knowledge Reference",
+    "text": "# Voter ID (EPIC) Official Verification Knowledge Reference\n\n**Document Type:** VOTER_ID\n**Issuing Authority:** Election Commission of India (ECI)\n**Statutory Framework:** Representation of the People Act, 1950 & 1951\n\n---",
+    "metadata": {
+      "filename": "voter_id_reference.md",
+      "doc_type": "VOTER_ID",
+      "title": "Voter ID (EPIC) Official Verification Knowledge Reference",
+      "chunk_id": "voter_id_reference_chunk_1",
+      "section_title": "Voter ID (EPIC) Official Verification Knowledge Reference",
+      "word_count": 29
+    }
+  },
+  {
+    "chunk_id": "voter_id_reference_chunk_2",
+    "doc_id": "voter_id_reference",
+    "doc_type": "VOTER_ID",
+    "section_title": "1. Expected Document Fields and Structure",
+    "text": "## 1. Expected Document Fields and Structure\n\nAn authentic Elector's Photo Identity Card (EPIC) contains:\n1. **EPIC Number:**\n   - 10-character alphanumeric string: 3 uppercase English letters (Functional Area / Assembly constituency code) followed by 7 numeric digits (e.g., `ABC1234567` or `XYZ7654321`).\n2. **Elector Demographics:**\n   - Elector's Full Name, Father's / Husband's Name, Gender (`MALE` / `FEMALE`), Date of Birth or Age on qualifying date.\n3. **Assembly & Polling Details:**\n   - Assembly Constituency Number & Name, Part Number & Name, Polling Station location.\n4. **Security Features:**\n   - ECI Hologram seal, barcode / QR code on newer e-EPIC variants, security text border.\n\n---",
+    "metadata": {
+      "filename": "voter_id_reference.md",
+      "doc_type": "VOTER_ID",
+      "title": "Voter ID (EPIC) Official Verification Knowledge Reference",
+      "chunk_id": "voter_id_reference_chunk_2",
+      "section_title": "1. Expected Document Fields and Structure",
+      "word_count": 101
+    }
+  },
+  {
+    "chunk_id": "voter_id_reference_chunk_3",
+    "doc_id": "voter_id_reference",
+    "doc_type": "VOTER_ID",
+    "section_title": "2. Common Inconsistencies & Verification Guidelines",
+    "text": "## 2. Common Inconsistencies & Verification Guidelines\n\n1. **Older Paper/Laminated EPIC vs. e-EPIC:**\n   - Older black-and-white or laminated cards may feature lower print resolution or lack QR codes. This is normal for historic issuances and should not trigger fraud flags.\n   - Newer color PVC and e-EPIC cards feature high-resolution photographs and secure digital QR codes.",
+    "metadata": {
+      "filename": "voter_id_reference.md",
+      "doc_type": "VOTER_ID",
+      "title": "Voter ID (EPIC) Official Verification Knowledge Reference",
+      "chunk_id": "voter_id_reference_chunk_3",
+      "section_title": "2. Common Inconsistencies & Verification Guidelines",
+      "word_count": 55
+    }
+  }
+]

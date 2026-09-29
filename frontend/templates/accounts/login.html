@@ -1,0 +1,263 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sign In | VerifyX AI - Secure Document Verification System{% endblock %}
+
+{% block extra_head %}
+<style>
+    /* Sign In Page Custom Theme Extensions */
+    .auth-wrapper {
+        min-height: calc(100vh - 180px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 2.5rem 1rem;
+        position: relative;
+    }
+
+    .auth-bg-glow {
+        position: absolute;
+        width: 550px;
+        height: 550px;
+        background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 75%);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 0;
+        filter: blur(40px);
+    }
+
+    .auth-card {
+        background: rgba(15, 23, 42, 0.85);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(56, 189, 248, 0.22);
+        border-radius: 1.25rem;
+        box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.6), 0 0 35px -5px rgba(14, 165, 233, 0.15);
+        position: relative;
+        z-index: 1;
+        width: 100%;
+        max-width: 460px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .auth-card:hover {
+        border-color: rgba(56, 189, 248, 0.35);
+        box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.7), 0 0 45px -5px rgba(14, 165, 233, 0.25);
+    }
+
+    .auth-input-group .input-group-text {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-right: none;
+        color: #38bdf8;
+        padding-left: 1.1rem;
+        padding-right: 1.1rem;
+    }
+
+    .auth-input-group .form-control {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        color: #f8fafc;
+        font-size: 0.95rem;
+        padding: 0.75rem 1rem;
+        transition: all 0.2s ease;
+    }
+
+    .auth-input-group .form-control::placeholder {
+        color: #64748b;
+    }
+
+    .auth-input-group .form-control:focus {
+        background: rgba(30, 41, 59, 0.95);
+        border-color: #38bdf8;
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+        color: #ffffff;
+    }
+
+    .auth-input-group .form-control:focus + .btn-toggle-pwd,
+    .auth-input-group .input-group-text:has(+ .form-control:focus) {
+        border-color: #38bdf8;
+    }
+
+    .btn-toggle-pwd {
+        background: rgba(30, 41, 59, 0.7);
+        border: 1px solid rgba(148, 163, 184, 0.25);
+        border-left: none;
+        color: #94a3b8;
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-toggle-pwd:hover {
+        color: #38bdf8;
+        background: rgba(30, 41, 59, 0.9);
+    }
+
+    .form-check-input {
+        background-color: rgba(30, 41, 59, 0.8);
+        border-color: rgba(148, 163, 184, 0.3);
+        cursor: pointer;
+    }
+
+    .form-check-input:checked {
+        background-color: #0284c7;
+        border-color: #38bdf8;
+    }
+
+    .form-check-input:focus {
+        box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+    <!-- Ambient glowing backdrop effect -->
+    <div class="auth-bg-glow"></div>
+
+    <div class="auth-card p-4 p-sm-5">
+        <!-- Header Section -->
+        <div class="text-center mb-4">
+            <div class="d-inline-flex align-items-center justify-content-center p-3 rounded-circle bg-info bg-opacity-10 border border-info border-opacity-25 mb-3 shadow-sm" style="width: 58px; height: 58px;">
+                <i class="fa-solid fa-shield-halved text-info fs-3"></i>
+            </div>
+            <h2 class="fw-bold text-white mb-1 tracking-wide">VerifyX AI</h2>
+            <p class="text-info text-opacity-75 small fw-semibold text-uppercase tracking-wider mb-0">Secure Document Verification System</p>
+        </div>
+
+        <!-- Notification / Error Messages -->
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show border-0 rounded-3 py-2 px-3 small d-flex align-items-center mb-4 shadow-sm" role="alert" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3) !important; color: #fca5a5;">
+                <i class="fa-solid fa-circle-exclamation me-2 fs-6"></i>
+                <div class="flex-grow-1 fw-medium">{{ message }}</div>
+                <button type="button" class="btn-close btn-close-white small shadow-none" data-bs-dismiss="alert" aria-label="Close" style="padding: 0.75rem;"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+
+        <!-- Sign In Form -->
+        <form method="POST" action="{% url 'accounts:login' %}" id="signInForm">
+            {% csrf_token %}
+            {% if next %}
+                <input type="hidden" name="next" value="{{ next }}">
+            {% endif %}
+
+            <!-- Field 1: Email / Username -->
+            <div class="mb-3">
+                <label for="identifierInput" class="form-label text-light small fw-semibold text-opacity-90 mb-1">
+                    Email / Username
+                </label>
+                <div class="input-group auth-input-group">
+                    <span class="input-group-text" id="email-addon">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </span>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        id="identifierInput" 
+                        name="username" 
+                        placeholder="admin@verifyx.ai or username" 
+                        value="{{ username|default:'' }}" 
+                        required 
+                        autocomplete="username"
+                        aria-describedby="email-addon"
+                    >
+                </div>
+            </div>
+
+            <!-- Field 2: Password with Show/Hide Toggle -->
+            <div class="mb-3">
+                <div class="d-flex align-items-center justify-content-between mb-1">
+                    <label for="passwordInput" class="form-label text-light small fw-semibold text-opacity-90 mb-0">
+                        Password
+                    </label>
+                    <a href="{% url 'accounts:forgot_password' %}" class="small text-info text-decoration-none fw-medium hover-underline" style="font-size: 0.82rem;">
+                        Forgot Password?
+                    </a>
+                </div>
+                <div class="input-group auth-input-group">
+                    <span class="input-group-text" id="pwd-addon">
+                        <i class="fa-solid fa-lock"></i>
+                    </span>
+                    <input 
+                        type="password" 
+                        class="form-control" 
+                        id="passwordInput" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        required 
+                        autocomplete="current-password"
+                        aria-describedby="pwd-addon"
+                    >
+                    <button 
+                        class="btn-toggle-pwd" 
+                        type="button" 
+                        id="togglePasswordBtn" 
+                        title="Show or hide password"
+                        aria-label="Toggle password visibility"
+                    >
+                        <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Options: Remember Me Checkbox -->
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="remember_me" id="rememberMeCheck" value="true" checked>
+                    <label class="form-check-label small text-secondary fw-medium cursor-pointer" for="rememberMeCheck">
+                        Remember Me
+                    </label>
+                </div>
+            </div>
+
+            <!-- Sign In Submit Button -->
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-cyber-primary py-2 fw-semibold text-uppercase tracking-wider shadow" id="submitSignInBtn">
+                    <i class="fa-solid fa-right-to-bracket me-2"></i> Sign In
+                </button>
+            </div>
+        </form>
+
+        <!-- Footer Link: Create Account -->
+        <div class="text-center pt-2 border-top border-secondary border-opacity-25">
+            <p class="small text-secondary mb-0">
+                Don't have an account? 
+                <a href="{% url 'accounts:register' %}" class="text-info text-decoration-none fw-semibold hover-underline ms-1">
+                    Create Account
+                </a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const passwordInput = document.getElementById('passwordInput');
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+        // Show / Hide Password Toggle
+        if (togglePasswordBtn && passwordInput) {
+            togglePasswordBtn.addEventListener('click', function() {
+                const isPassword = passwordInput.getAttribute('type') === 'password';
+                passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                
+                if (isPassword) {
+                    togglePasswordIcon.classList.remove('fa-eye');
+                    togglePasswordIcon.classList.add('fa-eye-slash');
+                    togglePasswordBtn.setAttribute('title', 'Hide password');
+                } else {
+                    togglePasswordIcon.classList.remove('fa-eye-slash');
+                    togglePasswordIcon.classList.add('fa-eye');
+                    togglePasswordBtn.setAttribute('title', 'Show password');
+                }
+            });
+        }
+    });
+</script>
+{% endblock %}
