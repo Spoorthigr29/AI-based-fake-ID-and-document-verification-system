@@ -42,3 +42,7 @@ ml_models/weights/
 .coverage
 htmlcov/
 .pytest_cache/
+
+# Netlify
+.netlify/
+

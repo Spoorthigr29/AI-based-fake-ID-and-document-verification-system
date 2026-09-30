@@ -39,6 +39,7 @@ INSTALLED_APPS = [
 
     # Third-party Apps
     'rest_framework',
+    'corsheaders',
 
     # VERIFYX Custom Modular Apps
     'accounts.apps.AccountsConfig',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -177,3 +179,19 @@ MANUAL_REVIEW_RISK_THRESHOLD = float(os.getenv('MANUAL_REVIEW_RISK_THRESHOLD', '
 FACE_MATCH_THRESHOLD = float(os.getenv('FACE_MATCH_THRESHOLD', '0.70'))
 FACE_MANUAL_REVIEW_THRESHOLD = float(os.getenv('FACE_MANUAL_REVIEW_THRESHOLD', '0.50'))
 FACE_MIN_QUALITY_SCORE = float(os.getenv('FACE_MIN_QUALITY_SCORE', '40.0'))
+
+# Cross-Origin Resource Sharing (CORS) for Netlify & External Frontends
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+

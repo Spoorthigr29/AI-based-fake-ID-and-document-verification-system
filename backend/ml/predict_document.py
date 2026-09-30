@@ -21,8 +21,8 @@ except ImportError:
         from .preprocess import preprocess_document_image
         from .train_document_model import DocumentAuthenticityNet
     except ImportError:
-        from preprocess import preprocess_document_image
-        from train_document_model import DocumentAuthenticityNet
+        from .preprocess import preprocess_document_image
+        from .train_document_model import DocumentAuthenticityNet
 
 
 class DocumentAuthenticityPredictor:
