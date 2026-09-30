@@ -1,11 +1,9 @@
 [build]
   publish = "frontend"
+  command = "echo 'VerifyX Frontend Static Build Ready'"
 
-[[redirects]]
-  from = "/api/*"
-  to = "http://127.0.0.1:8000/api/:splat"
-  status = 200
-  force = false
+[build.environment]
+  NODE_VERSION = "20"
 
 [[redirects]]
   from = "/*"
