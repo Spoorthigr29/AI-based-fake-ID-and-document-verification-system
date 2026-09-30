@@ -56,6 +56,9 @@
                         <a class="nav-link" href="#screening">Screening Modules</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link" href="#how-it-works">How It Works</a>
                     </li>
                     <li class="nav-item">
@@ -66,11 +69,15 @@
                     </li>
                 </ul>
 
-                <!-- Right Side: Backend Connection Pill & Start CTA -->
+                <!-- Right Side: Backend Connection Pill & Sign In / Start CTA -->
                 <div class="d-flex align-items-center gap-2 gap-sm-3">
                     <div id="backendStatusPill" class="status-pill-online d-inline-flex cursor-pointer" role="button" data-bs-toggle="modal" data-bs-target="#backendConfigModal" title="Click to configure backend API connection">
                         <span id="backendStatusText"><span class="status-dot-pulse"></span> Checking Engine...</span>
                     </div>
+
+                    <a href="signin.html" class="btn btn-sm btn-outline-info">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Sign In
+                    </a>
 
                     <a href="#verification" class="btn btn-sm btn-cyber-primary">
                         <i class="fa-solid fa-bolt me-1"></i> Start Verification
@@ -85,9 +92,9 @@
          ====================================================================== -->
     <div class="modal fade" id="backendConfigModal" tabindex="-1" aria-labelledby="backendConfigModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content glass-card border-secondary border-opacity-30" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); color: #f8fafc;">
+            <div class="modal-content card-white border-secondary border-opacity-30" style="background: rgba(15, 23, 42, 0.95); backdrop-filter: blur(16px); color: #f8fafc;">
                 <div class="modal-header border-bottom border-secondary border-opacity-30">
-                    <h5 class="modal-title d-flex align-items-center gap-2" id="backendConfigModalLabel">
+                    <h5 class="modal-title d-flex align-items-center gap-2 text-white" id="backendConfigModalLabel">
                         <i class="fa-solid fa-server text-info"></i> Backend Engine Connection
                     </h5>
                     <button type="button" class="btn-close btn-close-white shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -156,8 +163,8 @@
                         <a href="#verification" class="btn-cyan-hero">
                             <i class="fa-solid fa-arrow-down me-2"></i> Start Verification
                         </a>
-                        <a href="#how-it-works" class="btn-hero-outline">
-                            See How It Works <i class="fa-solid fa-arrow-right ms-2 text-info"></i>
+                        <a href="history.html" class="btn-hero-outline">
+                            <i class="fa-solid fa-clock-rotate-left me-1 text-info"></i> View History
                         </a>
                     </div>
 
@@ -208,7 +215,7 @@
                                 <div class="col-4 text-center">
                                     <div class="bg-dark bg-opacity-50 border border-secondary border-opacity-40 rounded-3 p-3 text-secondary d-flex flex-column align-items-center justify-content-center" style="height: 100px;">
                                         <i class="fa-solid fa-user-tie fs-1" style="color: #08BFEA;"></i>
-                                        <span class="extra-small text-info mt-1">Biometric 94%</span>
+                                        <span class="extra-small text-info mt-1">Biometric 98%</span>
                                     </div>
                                 </div>
                                 <div class="col-8">
@@ -279,36 +286,36 @@
                     <div class="row g-4 mb-4">
                         <!-- CARD 1: SELECT DOCUMENT TYPE -->
                         <div class="col-lg-4">
-                            <div class="step-card">
-                                <div class="step-number">01</div>
-                                <div class="step-title">SELECT DOCUMENT TYPE</div>
+                            <div class="step-card-white">
+                                <div class="step-number-blue">01</div>
+                                <div class="step-title-navy">SELECT DOCUMENT TYPE</div>
                                 
-                                <p class="text-secondary small mb-3">
-                                    Choose the government-issued document type you are submitting.
+                                <p class="text-slate-secondary small mb-3">
+                                    Choose the document type you are submitting for automated verification.
                                 </p>
 
                                 <div class="mb-3">
-                                    <label for="documentTypeSelect" class="form-label text-muted small fw-bold mb-1">
+                                    <label for="documentTypeSelect" class="form-label text-slate-secondary small fw-bold mb-1">
                                         Document Category
                                     </label>
-                                    <select id="documentTypeSelect" name="document_type" class="form-select form-select-lg border-slate-300 shadow-sm fs-6" required>
+                                    <select id="documentTypeSelect" name="document_type" class="form-select form-select-lg border-slate-300 shadow-sm fs-6" style="background-color: #f8fbfe;" required>
                                         <option value="sample_aadhaar" selected>Aadhaar Card</option>
                                         <option value="sample_pan">PAN Card</option>
                                         <option value="sample_passport">Passport Data Page</option>
                                         <option value="sample_driving_license">Driving License</option>
                                         <option value="sample_voter_id">Voter ID (EPIC)</option>
-                                        <option value="other">Other Government Issued ID</option>
+                                        <option value="other">Other Identity Document</option>
                                     </select>
                                 </div>
 
                                 <!-- Dynamic Notice -->
                                 <div class="mt-auto">
                                     <div id="docRequirementNotice" class="p-3 rounded-3 bg-light border border-slate-200 small">
-                                        <div class="fw-bold text-dark mb-1">
+                                        <div class="fw-bold text-navy mb-1">
                                             <i class="fa-solid fa-circle-check text-success me-1"></i>
                                             <span id="noticeHeader">Aadhaar Card</span>
                                         </div>
-                                        <div id="noticeBody" class="text-secondary">
+                                        <div id="noticeBody" class="text-slate-secondary">
                                             ✓ Secure QR digest decoding<br>
                                             ✓ Live selfie facial comparison<br>
                                             ✓ 12-Stage multi-modal risk scoring
@@ -320,20 +327,20 @@
 
                         <!-- CARD 2: UPLOAD DOCUMENT -->
                         <div class="col-lg-4">
-                            <div class="step-card">
-                                <div class="step-number">02</div>
-                                <div class="step-title">UPLOAD DOCUMENT</div>
+                            <div class="step-card-white">
+                                <div class="step-number-blue">02</div>
+                                <div class="step-title-navy">UPLOAD DOCUMENT</div>
 
-                                <p class="text-secondary small mb-3">
-                                    Submit a clear digital image or PDF scan of the identity document.
+                                <p class="text-slate-secondary small mb-3">
+                                    Submit a clear image of the identity document for OCR and document integrity checks.
                                 </p>
 
                                 <!-- Dropzone -->
-                                <div class="upload-dropzone mb-3" id="docDropzone" onclick="document.getElementById('docFileInput').click()">
-                                    <i class="fa-solid fa-cloud-arrow-up upload-icon"></i>
-                                    <div class="fw-bold text-dark small mb-1">Click to upload or drag & drop</div>
-                                    <div class="text-muted extra-small mb-2">Supported: PDF • JPG • PNG • WEBP</div>
-                                    <span class="badge bg-light text-secondary border border-slate-200">Max size: 10 MB</span>
+                                <div class="upload-dropzone-custom mb-3" id="docDropzone" onclick="document.getElementById('docFileInput').click()">
+                                    <i class="fa-solid fa-cloud-arrow-up fs-1 mb-2" style="color: #0875E1;"></i>
+                                    <div class="fw-bold text-navy small mb-1">Click to upload or drag & drop</div>
+                                    <div class="text-slate-secondary extra-small mb-2">Supported formats: PDF • JPG • PNG • WEBP</div>
+                                    <span class="badge bg-white text-secondary border border-slate-200 shadow-sm">Max size: 10 MB</span>
                                     <div id="fileSelectedFeedback" class="mt-2 text-primary fw-bold small d-none">
                                         <i class="fa-solid fa-file-image me-1" id="fileFeedbackIcon"></i> <span id="fileNameLabel"></span>
                                     </div>
@@ -341,7 +348,7 @@
 
                                 <input type="file" id="docFileInput" name="original_file" class="d-none" accept=".pdf,.jpg,.jpeg,.png,.webp,application/pdf,image/*">
 
-                                <div class="text-muted extra-small mt-auto">
+                                <div class="text-slate-secondary extra-small mt-auto">
                                     <i class="fa-solid fa-lock text-primary me-1"></i> Document processed securely in-memory.
                                 </div>
                             </div>
@@ -349,20 +356,20 @@
 
                         <!-- CARD 3: LIVE SELFIE VERIFICATION -->
                         <div class="col-lg-4">
-                            <div class="step-card">
-                                <div class="step-number">03</div>
-                                <div class="step-title">LIVE SELFIE VERIFICATION</div>
+                            <div class="step-card-white">
+                                <div class="step-number-blue">03</div>
+                                <div class="step-title-navy">LIVE SELFIE VERIFICATION</div>
 
                                 <div id="selfieActivePanel">
-                                    <p class="text-secondary small mb-3">
-                                        Capture a live camera photo for 1:1 biometric facial comparison.
+                                    <p class="text-slate-secondary small mb-3">
+                                        Capture a live photo using your camera for identity verification.
                                     </p>
 
-                                    <div class="camera-preview-box mb-3" id="cameraPreviewContainer">
-                                        <div id="cameraPlaceholder" class="text-center p-3 text-muted">
-                                            <i class="fa-solid fa-camera fs-2 text-primary mb-2"></i>
-                                            <div class="small fw-semibold">Camera is idle</div>
-                                            <div class="extra-small">Click below to open webcam</div>
+                                    <div class="camera-preview-box-custom mb-3" id="cameraPreviewContainer">
+                                        <div id="cameraPlaceholder" class="text-center p-3 text-secondary">
+                                            <i class="fa-solid fa-camera fs-2 mb-2" style="color: #0875E1;"></i>
+                                            <div class="small fw-semibold text-navy">Camera is idle</div>
+                                            <div class="extra-small text-slate-secondary">Click below to open webcam</div>
                                         </div>
                                         <video id="webcamVideo" class="d-none" autoplay playsinline></video>
                                         <canvas id="selfieCanvas" class="d-none"></canvas>
@@ -388,12 +395,16 @@
                                     </div>
 
                                     <div id="selfieStatusInfo" class="mt-3 p-2 px-3 rounded-2 bg-light border border-slate-200 extra-small d-none">
-                                        <div class="d-flex justify-content-between text-dark mb-1">
+                                        <div class="d-flex justify-content-between text-navy mb-1">
+                                            <span>Document Photo:</span>
+                                            <span class="text-success fw-bold">✓ Detected</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between text-navy mb-1">
                                             <span>Live Selfie:</span>
                                             <span class="text-success fw-bold">✓ Captured</span>
                                         </div>
-                                        <div class="d-flex justify-content-between text-dark">
-                                            <span>Biometric Comparison:</span>
+                                        <div class="d-flex justify-content-between text-navy">
+                                            <span>Face Verification:</span>
                                             <span class="text-primary fw-bold">Ready</span>
                                         </div>
                                     </div>
@@ -407,37 +418,37 @@
                     <!-- Action CTA Button -->
                     <div class="text-center my-4">
                         <button type="submit" class="btn btn-cyber-primary px-5 py-3 fs-5 shadow" id="startVerificationBtn">
-                            <i class="fa-solid fa-bolt me-2"></i> Start Verification <i class="fa-solid fa-arrow-right ms-2"></i>
+                            <i class="fa-solid fa-shield-check me-2"></i> Start Verification <i class="fa-solid fa-arrow-right ms-2"></i>
                         </button>
                     </div>
                 </form>
 
                 <!-- Quick 1-Click Evaluation Scenarios -->
-                <div class="glass-card p-4 mx-auto text-start shadow-sm mt-4" style="max-width: 960px;">
+                <div class="card-white p-4 mx-auto text-start shadow-sm mt-4" style="max-width: 960px;">
                     <div class="d-flex flex-wrap align-items-center justify-content-between mb-2 gap-2">
                         <span class="text-primary fw-bold small text-uppercase">
-                            <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Instant Demo Evaluation Scenarios:
+                            <i class="fa-solid fa-wand-magic-sparkles me-1"></i> Quick Evaluation Scenarios:
                         </span>
-                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">1-Click Launch</span>
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">Instant Execution</span>
                     </div>
-                    <p class="text-muted small mb-3">
-                        Test immediate multi-level screening across pre-configured forensic edge-cases:
+                    <p class="text-slate-secondary small mb-3">
+                        Run immediate multi-level screening on pre-configured verification test scenarios:
                     </p>
                     <div class="d-flex flex-wrap gap-2">
                         <button type="button" class="btn btn-sm btn-cyber-primary" data-demo-case="normal">
                             <i class="fa-solid fa-circle-check me-1"></i> 1. Standard Aadhaar (Low Risk)
                         </button>
                         <button type="button" class="btn btn-sm btn-cyber-secondary" data-demo-case="tampered">
-                            <i class="fa-solid fa-shield-virus text-danger me-1"></i> 2. Tampered PAN (High Risk ELA)
+                            <i class="fa-solid fa-shield-virus text-danger me-1"></i> 2. Tampered PAN (Review Required)
                         </button>
                         <button type="button" class="btn btn-sm btn-cyber-secondary" data-demo-case="identity_mismatch">
-                            <i class="fa-solid fa-arrows-split-up-and-left text-warning me-1"></i> 3. Discrepancy (DL)
+                            <i class="fa-solid fa-arrows-split-up-and-left text-warning me-1"></i> 3. Identity Discrepancy (DL)
                         </button>
                         <button type="button" class="btn btn-sm btn-cyber-secondary" data-demo-case="poor_quality">
-                            <i class="fa-solid fa-gauge-simple text-info me-1"></i> 4. Low Quality (Rescan)
+                            <i class="fa-solid fa-gauge-simple text-info me-1"></i> 4. Low Quality Document
                         </button>
                         <button type="button" class="btn btn-sm btn-cyber-secondary" data-demo-case="face_mismatch">
-                            <i class="fa-solid fa-user-slash text-danger me-1"></i> 5. Face Mismatch (Passport)
+                            <i class="fa-solid fa-user-slash text-danger me-1"></i> 5. Facial Discrepancy (Passport)
                         </button>
                     </div>
                 </div>
@@ -449,7 +460,7 @@
              ================================================================== -->
         <section id="screeningProgressSection" class="section-light-blue d-none">
             <div class="container px-lg-5 py-5">
-                <div class="glass-card p-4 p-md-5 mx-auto shadow-lg text-center" style="max-width: 800px; background: rgba(15, 23, 42, 0.95); color: #fff;">
+                <div class="card-white p-4 p-md-5 mx-auto shadow-lg text-center" style="max-width: 800px; background: rgba(15, 23, 42, 0.95); color: #fff;">
                     <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-info bg-opacity-10 border border-info border-opacity-25 text-info small fw-semibold mb-3">
                         <i class="fa-solid fa-microchip fa-spin"></i> MULTI-STAGE FORENSIC SCREENING PIPELINE
                     </div>
@@ -480,12 +491,15 @@
                         <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-25 text-primary small fw-semibold mb-2">
                             <i class="fa-solid fa-shield-halved"></i> VERIFYX INSTITUTIONAL AUDIT DOSSIER
                         </div>
-                        <h2 class="fw-bold text-dark mb-0">Verification Screening Result</h2>
+                        <h2 class="heading-section-dark fs-2 mb-0">Verification Screening Result</h2>
                     </div>
                     <div class="d-flex gap-2">
                         <button type="button" class="btn btn-sm btn-cyber-primary" id="newVerificationBtn">
                             <i class="fa-solid fa-cloud-arrow-up me-1"></i> New Verification
                         </button>
+                        <a href="history.html" class="btn btn-sm btn-cyber-secondary">
+                            <i class="fa-solid fa-clock-rotate-left me-1"></i> History Log
+                        </a>
                         <button type="button" class="btn btn-sm btn-cyber-outline" onclick="window.print()">
                             <i class="fa-solid fa-print me-1"></i> Export Report
                         </button>
@@ -493,38 +507,38 @@
                 </div>
 
                 <!-- Main Dossier Header Strip -->
-                <div class="glass-card mb-4 p-4">
+                <div class="card-white mb-4 p-4">
                     <div class="row align-items-center gy-3">
                         <div class="col-md-6">
-                            <div class="text-muted small text-uppercase fw-bold mb-1">Institutional Verification Tracking ID</div>
-                            <div class="fs-2 fw-black text-primary font-monospace" id="reportVerId">VX-2026-00177</div>
-                            <div class="text-secondary small mt-1">
+                            <div class="text-slate-secondary small text-uppercase fw-bold mb-1">Institutional Verification Tracking ID</div>
+                            <div class="fs-2 fw-black text-primary font-monospace" id="reportVerId">VX-2026-000178</div>
+                            <div class="text-slate-secondary small mt-1">
                                 Status: <span class="badge badge-risk-low">Screening Completed</span>
                             </div>
                         </div>
                         <div class="col-md-6 text-md-end">
-                            <div class="text-muted small text-uppercase fw-bold mb-1">Classified Document Type</div>
+                            <div class="text-slate-secondary small text-uppercase fw-bold mb-1">Classified Document Type</div>
                             <div class="d-inline-flex align-items-center gap-2 px-3 py-2 rounded bg-light border border-slate-200">
                                 <i class="fa-solid fa-id-card text-primary fs-5"></i>
-                                <span class="fs-5 fw-bold text-dark" id="reportDocType">Aadhaar Card</span>
+                                <span class="fs-5 fw-bold text-navy" id="reportDocType">PAN Card</span>
                             </div>
                         </div>
                     </div>
 
                     <!-- Metadata summary strip -->
-                    <div class="mt-3 pt-3 border-top border-slate-200 d-flex flex-wrap align-items-center justify-content-between gap-3 text-secondary small">
-                        <div><i class="fa-solid fa-file-image text-primary me-1"></i> File: <strong class="text-dark" id="reportFileName">sample_document.pdf</strong></div>
-                        <div>Size: <strong class="text-dark" id="reportFileSize">420 KB</strong></div>
+                    <div class="mt-3 pt-3 border-top border-slate-200 d-flex flex-wrap align-items-center justify-content-between gap-3 text-slate-secondary small">
+                        <div><i class="fa-solid fa-file-image text-primary me-1"></i> File: <strong class="text-navy" id="reportFileName">sample_pan.jpg</strong></div>
+                        <div>Size: <strong class="text-navy" id="reportFileSize">420 KB</strong></div>
                         <div>Screening Engine: <strong class="text-info">VerifyX Multi-Modal AI</strong></div>
                     </div>
                 </div>
 
                 <!-- Official Assessment Banner & Risk Gauge -->
-                <div class="glass-card mb-4 p-4 p-md-5 border-top border-4 border-primary">
+                <div class="card-white mb-4 p-4 p-md-5 border-top border-4 border-primary">
                     <div class="d-flex flex-wrap justify-content-between align-items-center pb-3 mb-4 border-bottom border-slate-200 gap-3">
                         <div>
-                            <span class="text-uppercase fw-bold text-muted small">Official Assessment</span>
-                            <h3 class="fw-black text-dark mb-0">VERIFICATION DECISION</h3>
+                            <span class="text-uppercase fw-bold text-slate-secondary small">Official Assessment</span>
+                            <h3 class="fw-black text-navy mb-0">VERIFICATION DECISION</h3>
                         </div>
                         <div id="reportDecisionBadge">
                             <span class="badge px-3 py-2 fs-6 fw-bold badge-risk-low">
@@ -537,11 +551,11 @@
                         <!-- Left: Overall Score -->
                         <div class="col-lg-5 text-center text-lg-start border-lg-end pe-lg-4">
                             <div class="p-4 rounded-3 bg-light border border-slate-200">
-                                <div class="text-muted small text-uppercase fw-bold mb-1">Overall Risk Score</div>
+                                <div class="text-slate-secondary small text-uppercase fw-bold mb-1">Overall Risk Score</div>
                                 <div id="reportRiskScore" class="display-3 fw-black font-monospace text-success">
                                     12 <span class="fs-4 text-muted">/ 100</span>
                                 </div>
-                                <div class="mt-3 text-secondary small" id="reportRiskText">
+                                <div class="mt-3 text-slate-secondary small" id="reportRiskText">
                                     Document exhibits high optical, structural, and biometric integrity. Zero critical anomaly flags detected.
                                 </div>
                             </div>
@@ -549,7 +563,7 @@
 
                         <!-- Right: Multi-Modal Radar Chart -->
                         <div class="col-lg-7 ps-lg-4">
-                            <h5 class="fw-bold text-dark mb-3">
+                            <h5 class="fw-bold text-navy mb-3">
                                 <i class="fa-solid fa-chart-radar text-primary me-2"></i>Multi-Modal Telemetry Radar
                             </h5>
                             <div style="height: 240px; position: relative;">
@@ -563,9 +577,9 @@
                 <div class="row g-4 mb-4">
                     <!-- 1. OCR Extracted Fields -->
                     <div class="col-lg-6">
-                        <div class="glass-card p-4 h-100">
+                        <div class="card-white p-4 h-100">
                             <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="fw-bold text-dark mb-0">
+                                <h5 class="fw-bold text-navy mb-0">
                                     <i class="fa-solid fa-font text-primary me-2"></i>OCR Text & Field Extraction
                                 </h5>
                                 <span class="badge bg-light text-secondary border border-slate-200">EasyOCR</span>
@@ -573,7 +587,7 @@
                             <div class="table-responsive">
                                 <table class="table table-hover align-middle mb-0">
                                     <thead class="table-light">
-                                        <tr class="extra-small text-uppercase text-muted">
+                                        <tr class="extra-small text-uppercase text-slate-secondary">
                                             <th>Field</th>
                                             <th>Extracted Value</th>
                                             <th>Confidence</th>
@@ -591,45 +605,45 @@
                     <div class="col-lg-6">
                         <div class="d-flex flex-column gap-4 h-100">
                             <!-- Facial Biometrics Card -->
-                            <div class="glass-card p-4 flex-grow-1">
+                            <div class="card-white p-4 flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="fw-bold text-dark mb-0">
+                                    <h5 class="fw-bold text-navy mb-0">
                                         <i class="fa-solid fa-user-check text-primary me-2"></i>Biometric Face Verification
                                     </h5>
                                     <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25" id="faceMatchStatus">MATCHED</span>
                                 </div>
                                 <div class="row g-3 align-items-center">
                                     <div class="col-6 text-center border-end">
-                                        <div class="extra-small text-muted text-uppercase fw-bold">Cosine Similarity</div>
-                                        <div class="fw-black fs-4 text-success" id="faceSimilarityVal">94%</div>
-                                        <div class="extra-small text-muted">Threshold: 70%</div>
+                                        <div class="extra-small text-slate-secondary text-uppercase fw-bold">Cosine Similarity</div>
+                                        <div class="fw-black fs-4 text-success" id="faceSimilarityVal">98%</div>
+                                        <div class="extra-small text-slate-secondary">Threshold: 70%</div>
                                     </div>
                                     <div class="col-6 text-center">
-                                        <div class="extra-small text-muted text-uppercase fw-bold">Liveness Detection</div>
+                                        <div class="extra-small text-slate-secondary text-uppercase fw-bold">Liveness Detection</div>
                                         <div class="fw-black fs-4 text-success">PASSED</div>
-                                        <div class="extra-small text-muted">3D Texture Active</div>
+                                        <div class="extra-small text-slate-secondary">3D Texture Active</div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Forensic ELA Tamper Scan Card -->
-                            <div class="glass-card p-4 flex-grow-1">
+                            <div class="card-white p-4 flex-grow-1">
                                 <div class="d-flex justify-content-between align-items-center mb-3">
-                                    <h5 class="fw-bold text-dark mb-0">
+                                    <h5 class="fw-bold text-navy mb-0">
                                         <i class="fa-solid fa-shield-virus text-primary me-2"></i>Forensic Tamper Scan (ELA)
                                     </h5>
                                     <span class="badge bg-light text-secondary border border-slate-200">Error Level Analysis</span>
                                 </div>
                                 <div class="row g-3 align-items-center">
                                     <div class="col-6 text-center border-end">
-                                        <div class="extra-small text-muted text-uppercase fw-bold">Tamper Anomaly Index</div>
+                                        <div class="extra-small text-slate-secondary text-uppercase fw-bold">Tamper Anomaly Index</div>
                                         <div class="fw-black fs-4 text-success" id="tamperScoreVal">4%</div>
-                                        <div class="extra-small text-muted">Normal Range: &lt; 20%</div>
+                                        <div class="extra-small text-slate-secondary">Normal Range: &lt; 20%</div>
                                     </div>
                                     <div class="col-6 text-center">
-                                        <div class="extra-small text-muted text-uppercase fw-bold">Pixel Resampling</div>
+                                        <div class="extra-small text-slate-secondary text-uppercase fw-bold">Pixel Resampling</div>
                                         <div class="fw-black fs-4 text-success">CLEAN</div>
-                                        <div class="extra-small text-muted">Zero Splice Artifacts</div>
+                                        <div class="extra-small text-slate-secondary">Zero Splice Artifacts</div>
                                     </div>
                                 </div>
                             </div>
@@ -650,19 +664,19 @@
                     </div>
                     <h2 class="heading-section-dark fs-1 mb-2">Multi-Modal AI Screening Architecture</h2>
                     <p class="desc-section-slate mx-auto" style="max-width: 650px;">
-                        Six synchronized forensic engines analyze every uploaded identity document across optical, structural, and cryptographic dimensions.
+                        Specialized forensic engines analyze every uploaded identity document across optical, structural, and cryptographic dimensions.
                     </p>
                 </div>
 
                 <div class="row g-4">
                     <!-- Module 1: Optical Quality -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-primary bg-opacity-10 text-primary fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-primary bg-opacity-10 text-primary">
                                 <i class="fa-solid fa-camera-viewfinder"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">Optical Quality & Glare Analyzer</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">Optical Quality & Glare Analyzer</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Evaluates Laplacian blur variance, specular reflection, exposure histograms, and lighting uniformity to prevent fraudulent unreadable scans.
                             </p>
                         </div>
@@ -670,12 +684,12 @@
 
                     <!-- Module 2: OCR Extraction -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-info bg-opacity-10 text-info fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-info bg-opacity-10 text-info">
                                 <i class="fa-solid fa-font"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">Multi-Engine OCR & Layout</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">Multi-Engine OCR & Layout</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Deep neural text recognition engine extracts Name, Date of Birth, Gender, Document Numbers, and Address with character-level confidence scores.
                             </p>
                         </div>
@@ -683,12 +697,12 @@
 
                     <!-- Module 3: Face Biometrics -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-success bg-opacity-10 text-success fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-success bg-opacity-10 text-success">
                                 <i class="fa-solid fa-fingerprint"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">Biometric Facial Verification</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">Biometric Facial Verification</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Performs high-precision facial landmark localization, alignment, cosine similarity calculation, and passive 3D liveness detection against applicant selfies.
                             </p>
                         </div>
@@ -696,12 +710,12 @@
 
                     <!-- Module 4: Tamper Detection -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-danger bg-opacity-10 text-danger fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-danger bg-opacity-10 text-danger">
                                 <i class="fa-solid fa-shield-virus"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">Forensic ELA & Tamper Detection</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">Forensic ELA & Tamper Detection</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Error Level Analysis (ELA) and copy-move forensic algorithms detect digital modifications, font splices, replaced photos, and altered numerical digits.
                             </p>
                         </div>
@@ -709,12 +723,12 @@
 
                     <!-- Module 5: QR & Cryptographic Digest -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-warning bg-opacity-10 text-warning fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-warning bg-opacity-10 text-warning">
                                 <i class="fa-solid fa-qrcode"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">QR Code & Digest Cross-Check</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">QR Code & Digest Cross-Check</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Decodes encoded 2D barcodes (UIDAI Secure QR, Parivahan QR, ICAO MRZ) and cross-validates visual OCR fields against embedded encrypted metadata.
                             </p>
                         </div>
@@ -722,12 +736,12 @@
 
                     <!-- Module 6: Risk Engine & RAG -->
                     <div class="col-md-6 col-lg-4">
-                        <div class="glass-card p-4 h-100">
-                            <div class="d-inline-flex p-3 rounded-3 bg-purple bg-opacity-10 text-primary fs-4 mb-3">
+                        <div class="module-card-white">
+                            <div class="module-icon-box bg-primary bg-opacity-10 text-primary">
                                 <i class="fa-solid fa-brain"></i>
                             </div>
-                            <h5 class="fw-bold text-dark mb-2">Multi-Modal Risk Engine & RAG</h5>
-                            <p class="text-secondary small mb-0">
+                            <h5 class="fw-bold text-navy mb-2">Multi-Modal Risk Engine & RAG</h5>
+                            <p class="text-slate-secondary small mb-0">
                                 Aggregates 24 quantitative risk signals into a deterministic score (0–100) and uses Retrieval-Augmented Generation (RAG) to provide clear human explanations.
                             </p>
                         </div>
@@ -753,31 +767,31 @@
 
                 <div class="row g-4 text-center">
                     <div class="col-md-3">
-                        <div class="p-4 rounded-3 bg-white border border-slate-200 shadow-sm h-100">
+                        <div class="card-white p-4 h-100">
                             <div class="fs-1 fw-black text-primary font-monospace mb-2">01</div>
-                            <h6 class="fw-bold text-dark mb-2">Ingestion & Quality</h6>
-                            <p class="text-secondary extra-small mb-0">Binary stream validation, resolution scaling, and blur/glare classification.</p>
+                            <h6 class="fw-bold text-navy mb-2">Ingestion & Quality</h6>
+                            <p class="text-slate-secondary extra-small mb-0">Binary stream validation, resolution scaling, and blur/glare classification.</p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="p-4 rounded-3 bg-white border border-slate-200 shadow-sm h-100">
+                        <div class="card-white p-4 h-100">
                             <div class="fs-1 fw-black text-primary font-monospace mb-2">02</div>
-                            <h6 class="fw-bold text-dark mb-2">OCR & QR Decoding</h6>
-                            <p class="text-secondary extra-small mb-0">Structured text extraction, layout normalization, and barcode cryptographic decryption.</p>
+                            <h6 class="fw-bold text-navy mb-2">OCR & QR Decoding</h6>
+                            <p class="text-slate-secondary extra-small mb-0">Structured text extraction, layout normalization, and barcode cryptographic decryption.</p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="p-4 rounded-3 bg-white border border-slate-200 shadow-sm h-100">
+                        <div class="card-white p-4 h-100">
                             <div class="fs-1 fw-black text-primary font-monospace mb-2">03</div>
-                            <h6 class="fw-bold text-dark mb-2">Biometrics & Tamper</h6>
-                            <p class="text-secondary extra-small mb-0">Facial embedding matching against live webcam selfie and pixel ELA manipulation scan.</p>
+                            <h6 class="fw-bold text-navy mb-2">Biometrics & Tamper</h6>
+                            <p class="text-slate-secondary extra-small mb-0">Facial embedding matching against live webcam selfie and pixel ELA manipulation scan.</p>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="p-4 rounded-3 bg-white border border-slate-200 shadow-sm h-100">
+                        <div class="card-white p-4 h-100">
                             <div class="fs-1 fw-black text-primary font-monospace mb-2">04</div>
-                            <h6 class="fw-bold text-dark mb-2">Risk Scoring & Dossier</h6>
-                            <p class="text-secondary extra-small mb-0">Multi-modal risk calculation (0-100), RAG explanation, and exportable audit report.</p>
+                            <h6 class="fw-bold text-navy mb-2">Risk Scoring & Dossier</h6>
+                            <p class="text-slate-secondary extra-small mb-0">Multi-modal risk calculation (0-100), RAG explanation, and exportable audit report.</p>
                         </div>
                     </div>
                 </div>
@@ -789,17 +803,17 @@
              ================================================================== -->
         <section id="security" class="section-light-blue">
             <div class="container px-lg-5">
-                <div class="glass-card p-4 p-md-5 mx-auto" style="max-width: 1000px;">
+                <div class="card-white p-4 p-md-5 mx-auto" style="max-width: 1000px;">
                     <div class="row g-4 align-items-center">
                         <div class="col-lg-6">
                             <div class="section-badge-blue mb-2">
                                 <i class="fa-solid fa-lock"></i> ENTERPRISE SECURITY
                             </div>
-                            <h3 class="fw-bold text-dark mb-3">Institutional Grade Data Protection</h3>
-                            <p class="text-secondary small mb-3">
+                            <h3 class="fw-bold text-navy mb-3">Institutional Grade Data Protection</h3>
+                            <p class="text-slate-secondary small mb-3">
                                 VerifyX AI is engineered with privacy-first standards to safeguard identity assets:
                             </p>
-                            <ul class="list-unstyled d-flex flex-column gap-2 small text-secondary">
+                            <ul class="list-unstyled d-flex flex-column gap-2 small text-slate-secondary">
                                 <li><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>In-Memory Processing:</strong> Documents processed without permanent disk caching.</li>
                                 <li><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>PII Masking:</strong> Aadhaar numbers masked (XXXX XXXX 1234) across all audit logs.</li>
                                 <li><i class="fa-solid fa-circle-check text-success me-2"></i> <strong>Encrypted Transmission:</strong> End-to-end TLS 1.3 encryption across frontend and backend.</li>
@@ -808,8 +822,8 @@
                         <div class="col-lg-6 text-center">
                             <div class="p-4 rounded-3 bg-light border border-slate-200">
                                 <i class="fa-solid fa-shield-halved fs-1 text-primary mb-3"></i>
-                                <h5 class="fw-bold text-dark mb-1">Audit Trail & Governance</h5>
-                                <p class="text-secondary extra-small mb-0">
+                                <h5 class="fw-bold text-navy mb-1">Audit Trail & Governance</h5>
+                                <p class="text-slate-secondary extra-small mb-0">
                                     Every verification event is assigned an immutable SHA-256 digest and timestamp for regulatory compliance.
                                 </p>
                             </div>
@@ -825,8 +839,8 @@
         <section id="about" class="section-light-blue pb-5">
             <div class="container px-lg-5">
                 <div class="text-center mb-4">
-                    <h5 class="fw-bold text-dark mb-1">VerifyX AI Platform</h5>
-                    <p class="text-muted extra-small">Version 2.0 &bull; Netlify Cloud Distribution &bull; Powered by Django AI Backend</p>
+                    <h5 class="fw-bold text-navy mb-1">VerifyX AI Platform</h5>
+                    <p class="text-slate-secondary extra-small">Version 2.0 &bull; Netlify Cloud Distribution &bull; Powered by Django AI Backend</p>
                 </div>
             </div>
         </section>
@@ -857,9 +871,8 @@
                         <a href="#home" class="footer-link">Home</a>
                         <a href="#verification" class="footer-link">Verification</a>
                         <a href="#screening" class="footer-link">Screening Modules</a>
-                        <a href="#how-it-works" class="footer-link">How It Works</a>
-                        <a href="#security" class="footer-link">Security</a>
-                        <a href="#about" class="footer-link">About</a>
+                        <a href="history.html" class="footer-link">History</a>
+                        <a href="signin.html" class="footer-link">Sign In</a>
                     </div>
                     <div class="text-muted extra-small">
                         &copy; 2026 VerifyX AI. All rights reserved.

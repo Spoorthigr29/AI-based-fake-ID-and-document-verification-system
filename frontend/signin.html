@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In | VerifyX AI - Secure Document Verification Platform</title>
+    <meta name="description" content="Sign In to VerifyX AI Identity & Document Verification Platform.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Design System CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+    
+    <style>
+        .auth-wrapper {
+            min-height: calc(100vh - 160px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 1rem;
+            position: relative;
+            background-color: #071426;
+        }
+
+        .auth-bg-glow {
+            position: absolute;
+            width: 550px;
+            height: 550px;
+            background: radial-gradient(circle, rgba(14, 165, 233, 0.15) 0%, rgba(6, 182, 212, 0.05) 50%, transparent 75%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 0;
+            filter: blur(40px);
+        }
+
+        .auth-card {
+            background: rgba(15, 23, 42, 0.90);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(56, 189, 248, 0.25);
+            border-radius: 1.25rem;
+            box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.7), 0 0 35px -5px rgba(14, 165, 233, 0.2);
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 460px;
+            color: #f8fafc;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .auth-card:hover {
+            border-color: rgba(56, 189, 248, 0.4);
+            box-shadow: 0 25px 50px -10px rgba(0, 0, 0, 0.8), 0 0 45px -5px rgba(14, 165, 233, 0.3);
+        }
+
+        .auth-input-group .input-group-text {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-right: none;
+            color: #38bdf8;
+            padding-left: 1.1rem;
+            padding-right: 1.1rem;
+        }
+
+        .auth-input-group .form-control {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            color: #f8fafc;
+            font-size: 0.95rem;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .auth-input-group .form-control::placeholder {
+            color: #64748b;
+        }
+
+        .auth-input-group .form-control:focus {
+            background: rgba(30, 41, 59, 0.98);
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+            color: #ffffff;
+        }
+
+        .btn-toggle-pwd {
+            background: rgba(30, 41, 59, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.25);
+            border-left: none;
+            color: #94a3b8;
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: color 0.2s ease, border-color 0.2s ease;
+        }
+
+        .btn-toggle-pwd:hover {
+            color: #38bdf8;
+            background: rgba(30, 41, 59, 0.95);
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbarMain" data-bs-offset="100" tabindex="0">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top" id="mainNavbar">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="index.html">
+                <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 38px; height: 38px;">
+                    <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <span class="fs-4 brand-badge">VERIFYX</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#verification">Verification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#screening">Screening Modules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#security">Security</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#about">About</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 gap-sm-3">
+                    <a href="signin.html" class="btn btn-sm btn-outline-info active">
+                        <i class="fa-solid fa-right-to-bracket me-1"></i> Sign In
+                    </a>
+                    <a href="index.html#verification" class="btn btn-sm btn-cyber-primary">
+                        <i class="fa-solid fa-bolt me-1"></i> Start Verification
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- SIGN IN AUTH CONTAINER -->
+    <div class="auth-wrapper">
+        <div class="auth-bg-glow"></div>
+
+        <div class="auth-card p-4 p-sm-5">
+            <div class="text-center mb-4">
+                <div class="d-inline-flex align-items-center justify-content-center p-3 rounded-circle bg-info bg-opacity-10 border border-info border-opacity-25 mb-3 shadow-sm" style="width: 60px; height: 60px;">
+                    <i class="fa-solid fa-shield-halved text-info fs-3"></i>
+                </div>
+                <h2 class="fw-bold text-white mb-1 tracking-wide">VerifyX AI</h2>
+                <p class="text-info text-opacity-75 small fw-semibold text-uppercase tracking-wider mb-0">Secure Document Verification Platform</p>
+            </div>
+
+            <!-- Notification Alert placeholder -->
+            <div id="authAlert" class="d-none alert alert-success alert-dismissible fade show border-0 rounded-3 py-2 px-3 small d-flex align-items-center mb-4 shadow-sm" role="alert" style="background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.3) !important; color: #6ee7b7;">
+                <i class="fa-solid fa-circle-check me-2 fs-6"></i>
+                <div class="flex-grow-1 fw-medium" id="authAlertText">Authentication Successful</div>
+            </div>
+
+            <!-- Sign In Form -->
+            <form id="signInForm">
+                <!-- Username / Email -->
+                <div class="mb-3">
+                    <label for="identifierInput" class="form-label text-light small fw-semibold text-opacity-90 mb-1">
+                        Email / Username
+                    </label>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-user-shield"></i>
+                        </span>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="identifierInput" 
+                            name="username" 
+                            placeholder="admin@verifyx.ai or username" 
+                            value="admin@verifyx.ai"
+                            required 
+                            autocomplete="username"
+                        >
+                    </div>
+                </div>
+
+                <!-- Password -->
+                <div class="mb-3">
+                    <div class="d-flex align-items-center justify-content-between mb-1">
+                        <label for="passwordInput" class="form-label text-light small fw-semibold text-opacity-90 mb-0">
+                            Password
+                        </label>
+                        <a href="#" onclick="alert('Password reset link sent to registered email.'); return false;" class="small text-info text-decoration-none fw-medium" style="font-size: 0.82rem;">
+                            Forgot Password?
+                        </a>
+                    </div>
+                    <div class="input-group auth-input-group">
+                        <span class="input-group-text">
+                            <i class="fa-solid fa-lock"></i>
+                        </span>
+                        <input 
+                            type="password" 
+                            class="form-control" 
+                            id="passwordInput" 
+                            name="password" 
+                            placeholder="Enter your password" 
+                            value="password123"
+                            required 
+                            autocomplete="current-password"
+                        >
+                        <button 
+                            class="btn-toggle-pwd" 
+                            type="button" 
+                            id="togglePasswordBtn" 
+                            title="Show or hide password"
+                        >
+                            <i class="fa-solid fa-eye" id="togglePasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me -->
+                <div class="d-flex align-items-center justify-content-between mb-4">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMeCheck" checked style="background-color: rgba(30, 41, 59, 0.8); border-color: rgba(148, 163, 184, 0.3);">
+                        <label class="form-check-label small text-secondary fw-medium cursor-pointer" for="rememberMeCheck">
+                            Remember Me
+                        </label>
+                    </div>
+                    <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 extra-small">Institutional SSL Active</span>
+                </div>
+
+                <!-- Sign In Button -->
+                <div class="d-grid mb-3">
+                    <button type="submit" class="btn btn-cyber-primary py-2 fw-semibold text-uppercase tracking-wider shadow" id="submitSignInBtn">
+                        <i class="fa-solid fa-right-to-bracket me-2"></i> Sign In
+                    </button>
+                </div>
+            </form>
+
+            <div class="text-center pt-2 border-top border-secondary border-opacity-25">
+                <p class="small text-secondary mb-0">
+                    Need platform access? 
+                    <a href="index.html#verification" class="text-info text-decoration-none fw-semibold ms-1">
+                        Try Instant Verification
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-dark-navy">
+        <div class="container px-lg-5">
+            <div class="row g-4 align-items-center justify-content-between">
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="d-inline-flex align-items-center gap-2 mb-2">
+                        <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 34px; height: 34px;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="fs-4 fw-black text-white">VERIFYX</span>
+                    </div>
+                    <p class="text-slate-secondary text-light small mb-0">Institutional Identity & Document Verification Platform</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-3 mb-2">
+                        <a href="index.html#home" class="footer-link">Home</a>
+                        <a href="index.html#verification" class="footer-link">Verification</a>
+                        <a href="history.html" class="footer-link">History</a>
+                        <a href="signin.html" class="footer-link">Sign In</a>
+                    </div>
+                    <div class="text-muted extra-small">
+                        &copy; 2026 VerifyX AI. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const passwordInput = document.getElementById('passwordInput');
+            const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+            const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+            const signInForm = document.getElementById('signInForm');
+            const authAlert = document.getElementById('authAlert');
+
+            if (togglePasswordBtn && passwordInput) {
+                togglePasswordBtn.addEventListener('click', () => {
+                    const isPassword = passwordInput.getAttribute('type') === 'password';
+                    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                    togglePasswordIcon.className = isPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye';
+                });
+            }
+
+            if (signInForm) {
+                signInForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    authAlert.classList.remove('d-none');
+                    setTimeout(() => {
+                        window.location.href = 'history.html';
+                    }, 800);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,1 +1,5 @@
-/*    /index.html   200
+/login        /signin.html     200
+/signin       /signin.html     200
+/history      /history.html    200
+/documents/history/ /history.html 200
+/*            /index.html      200

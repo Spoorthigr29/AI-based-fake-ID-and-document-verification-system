@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification History | VERIFYX AI - Identity Archive</title>
+    <meta name="description" content="Browse and inspect previous automated identity screening records and forensic audit logs.">
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- FontAwesome 6 Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom Design System CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbarMain" data-bs-offset="100" tabindex="0">
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top" id="mainNavbar">
+        <div class="container-fluid px-lg-5">
+            <a class="navbar-brand d-flex align-items-center gap-2 text-decoration-none" href="index.html">
+                <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 38px; height: 38px;">
+                    <i class="fa-solid fa-shield-halved fs-5"></i>
+                </div>
+                <span class="fs-4 brand-badge">VERIFYX</span>
+            </a>
+            
+            <button class="navbar-toggler border-0 shadow-none text-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0 gap-1">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#verification">Verification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#screening">Screening Modules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="history.html">History</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#how-it-works">How It Works</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#security">Security</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html#about">About</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 gap-sm-3">
+                    <a href="signin.html" class="btn btn-sm btn-outline-info">
+                        <i class="fa-solid fa-user-check me-1"></i> Officer Account
+                    </a>
+                    <a href="index.html#verification" class="btn btn-sm btn-cyber-primary">
+                        <i class="fa-solid fa-bolt me-1"></i> Start Verification
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN LIGHT BLUE CONTENT -->
+    <div class="main-content-light-blue py-5">
+        <div class="container px-3 px-lg-5">
+            <!-- Header -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div>
+                    <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-primary bg-opacity-10 border border-primary border-opacity-25 text-primary small fw-semibold mb-2">
+                        <i class="fa-solid fa-clock-rotate-left"></i> VERIFICATION ARCHIVE
+                    </div>
+                    <h2 class="heading-section-dark fs-2 mb-1">Verification History & Audit Log</h2>
+                    <p class="desc-section-slate small mb-0">Browse and inspect previous automated identity screening records and forensic telemetry.</p>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="index.html#verification" class="btn btn-cyber-primary shadow-sm">
+                        <i class="fa-solid fa-plus me-1"></i> Start New Verification
+                    </a>
+                </div>
+            </div>
+
+            <!-- Summary Metrics Cards -->
+            <div class="row g-3 mb-4">
+                <div class="col-6 col-lg-3">
+                    <div class="card-white p-3 d-flex align-items-center gap-3">
+                        <div class="w-10 h-10 rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center fs-5 p-3">
+                            <i class="fa-solid fa-file-shield"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold">Total Screened</div>
+                            <div class="fw-bold text-navy fs-5" id="metricTotal">8 Records</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card-white p-3 d-flex align-items-center gap-3">
+                        <div class="w-10 h-10 rounded-circle bg-success bg-opacity-10 text-success d-flex align-items-center justify-content-center fs-5 p-3">
+                            <i class="fa-solid fa-circle-check"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold">Verified (Low Risk)</div>
+                            <div class="fw-bold text-success fs-5" id="metricVerified">5 Records</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card-white p-3 d-flex align-items-center gap-3">
+                        <div class="w-10 h-10 rounded-circle bg-warning bg-opacity-10 text-warning d-flex align-items-center justify-content-center fs-5 p-3">
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold">Review Required</div>
+                            <div class="fw-bold text-warning fs-5" id="metricReview">2 Records</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6 col-lg-3">
+                    <div class="card-white p-3 d-flex align-items-center gap-3">
+                        <div class="w-10 h-10 rounded-circle bg-danger bg-opacity-10 text-danger d-flex align-items-center justify-content-center fs-5 p-3">
+                            <i class="fa-solid fa-shield-virus"></i>
+                        </div>
+                        <div>
+                            <div class="text-slate-secondary extra-small text-uppercase fw-bold">Tampered / High Risk</div>
+                            <div class="fw-bold text-danger fs-5" id="metricTampered">1 Record</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Search & Filter Panel -->
+            <div class="card-white p-4 mb-4">
+                <div class="row g-3 align-items-end">
+                    <div class="col-12 col-md-4">
+                        <label class="form-label text-slate-secondary extra-small fw-bold text-uppercase mb-1">
+                            <i class="fa-solid fa-magnifying-glass me-1 text-primary"></i> Search Case ID / Name
+                        </label>
+                        <input type="text" id="searchInput" class="form-control form-control-sm bg-light border-slate-300" placeholder="e.g. VX-2026 or PAN or Spoorthi">
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <label class="form-label text-slate-secondary extra-small fw-bold text-uppercase mb-1">Status</label>
+                        <select id="statusFilter" class="form-select form-select-sm bg-light border-slate-300">
+                            <option value="">All Statuses</option>
+                            <option value="Verified">Verified (Low Risk)</option>
+                            <option value="Review Required">Review Required</option>
+                            <option value="High Risk">High Risk / Mismatch</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <label class="form-label text-slate-secondary extra-small fw-bold text-uppercase mb-1">Document Type</label>
+                        <select id="docTypeFilter" class="form-select form-select-sm bg-light border-slate-300">
+                            <option value="">All Document Types</option>
+                            <option value="Aadhaar">Aadhaar Card</option>
+                            <option value="PAN">PAN Card</option>
+                            <option value="Passport">Passport</option>
+                            <option value="Driving License">Driving License</option>
+                            <option value="Voter ID">Voter ID</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-2 d-flex gap-2">
+                        <button type="button" class="btn btn-sm btn-outline-secondary w-100" id="clearFilterBtn">
+                            <i class="fa-solid fa-rotate-left me-1"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Records Table Card -->
+            <div class="card-white p-0 overflow-hidden shadow-sm">
+                <div class="d-flex flex-wrap justify-content-between align-items-center px-4 py-3 bg-light border-bottom border-slate-200 gap-2">
+                    <div class="d-flex align-items-center gap-2">
+                        <i class="fa-solid fa-list-check text-primary"></i>
+                        <span class="fw-bold text-navy small">Verification Records Archive</span>
+                    </div>
+                    <div class="text-slate-secondary small" id="recordCountLabel">
+                        Showing <strong class="text-navy">8</strong> verified records
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="bg-light text-slate-secondary small text-uppercase font-monospace border-bottom">
+                            <tr>
+                                <th class="ps-4 py-3">Timestamp</th>
+                                <th class="py-3">Verification ID</th>
+                                <th class="py-3">Document Type</th>
+                                <th class="py-3">Biometrics</th>
+                                <th class="py-3">Tamper Scan</th>
+                                <th class="py-3">Risk Score</th>
+                                <th class="py-3">Decision</th>
+                                <th class="text-end pe-4 py-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="small" id="historyTableBody">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- DETAIL DOSSIER MODAL -->
+    <div class="modal fade" id="historyDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content card-white border-0 shadow-lg">
+                <div class="modal-header border-bottom border-slate-200 bg-light p-4">
+                    <div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 extra-small">FORENSIC DOSSIER</span>
+                        <h5 class="modal-title fw-bold text-navy mt-1" id="modalVerId">VX-2026-000178</h5>
+                    </div>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4" id="modalBodyContent">
+                    <!-- Populated dynamically -->
+                </div>
+                <div class="modal-footer border-top border-slate-200 bg-light d-flex justify-content-between">
+                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.print()">
+                        <i class="fa-solid fa-print me-1"></i> Print Dossier
+                    </button>
+                    <button type="button" class="btn btn-sm btn-cyber-primary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer-dark-navy">
+        <div class="container px-lg-5">
+            <div class="row g-4 align-items-center justify-content-between">
+                <div class="col-md-6 text-center text-md-start">
+                    <div class="d-inline-flex align-items-center gap-2 mb-2">
+                        <div class="d-flex align-items-center justify-content-center brand-logo-icon rounded-3 p-2" style="width: 34px; height: 34px;">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="fs-4 fw-black text-white">VERIFYX</span>
+                    </div>
+                    <p class="text-slate-secondary text-light small mb-0">Institutional Identity & Document Verification Platform</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <div class="d-flex flex-wrap justify-content-center justify-content-md-end gap-3 mb-2">
+                        <a href="index.html#home" class="footer-link">Home</a>
+                        <a href="index.html#verification" class="footer-link">Verification</a>
+                        <a href="history.html" class="footer-link">History</a>
+                        <a href="signin.html" class="footer-link">Sign In</a>
+                    </div>
+                    <div class="text-muted extra-small">
+                        &copy; 2026 VerifyX AI. All rights reserved.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5.3 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        const HISTORY_DATA = [
+            {
+                id: 'VX-2026-000178',
+                date: '30-09-2026 09:15',
+                type: 'PAN Card',
+                name: 'SPOORTHI G R',
+                bio: '98% Match',
+                tamper: '4% (Clean)',
+                score: 12,
+                decision: 'Verified',
+                badgeClass: 'badge-risk-low',
+                details: 'Official PAN layout verified. High-precision contour crop matched live selfie with 98% cosine similarity. Zero ELA anomalies.'
+            },
+            {
+                id: 'VX-2026-000177',
+                date: '29-09-2026 18:02',
+                type: 'Aadhaar Card',
+                name: 'ANANYA SHARMA',
+                bio: '94% Match',
+                tamper: '2% (Clean)',
+                score: 15,
+                decision: 'Verified',
+                badgeClass: 'badge-risk-low',
+                details: 'UIDAI QR code cryptographically validated. Visual OCR match 100%. Liveness confirmed.'
+            },
+            {
+                id: 'VX-2026-000176',
+                date: '29-09-2026 17:45',
+                type: 'Aadhaar Card',
+                name: 'VIKRAM MALHOTRA',
+                bio: '88% Match',
+                tamper: '5% (Clean)',
+                score: 22,
+                decision: 'Verified',
+                badgeClass: 'badge-risk-low',
+                details: 'Standard e-Aadhaar PDF verified. Digital signature timestamp valid.'
+            },
+            {
+                id: 'VX-2026-000175',
+                date: '29-09-2026 15:20',
+                type: 'PAN Card',
+                name: 'RAHUL SHARMA',
+                bio: 'N/A',
+                tamper: '84% (Manipulated)',
+                score: 82,
+                decision: 'High Risk',
+                badgeClass: 'badge-risk-high',
+                details: 'Digital tampering detected in Name text strip using Error Level Analysis. Resampling grid mismatch.'
+            },
+            {
+                id: 'VX-2026-000174',
+                date: '29-09-2026 14:10',
+                type: 'Passport',
+                name: 'KAVITA PATEL',
+                bio: '92% Match',
+                tamper: '3% (Clean)',
+                score: 18,
+                decision: 'Verified',
+                badgeClass: 'badge-risk-low',
+                details: 'ICAO MRZ checksum validated. Facial biometric embedding matched against live webcam stream.'
+            },
+            {
+                id: 'VX-2026-000173',
+                date: '28-09-2026 16:30',
+                type: 'Driving License',
+                name: 'PRIYA SUNDARAM',
+                bio: '88% Match',
+                tamper: '35% (Mismatch)',
+                score: 68,
+                decision: 'Review Required',
+                badgeClass: 'badge-risk-medium',
+                details: 'Parivahan QR metadata contains name discrepancy against visual OCR text. Manual review recommended.'
+            },
+            {
+                id: 'VX-2026-000172',
+                date: '28-09-2026 11:15',
+                type: 'Voter ID',
+                name: 'RAJESH KUMAR',
+                bio: '86% Match',
+                tamper: '6% (Clean)',
+                score: 25,
+                decision: 'Verified',
+                badgeClass: 'badge-risk-low',
+                details: 'EPIC card layout and microprint geometry verified.'
+            },
+            {
+                id: 'VX-2026-000171',
+                date: '27-09-2026 10:05',
+                type: 'Passport',
+                name: 'UNKNOWN',
+                bio: 'N/A',
+                tamper: '12% (Blur)',
+                score: 55,
+                decision: 'Review Required',
+                badgeClass: 'badge-risk-medium',
+                details: 'Image quality is too low or blurry to extract critical security features. Rescan requested from applicant.'
+            }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('historyTableBody');
+            const countLabel = document.getElementById('recordCountLabel');
+            tbody.innerHTML = '';
+
+            if (countLabel) {
+                countLabel.innerHTML = `Showing <strong class="text-navy">${data.length}</strong> records`;
+            }
+
+            if (data.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-folder-open fs-2 mb-2"></i>
+                            <div>No matching verification records found.</div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            data.forEach(item => {
+                const tr = document.createElement('tr');
+                tr.style.cursor = 'pointer';
+                tr.innerHTML = `
+                    <td class="ps-4 py-3 text-secondary font-monospace">${item.date}</td>
+                    <td class="py-3">
+                        <strong class="text-primary font-monospace">${item.id}</strong>
+                    </td>
+                    <td class="py-3">
+                        <span class="badge bg-white border border-slate-300 text-dark px-2 py-1">${item.type}</span>
+                    </td>
+                    <td class="py-3 text-dark fw-semibold">${item.bio}</td>
+                    <td class="py-3 text-slate-secondary">${item.tamper}</td>
+                    <td class="py-3">
+                        <div class="d-flex align-items-center gap-2">
+                            <strong class="${item.score <= 30 ? 'text-success' : (item.score <= 70 ? 'text-warning' : 'text-danger')} font-monospace">${item.score}</strong>
+                            <div class="progress" style="width: 50px; height: 6px;">
+                                <div class="progress-bar ${item.score <= 30 ? 'bg-success' : (item.score <= 70 ? 'bg-warning' : 'bg-danger')}" style="width: ${item.score}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3">
+                        <span class="badge ${item.badgeClass}">${item.decision}</span>
+                    </td>
+                    <td class="text-end pe-4 py-3">
+                        <button type="button" class="btn btn-sm btn-cyber-primary" onclick="showDossier('${item.id}')">
+                            View <i class="fa-solid fa-arrow-right ms-1"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.showDossier = function(id) {
+            const item = HISTORY_DATA.find(x => x.id === id);
+            if (!item) return;
+
+            document.getElementById('modalVerId').innerText = item.id;
+            const content = document.getElementById('modalBodyContent');
+            content.innerHTML = `
+                <div class="row g-3 mb-3">
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 border border-slate-200">
+                            <div class="extra-small text-slate-secondary text-uppercase fw-bold">Document Category</div>
+                            <div class="fw-bold text-navy fs-6">${item.type}</div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded-3 border border-slate-200">
+                            <div class="extra-small text-slate-secondary text-uppercase fw-bold">Verification Decision</div>
+                            <div class="fw-bold fs-6"><span class="badge ${item.badgeClass}">${item.decision}</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 border border-slate-200 mb-3">
+                    <div class="d-flex justify-content-between align-items-center mb-1">
+                        <span class="extra-small text-slate-secondary text-uppercase fw-bold">Multi-Modal Risk Score</span>
+                        <span class="fw-black font-monospace ${item.score <= 30 ? 'text-success' : (item.score <= 70 ? 'text-warning' : 'text-danger')}">${item.score} / 100</span>
+                    </div>
+                    <div class="progress" style="height: 8px;">
+                        <div class="progress-bar ${item.score <= 30 ? 'bg-success' : (item.score <= 70 ? 'bg-warning' : 'bg-danger')}" style="width: ${item.score}%"></div>
+                    </div>
+                </div>
+
+                <div class="p-3 bg-light rounded-3 border border-slate-200">
+                    <div class="extra-small text-slate-secondary text-uppercase fw-bold mb-1">Forensic Analysis Summary</div>
+                    <div class="small text-navy">${item.details}</div>
+                </div>
+            `;
+
+            const modal = new bootstrap.Modal(document.getElementById('historyDetailModal'));
+            modal.show();
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable(HISTORY_DATA);
+
+            const searchInput = document.getElementById('searchInput');
+            const statusFilter = document.getElementById('statusFilter');
+            const docTypeFilter = document.getElementById('docTypeFilter');
+            const clearFilterBtn = document.getElementById('clearFilterBtn');
+
+            function applyFilters() {
+                const q = searchInput.value.toLowerCase().trim();
+                const st = statusFilter.value;
+                const dt = docTypeFilter.value.toLowerCase();
+
+                const filtered = HISTORY_DATA.filter(item => {
+                    const matchQ = !q || item.id.toLowerCase().includes(q) || item.type.toLowerCase().includes(q) || item.name.toLowerCase().includes(q);
+                    const matchSt = !st || item.decision === st;
+                    const matchDt = !dt || item.type.toLowerCase().includes(dt);
+                    return matchQ && matchSt && matchDt;
+                });
+
+                renderTable(filtered);
+            }
+
+            if (searchInput) searchInput.addEventListener('input', applyFilters);
+            if (statusFilter) statusFilter.addEventListener('change', applyFilters);
+            if (docTypeFilter) docTypeFilter.addEventListener('change', applyFilters);
+
+            if (clearFilterBtn) {
+                clearFilterBtn.addEventListener('click', () => {
+                    searchInput.value = '';
+                    statusFilter.value = '';
+                    docTypeFilter.value = '';
+                    renderTable(HISTORY_DATA);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
